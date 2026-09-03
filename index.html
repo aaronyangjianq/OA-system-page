@@ -3,95 +3,3043 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="OA 报销付款闭环的脱敏交互式展示原型。" />
-    <meta property="og:title" content="OA Payment Control · Prototype" />
-    <meta property="og:description" content="OA 报销付款闭环的脱敏交互式展示原型。" />
+    <meta
+      name="description"
+      content="OA 系统报销管理模块的脱敏交互式展示原型。"
+    />
+    <meta property="og:title" content="OA System · 报销管理" />
+    <meta
+      property="og:description"
+      content="OA 系统报销管理模块的脱敏交互式展示原型。"
+    />
     <meta property="og:image" content="./public/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>OA Payment Control · Prototype</title>
+    <title>OA System · 报销管理</title>
     <style>
-      :root { --ink:#12213a; --muted:#66758c; --blue:#1356bd; --line:#dfe6ef; --surface:#fff; --paper:#f5f7fb; --navy:#0b1d37; }
-      * { box-sizing:border-box } body { margin:0; min-width:320px; color:var(--ink); background:var(--paper); font-family:Inter,"PingFang SC","Microsoft YaHei",Arial,sans-serif; }
-      button,input { font:inherit } button { cursor:pointer; border:0 } .topbar { position:sticky;top:0;z-index:30;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(12px) }
-      .brand,.top-actions,.user { display:flex;align-items:center;gap:11px }.logo { width:36px;height:36px;display:grid;place-items:center;border-radius:11px;color:#fff;background:var(--navy);font-size:14px;font-weight:800;box-shadow:0 8px 18px rgba(10,35,70,.18) }.brand b { display:block;font-size:14px;letter-spacing:-.02em }.brand small { display:block;margin-top:2px;color:#9aa7b8;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase }.search { width:min(34vw,420px);position:relative }.search input { width:100%;padding:10px 14px 10px 35px;border:1px solid var(--line);border-radius:11px;background:#f8fafc;outline:none;font-size:13px }.search input:focus { border-color:#75a7f4;background:#fff;box-shadow:0 0 0 4px #dbeafe }.search span { position:absolute;left:12px;top:8px;color:#9aa7b8 }.tag { display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:20px;background:#eef5ff;color:#1356bd;font-size:11px;font-weight:700 }.tag:before { content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7 }.icon-btn { display:grid;place-items:center;width:34px;height:34px;border-radius:9px;color:#617087;background:transparent }.icon-btn:hover { background:#f1f5f9 }.avatar { display:grid;place-items:center;width:25px;height:25px;border-radius:7px;color:#fff;background:linear-gradient(135deg,#246dd7,#5137ac);font-size:10px }.shell { display:flex;max-width:1600px;margin:auto }.sidebar { position:sticky;top:68px;height:calc(100vh - 68px);width:250px;flex:none;padding:20px 16px;border-right:1px solid var(--line);background:#fff }.overline { padding:0 11px;color:#9aa7b8;font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase }.nav { margin-top:11px }.nav button { display:flex;align-items:center;gap:11px;width:100%;padding:11px;border-radius:11px;color:#617087;background:transparent;text-align:left;font-size:14px;font-weight:600;transition:.16s }.nav button:hover { color:var(--ink);background:#f6f8fb }.nav button.active { color:#104da9;background:#edf5ff;box-shadow:inset 0 0 0 1px #d8e9ff }.nav .glyph { width:17px;color:#99a7ba;text-align:center }.nav button.active .glyph { color:#1356bd }.count { margin-left:auto;padding:2px 7px;border-radius:10px;color:#cf3347;background:#ffe8ed;font-size:10px }.safe { margin-top:30px;padding:15px;border-radius:15px;background:#f7f9fc }.safe b { font-size:12px }.safe p { margin:7px 0 0;color:var(--muted);font-size:12px;line-height:1.55 }.safe b:before { content:"✓";display:inline-grid;place-items:center;width:17px;height:17px;margin-right:7px;border-radius:50%;color:#077a4a;background:#e0f7ec }.main { width:100%;min-width:0;padding:29px 48px }.inner { max-width:1240px;margin:auto }.page { display:none }.page.active { display:block }.page-head { display:flex;gap:16px;align-items:end;justify-content:space-between;margin-bottom:28px }.eyebrow { margin:0;color:#1356bd;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase }.page-head h1 { margin:8px 0 0;color:#0f1c31;font-size:30px;letter-spacing:-.045em }.primary,.secondary { display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:11px;font-size:13px;font-weight:700;transition:.16s }.primary { color:#fff;background:#0e478f;box-shadow:0 6px 16px -9px #0e478f }.primary:hover { background:#083876;transform:translateY(-1px) }.secondary { color:#4b5d75;background:#fff;border:1px solid var(--line) }.secondary:hover { border-color:#b9d8ff;color:#1453aa;background:#f1f7ff }.cards { display:grid;grid-template-columns:repeat(4,1fr);gap:15px }.card { padding:20px;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 10px 35px -26px rgba(15,23,42,.45) }.card-top { display:flex;justify-content:space-between;align-items:start;color:var(--muted);font-size:13px;font-weight:600 }.card-icon { display:grid;place-items:center;width:36px;height:36px;border-radius:11px;font-size:16px }.blue { color:#1255bb;background:#edf5ff }.purple { color:#6838b2;background:#f4edff }.sky { color:#167ba1;background:#eafbff }.red { color:#ce3750;background:#fff0f2 }.metric { margin-top:20px;color:#0f1c31;font-size:26px;font-weight:750;letter-spacing:-.05em }.hint { margin-top:7px;color:var(--muted);font-size:12px }.split { display:grid;grid-template-columns:1.32fr .68fr;gap:18px;margin-top:24px }.panel { border:1px solid var(--line);border-radius:17px;background:#fff;overflow:hidden;box-shadow:0 12px 36px -28px rgba(15,23,42,.6) }.panel-head { display:flex;justify-content:space-between;align-items:center;padding:17px 20px;border-bottom:1px solid #eef1f5 }.panel-head h2 { margin:0;font-size:15px }.panel-head p { margin:4px 0 0;color:var(--muted);font-size:11px }.link { color:#1356bd;background:transparent;font-size:13px;font-weight:700 }.payment { display:grid;grid-template-columns:1fr auto;gap:15px;width:100%;padding:16px 20px;border-bottom:1px solid #eef1f5;background:#fff;text-align:left;transition:.16s }.payment:hover { background:#f8fbff }.payment:last-child { border:0 }.payment b { font-size:13px }.payment b span { margin-left:8px;color:var(--muted);font-weight:500 }.payment p { margin:5px 0 0;color:var(--muted);font-size:11px }.amount { text-align:right;font-size:13px;font-weight:700 }.pill { display:inline-flex;align-items:center;gap:5px;margin-top:5px;padding:5px 9px;border-radius:18px;font-size:11px;font-weight:700 }.pill:before { content:"";width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.75 }.pill.blue { color:#1556b7;background:#eaf3ff }.pill.green { color:#158452;background:#e9f9f0 }.pill.amber { color:#a76708;background:#fff6de }.pill.red { color:#c83348;background:#fff0f2 }.guard { padding:20px;border-radius:17px;color:#fff;background:var(--navy);box-shadow:0 18px 40px -26px rgba(15,23,42,.8) }.guard .eyebrow { color:#b7d4ff }.guard h2 { margin:11px 0 0;font-size:18px }.guard-list { display:grid;gap:15px;margin-top:21px }.guard-list div { display:flex;gap:11px }.number { display:grid;place-items:center;flex:none;width:27px;height:27px;border-radius:8px;color:#c4dcff;background:#1e5197;font-family:monospace;font-size:11px;font-weight:700 }.guard-list b { display:block;font-size:13px }.guard-list p { margin:4px 0 0;color:#c4cede;font-size:11px;line-height:1.5 }.filters { display:flex;gap:8px;align-items:center;margin-bottom:18px }.filters button { padding:8px 13px;border:1px solid var(--line);border-radius:20px;color:#55667c;background:#fff;font-size:13px;font-weight:600 }.filters button.active { border-color:#172335;color:#fff;background:#172335 }.filters small { margin-left:auto;color:#9aa7b8 }.table-head,.table-row { display:grid;grid-template-columns:1.2fr .85fr .8fr .85fr 30px;gap:12px;align-items:center;padding:13px 20px }.table-head { color:#9aa7b8;background:#f8fafc;border-bottom:1px solid #eef1f5;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase }.table-row { width:100%;border-bottom:1px solid #eef1f5;background:#fff;text-align:left;transition:.16s }.table-row:hover { background:#f7fbff }.table-row:last-child { border:0 }.small { color:var(--muted);font-size:11px }.row-title { font-size:13px;font-weight:700 }.dual { display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:22px }.box { padding:20px;border:1px solid var(--line);border-radius:17px;background:#fff }.box h2 { margin:0;font-size:15px }.contract { margin-top:18px;padding:15px;border-radius:12px;background:#f6f8fb }.contract-top { display:flex;justify-content:space-between;gap:8px }.contract b { font-size:13px }.contract p { margin:5px 0 0;color:var(--muted);font-size:11px }.batches { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px }.batches span { padding:10px;border-radius:8px;color:#526279;background:#fff;font-size:12px }.batches strong { float:right;color:var(--ink) }.invoice { padding:20px;border:1px solid #ceddec;border-radius:17px;color:#fff;background:var(--navy) }.invoice .eyebrow { color:#b7d4ff }.invoice h2 { margin:12px 0 0;font-size:18px }.invoice p { color:#c5d0df;font-size:13px;line-height:1.6 }.invoice button { padding:0;color:#fff;background:transparent;font-size:13px;font-weight:700;text-decoration:underline;text-decoration-color:#4988df;text-underline-offset:4px }.trace-card { padding:20px;border:1px solid var(--line);border-radius:17px;background:#fff }.trace-top { display:flex;justify-content:space-between;gap:16px;padding-bottom:18px;border-bottom:1px solid #eef1f5 }.trace-top h2 { margin:0;font-size:17px }.trace-top p { margin:8px 0 0;color:var(--muted);font-size:12px }.request { padding:8px 11px;border-radius:9px;color:#6a7789;background:#f6f8fb;font-size:11px }.request b { color:#26374d;font-family:monospace }.steps { position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:27px }.steps:before { content:"";position:absolute;top:20px;left:35px;right:35px;height:1px;background:#dfe6ef }.step { position:relative;z-index:1 }.dot { display:grid;place-items:center;width:40px;height:40px;border:4px solid #fff;border-radius:50%;font-size:13px;font-weight:700 }.done .dot { color:#fff;background:#18a46a }.active .dot { color:#fff;background:#1d62c3;box-shadow:0 0 0 5px #e5f0ff }.next .dot { color:#8b99aa;background:#edf1f5 }.step b { display:block;margin-top:11px;font-size:13px }.step p { margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.45 }.snapshots { display:grid;gap:10px;margin-top:17px }.snapshot { display:flex;gap:13px;align-items:center;padding:11px 13px;border-radius:10px;background:#f7f9fc }.snapshot i { width:9px;height:9px;border-radius:50%;background:#15a26b }.snapshot:last-child i { background:#2365c5 }.snapshot b { font-size:13px }.snapshot p { margin:3px 0 0;color:var(--muted);font-size:11px }.snapshot span { margin-left:auto;color:#53647a;font-size:11px }.warn { padding:20px;border:1px solid #ffe0a1;border-radius:17px;background:#fffaf0 }.warn h2 { margin:0;font-size:15px }.warn p { color:#55667c;font-size:13px;line-height:1.65 }.warn .primary { color:#566579;background:#fff;border:1px solid #f2d590;box-shadow:none }.adapter { padding:22px;border:1px solid var(--line);border-radius:17px;background:#fff }.adapter-top { display:flex;justify-content:space-between;gap:15px;padding-bottom:19px;border-bottom:1px solid #eef1f5 }.adapter h2 { margin:0;font-size:15px }.adapter p { max-width:600px;color:var(--muted);font-size:13px;line-height:1.65 }.adapter-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px }.code { margin-top:20px;padding:13px;border-radius:10px;color:#cad6e7;background:#0b1d37;font:11px/1.8 ui-monospace,SFMono-Regular,Menlo,monospace }.code b { color:#89b7ff }.code span { color:#75d8ac }.errors { display:grid;grid-template-columns:1.35fr .65fr;gap:17px }.error-row { display:flex;align-items:center;gap:12px;padding:15px 20px;border-bottom:1px solid #eef1f5 }.error-row:last-child { border:0 }.error-dot { width:10px;height:10px;border-radius:50%;background:#e34659 }.error-row:nth-child(3) .error-dot,.error-row:nth-child(4) .error-dot { background:#e9a126 }.error-row b { display:block;font-size:13px }.error-row p { margin:4px 0 0;color:var(--muted);font-size:11px }.priority { margin-left:auto }.danger { padding:20px;border:1px solid #ffcdd5;border-radius:17px;background:#fff7f8 }.danger h2 { margin:15px 0 0;font-size:15px }.danger p { color:#566579;font-size:13px;line-height:1.65 }.danger button { margin-top:13px;padding:10px 13px;border-radius:10px;color:#fff;background:#d7394f;font-size:13px;font-weight:700 }.subject-head,.subject-row { display:grid;grid-template-columns:.7fr 1.2fr 1fr .6fr;gap:12px;padding:13px 20px }.subject-head { color:#9aa7b8;background:#f8fafc;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase }.subject-row { align-items:center;border-top:1px solid #eef1f5;font-size:13px }.subject-row code { color:#65758a }.subject-row b { font-size:13px }.toast { display:none;position:fixed;right:24px;bottom:24px;z-index:60;padding:13px 16px;border-radius:11px;color:#087646;background:#ebfaf0;box-shadow:0 18px 35px rgba(15,23,42,.15);font-size:13px;font-weight:700 }.toast.show { display:block }.mobile-menu { display:none }
-      @media (max-width:1000px) { .sidebar { display:none }.main { padding:25px }.cards { grid-template-columns:repeat(2,1fr) }.mobile-menu { display:grid }.search { width:260px }.split,.errors { grid-template-columns:1fr }.dual { grid-template-columns:1fr } }
-      @media (max-width:650px) { .topbar { padding:0 14px }.search,.top-actions .tag { display:none }.main { padding:22px 14px }.page-head { align-items:start;flex-direction:column }.cards { grid-template-columns:1fr }.table-head { display:none }.table-row { grid-template-columns:1fr auto }.table-row .hide-small { display:none }.steps { grid-template-columns:1fr;gap:14px }.steps:before { top:18px;bottom:18px;left:19px;right:auto;width:1px;height:auto }.step { display:flex;gap:12px }.step b { margin-top:3px }.step p { margin-top:4px }.trace-top { flex-direction:column }.snapshot span { display:none }.adapter-grid { grid-template-columns:1fr }.subject-head,.subject-row { grid-template-columns:.75fr 1.25fr .7fr }.subject-head span:nth-child(3),.subject-row span:nth-child(3) { display:none }.filters { flex-wrap:wrap }.filters small { width:100%;margin:4px 0 0 }.mobile-drawer { display:none;position:fixed;inset:0;z-index:50;background:rgba(5,15,30,.36) }.mobile-drawer.open { display:block }.drawer { width:286px;height:100%;padding:19px;background:#fff;box-shadow:18px 0 44px rgba(15,23,42,.25) }.drawer-head { display:flex;justify-content:space-between;align-items:center;font-weight:700 }.safe { display:none } }
+      :root {
+        --ink: #12213a;
+        --muted: #66758c;
+        --blue: #1356bd;
+        --line: #dfe6ef;
+        --surface: #fff;
+        --paper: #f5f7fb;
+        --navy: #0b1d37;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: Inter, 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+      }
+      button,
+      input {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: 0;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+        background: rgba(255, 255, 255, 0.92);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(12px);
+      }
+      .brand,
+      .top-actions,
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+      .logo {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: #fff;
+        background: var(--navy);
+        font-size: 14px;
+        font-weight: 800;
+        box-shadow: 0 8px 18px rgba(10, 35, 70, 0.18);
+      }
+      .brand b {
+        display: block;
+        font-size: 14px;
+        letter-spacing: -0.02em;
+      }
+      .brand small {
+        display: block;
+        margin-top: 2px;
+        color: #9aa7b8;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .search {
+        width: min(34vw, 420px);
+        position: relative;
+      }
+      .search input {
+        width: 100%;
+        padding: 10px 14px 10px 35px;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        background: #f8fafc;
+        outline: none;
+        font-size: 13px;
+      }
+      .search input:focus {
+        border-color: #75a7f4;
+        background: #fff;
+        box-shadow: 0 0 0 4px #dbeafe;
+      }
+      .search span {
+        position: absolute;
+        left: 12px;
+        top: 8px;
+        color: #9aa7b8;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #eef5ff;
+        color: #1356bd;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .tag:before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.7;
+      }
+      .icon-btn {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        color: #617087;
+        background: transparent;
+      }
+      .icon-btn:hover {
+        background: #f1f5f9;
+      }
+      .avatar {
+        display: grid;
+        place-items: center;
+        width: 25px;
+        height: 25px;
+        border-radius: 7px;
+        color: #fff;
+        background: linear-gradient(135deg, #246dd7, #5137ac);
+        font-size: 10px;
+      }
+      .shell {
+        display: flex;
+        max-width: 1600px;
+        margin: auto;
+      }
+      .sidebar {
+        position: sticky;
+        top: 68px;
+        height: calc(100vh - 68px);
+        width: 250px;
+        flex: none;
+        padding: 20px 16px;
+        border-right: 1px solid var(--line);
+        background: #fff;
+      }
+      .overline {
+        padding: 0 11px;
+        color: #9aa7b8;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+      .nav {
+        margin-top: 11px;
+      }
+      .nav button {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        width: 100%;
+        padding: 11px;
+        border-radius: 11px;
+        color: #617087;
+        background: transparent;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.16s;
+      }
+      .nav button:hover {
+        color: var(--ink);
+        background: #f6f8fb;
+      }
+      .nav button.active {
+        color: #104da9;
+        background: #edf5ff;
+        box-shadow: inset 0 0 0 1px #d8e9ff;
+      }
+      .nav .glyph {
+        width: 17px;
+        color: #99a7ba;
+        text-align: center;
+      }
+      .nav button.active .glyph {
+        color: #1356bd;
+      }
+      .count {
+        margin-left: auto;
+        padding: 2px 7px;
+        border-radius: 10px;
+        color: #cf3347;
+        background: #ffe8ed;
+        font-size: 10px;
+      }
+      .safe {
+        margin-top: 30px;
+        padding: 15px;
+        border-radius: 15px;
+        background: #f7f9fc;
+      }
+      .safe b {
+        font-size: 12px;
+      }
+      .safe p {
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .safe b:before {
+        content: '✓';
+        display: inline-grid;
+        place-items: center;
+        width: 17px;
+        height: 17px;
+        margin-right: 7px;
+        border-radius: 50%;
+        color: #077a4a;
+        background: #e0f7ec;
+      }
+      .main {
+        width: 100%;
+        min-width: 0;
+        padding: 29px 48px;
+      }
+      .inner {
+        max-width: 1240px;
+        margin: auto;
+      }
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+      }
+      .page-head {
+        display: flex;
+        gap: 16px;
+        align-items: end;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+      .eyebrow {
+        margin: 0;
+        color: #1356bd;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .page-head h1 {
+        margin: 8px 0 0;
+        color: #0f1c31;
+        font-size: 30px;
+        letter-spacing: -0.045em;
+      }
+      .primary,
+      .secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 10px 14px;
+        border-radius: 11px;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.16s;
+      }
+      .primary {
+        color: #fff;
+        background: #0e478f;
+        box-shadow: 0 6px 16px -9px #0e478f;
+      }
+      .primary:hover {
+        background: #083876;
+        transform: translateY(-1px);
+      }
+      .secondary {
+        color: #4b5d75;
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+      .secondary:hover {
+        border-color: #b9d8ff;
+        color: #1453aa;
+        background: #f1f7ff;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+      }
+      .card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: #fff;
+        box-shadow: 0 10px 35px -26px rgba(15, 23, 42, 0.45);
+      }
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .card-icon {
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        font-size: 16px;
+      }
+      .blue {
+        color: #1255bb;
+        background: #edf5ff;
+      }
+      .purple {
+        color: #6838b2;
+        background: #f4edff;
+      }
+      .sky {
+        color: #167ba1;
+        background: #eafbff;
+      }
+      .red {
+        color: #ce3750;
+        background: #fff0f2;
+      }
+      .metric {
+        margin-top: 20px;
+        color: #0f1c31;
+        font-size: 26px;
+        font-weight: 750;
+        letter-spacing: -0.05em;
+      }
+      .hint {
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 1.32fr 0.68fr;
+        gap: 18px;
+        margin-top: 24px;
+      }
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 12px 36px -28px rgba(15, 23, 42, 0.6);
+      }
+      .panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 17px 20px;
+        border-bottom: 1px solid #eef1f5;
+      }
+      .panel-head h2 {
+        margin: 0;
+        font-size: 15px;
+      }
+      .panel-head p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .link {
+        color: #1356bd;
+        background: transparent;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .payment {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 15px;
+        width: 100%;
+        padding: 16px 20px;
+        border-bottom: 1px solid #eef1f5;
+        background: #fff;
+        text-align: left;
+        transition: 0.16s;
+      }
+      .payment:hover {
+        background: #f8fbff;
+      }
+      .payment:last-child {
+        border: 0;
+      }
+      .payment b {
+        font-size: 13px;
+      }
+      .payment b span {
+        margin-left: 8px;
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .payment p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .amount {
+        text-align: right;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+        padding: 5px 9px;
+        border-radius: 18px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .pill:before {
+        content: '';
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.75;
+      }
+      .pill.blue {
+        color: #1556b7;
+        background: #eaf3ff;
+      }
+      .pill.green {
+        color: #158452;
+        background: #e9f9f0;
+      }
+      .pill.amber {
+        color: #a76708;
+        background: #fff6de;
+      }
+      .pill.red {
+        color: #c83348;
+        background: #fff0f2;
+      }
+      .guard {
+        padding: 20px;
+        border-radius: 17px;
+        color: #fff;
+        background: var(--navy);
+        box-shadow: 0 18px 40px -26px rgba(15, 23, 42, 0.8);
+      }
+      .guard .eyebrow {
+        color: #b7d4ff;
+      }
+      .guard h2 {
+        margin: 11px 0 0;
+        font-size: 18px;
+      }
+      .guard-list {
+        display: grid;
+        gap: 15px;
+        margin-top: 21px;
+      }
+      .guard-list div {
+        display: flex;
+        gap: 11px;
+      }
+      .number {
+        display: grid;
+        place-items: center;
+        flex: none;
+        width: 27px;
+        height: 27px;
+        border-radius: 8px;
+        color: #c4dcff;
+        background: #1e5197;
+        font-family: monospace;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .guard-list b {
+        display: block;
+        font-size: 13px;
+      }
+      .guard-list p {
+        margin: 4px 0 0;
+        color: #c4cede;
+        font-size: 11px;
+        line-height: 1.5;
+      }
+      .filters {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+      .filters button {
+        padding: 8px 13px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        color: #55667c;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .filters button.active {
+        border-color: #172335;
+        color: #fff;
+        background: #172335;
+      }
+      .filters small {
+        margin-left: auto;
+        color: #9aa7b8;
+      }
+      .table-head,
+      .table-row {
+        display: grid;
+        grid-template-columns: 1.2fr 0.85fr 0.8fr 0.85fr 30px;
+        gap: 12px;
+        align-items: center;
+        padding: 13px 20px;
+      }
+      .table-head {
+        color: #9aa7b8;
+        background: #f8fafc;
+        border-bottom: 1px solid #eef1f5;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .table-row {
+        width: 100%;
+        border-bottom: 1px solid #eef1f5;
+        background: #fff;
+        text-align: left;
+        transition: 0.16s;
+      }
+      .table-row:hover {
+        background: #f7fbff;
+      }
+      .table-row:last-child {
+        border: 0;
+      }
+      .small {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .row-title {
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .dual {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 16px;
+        margin-top: 22px;
+      }
+      .box {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: #fff;
+      }
+      .box h2 {
+        margin: 0;
+        font-size: 15px;
+      }
+      .contract {
+        margin-top: 18px;
+        padding: 15px;
+        border-radius: 12px;
+        background: #f6f8fb;
+      }
+      .contract-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .contract b {
+        font-size: 13px;
+      }
+      .contract p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .batches {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .batches span {
+        padding: 10px;
+        border-radius: 8px;
+        color: #526279;
+        background: #fff;
+        font-size: 12px;
+      }
+      .batches strong {
+        float: right;
+        color: var(--ink);
+      }
+      .invoice {
+        padding: 20px;
+        border: 1px solid #ceddec;
+        border-radius: 17px;
+        color: #fff;
+        background: var(--navy);
+      }
+      .invoice .eyebrow {
+        color: #b7d4ff;
+      }
+      .invoice h2 {
+        margin: 12px 0 0;
+        font-size: 18px;
+      }
+      .invoice p {
+        color: #c5d0df;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .invoice button {
+        padding: 0;
+        color: #fff;
+        background: transparent;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: underline;
+        text-decoration-color: #4988df;
+        text-underline-offset: 4px;
+      }
+      .trace-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: #fff;
+      }
+      .trace-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #eef1f5;
+      }
+      .trace-top h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+      .trace-top p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .request {
+        padding: 8px 11px;
+        border-radius: 9px;
+        color: #6a7789;
+        background: #f6f8fb;
+        font-size: 11px;
+      }
+      .request b {
+        color: #26374d;
+        font-family: monospace;
+      }
+      .steps {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-top: 27px;
+      }
+      .steps:before {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 35px;
+        right: 35px;
+        height: 1px;
+        background: #dfe6ef;
+      }
+      .step {
+        position: relative;
+        z-index: 1;
+      }
+      .dot {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border: 4px solid #fff;
+        border-radius: 50%;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .done .dot {
+        color: #fff;
+        background: #18a46a;
+      }
+      .active .dot {
+        color: #fff;
+        background: #1d62c3;
+        box-shadow: 0 0 0 5px #e5f0ff;
+      }
+      .next .dot {
+        color: #8b99aa;
+        background: #edf1f5;
+      }
+      .step b {
+        display: block;
+        margin-top: 11px;
+        font-size: 13px;
+      }
+      .step p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.45;
+      }
+      .snapshots {
+        display: grid;
+        gap: 10px;
+        margin-top: 17px;
+      }
+      .snapshot {
+        display: flex;
+        gap: 13px;
+        align-items: center;
+        padding: 11px 13px;
+        border-radius: 10px;
+        background: #f7f9fc;
+      }
+      .snapshot i {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #15a26b;
+      }
+      .snapshot:last-child i {
+        background: #2365c5;
+      }
+      .snapshot b {
+        font-size: 13px;
+      }
+      .snapshot p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .snapshot span {
+        margin-left: auto;
+        color: #53647a;
+        font-size: 11px;
+      }
+      .warn {
+        padding: 20px;
+        border: 1px solid #ffe0a1;
+        border-radius: 17px;
+        background: #fffaf0;
+      }
+      .warn h2 {
+        margin: 0;
+        font-size: 15px;
+      }
+      .warn p {
+        color: #55667c;
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .warn .primary {
+        color: #566579;
+        background: #fff;
+        border: 1px solid #f2d590;
+        box-shadow: none;
+      }
+      .adapter {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: #fff;
+      }
+      .adapter-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding-bottom: 19px;
+        border-bottom: 1px solid #eef1f5;
+      }
+      .adapter h2 {
+        margin: 0;
+        font-size: 15px;
+      }
+      .adapter p {
+        max-width: 600px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .adapter-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 20px;
+      }
+      .code {
+        margin-top: 20px;
+        padding: 13px;
+        border-radius: 10px;
+        color: #cad6e7;
+        background: #0b1d37;
+        font:
+          11px/1.8 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+      }
+      .code b {
+        color: #89b7ff;
+      }
+      .code span {
+        color: #75d8ac;
+      }
+      .errors {
+        display: grid;
+        grid-template-columns: 1.35fr 0.65fr;
+        gap: 17px;
+      }
+      .error-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eef1f5;
+      }
+      .error-row:last-child {
+        border: 0;
+      }
+      .error-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #e34659;
+      }
+      .error-row:nth-child(3) .error-dot,
+      .error-row:nth-child(4) .error-dot {
+        background: #e9a126;
+      }
+      .error-row b {
+        display: block;
+        font-size: 13px;
+      }
+      .error-row p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .priority {
+        margin-left: auto;
+      }
+      .danger {
+        padding: 20px;
+        border: 1px solid #ffcdd5;
+        border-radius: 17px;
+        background: #fff7f8;
+      }
+      .danger h2 {
+        margin: 15px 0 0;
+        font-size: 15px;
+      }
+      .danger p {
+        color: #566579;
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .danger button {
+        margin-top: 13px;
+        padding: 10px 13px;
+        border-radius: 10px;
+        color: #fff;
+        background: #d7394f;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .subject-head,
+      .subject-row {
+        display: grid;
+        grid-template-columns: 0.7fr 1.2fr 1fr 0.6fr;
+        gap: 12px;
+        padding: 13px 20px;
+      }
+      .subject-head {
+        color: #9aa7b8;
+        background: #f8fafc;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .subject-row {
+        align-items: center;
+        border-top: 1px solid #eef1f5;
+        font-size: 13px;
+      }
+      .subject-row code {
+        color: #65758a;
+      }
+      .subject-row b {
+        font-size: 13px;
+      }
+      .toast {
+        display: none;
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 60;
+        padding: 13px 16px;
+        border-radius: 11px;
+        color: #087646;
+        background: #ebfaf0;
+        box-shadow: 0 18px 35px rgba(15, 23, 42, 0.15);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .toast.show {
+        display: block;
+      }
+      .mobile-menu {
+        display: none;
+      }
+      @media (max-width: 1000px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 25px;
+        }
+        .cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .mobile-menu {
+          display: grid;
+        }
+        .search {
+          width: 260px;
+        }
+        .split,
+        .errors {
+          grid-template-columns: 1fr;
+        }
+        .dual {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 650px) {
+        .topbar {
+          padding: 0 14px;
+        }
+        .search,
+        .top-actions .tag {
+          display: none;
+        }
+        .main {
+          padding: 22px 14px;
+        }
+        .page-head {
+          align-items: start;
+          flex-direction: column;
+        }
+        .cards {
+          grid-template-columns: 1fr;
+        }
+        .table-head {
+          display: none;
+        }
+        .table-row {
+          grid-template-columns: 1fr auto;
+        }
+        .table-row .hide-small {
+          display: none;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .steps:before {
+          top: 18px;
+          bottom: 18px;
+          left: 19px;
+          right: auto;
+          width: 1px;
+          height: auto;
+        }
+        .step {
+          display: flex;
+          gap: 12px;
+        }
+        .step b {
+          margin-top: 3px;
+        }
+        .step p {
+          margin-top: 4px;
+        }
+        .trace-top {
+          flex-direction: column;
+        }
+        .snapshot span {
+          display: none;
+        }
+        .adapter-grid {
+          grid-template-columns: 1fr;
+        }
+        .subject-head,
+        .subject-row {
+          grid-template-columns: 0.75fr 1.25fr 0.7fr;
+        }
+        .subject-head span:nth-child(3),
+        .subject-row span:nth-child(3) {
+          display: none;
+        }
+        .filters {
+          flex-wrap: wrap;
+        }
+        .filters small {
+          width: 100%;
+          margin: 4px 0 0;
+        }
+        .mobile-drawer {
+          display: none;
+          position: fixed;
+          inset: 0;
+          z-index: 50;
+          background: rgba(5, 15, 30, 0.36);
+        }
+        .mobile-drawer.open {
+          display: block;
+        }
+        .drawer {
+          width: 286px;
+          height: 100%;
+          padding: 19px;
+          background: #fff;
+          box-shadow: 18px 0 44px rgba(15, 23, 42, 0.25);
+        }
+        .drawer-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-weight: 700;
+        }
+        .safe {
+          display: none;
+        }
+      }
     </style>
     <style>
-      .batch-detail{display:none;padding:15px 20px 17px 38px;border-top:1px solid #dbeafe;background:#f2f7ff}.batch-detail.open{display:block}.batch-detail-head{display:flex;justify-content:space-between;gap:12px;align-items:start}.batch-detail h3{margin:0;font-size:13px}.batch-detail p{margin:5px 0 0;color:var(--muted);font-size:11px}.batch-items{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}.batch-item{padding:11px;border:1px solid #dfe7f1;border-radius:10px;background:#fff;text-align:left}.batch-item b,.batch-item span{display:block;font-size:11px}.batch-item span{margin-top:5px;color:var(--muted)}
-      .form-wrap{max-width:780px;margin:auto}.form-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;padding:8px;border:1px solid var(--line);border-radius:16px;background:#fff}.form-tabs button{padding:11px 8px;border-radius:10px;color:#596a81;background:transparent;font-size:13px;font-weight:700}.form-tabs button.active{color:#fff;background:#152238}.form-card{padding:20px;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 12px 36px -28px rgba(15,23,42,.6)}.form-intro{display:flex;align-items:start;justify-content:space-between;gap:12px;padding-bottom:16px;border-bottom:1px solid #eef1f5}.form-intro h2{margin:0;font-size:16px}.form-intro p{margin:5px 0 0;color:var(--muted);font-size:11px}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:17px}.field{display:block}.field.wide{grid-column:1/-1}.field>span{display:block;margin-bottom:6px;color:#566579;font-size:11px;font-weight:700}.field input,.field select,.field textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;outline:none;font-size:13px}.field textarea{min-height:80px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#75a7f4;box-shadow:0 0 0 4px #e2efff}.kind-fields,.batch-fields{display:none;grid-column:1/-1}.kind-fields.active,.batch-fields.active{display:grid;grid-template-columns:1fr 1fr;gap:15px}.mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mode-switch button{padding:10px;border:1px solid var(--line);border-radius:10px;color:#596a81;background:#fff;font-size:13px;font-weight:700}.mode-switch button.active{color:#1356bd;border-color:#5d97e6;background:#eef5ff}.form-actions{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:18px;padding-top:16px;border-top:1px solid #eef1f5}.success-note{display:none;margin-top:14px;padding:11px 13px;border:1px solid #bcebd3;border-radius:10px;color:#087646;background:#eefbf4;font-size:12px;font-weight:700}.success-note.show{display:block}
-      .notice{padding:14px 16px;border:1px solid #f2d590;border-radius:12px;color:#76500b;background:#fffaf0;font-size:12px;line-height:1.65}.poc-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:17px;margin-top:18px}.poc-stack{display:grid;gap:14px}.poc-field{padding:13px;border-radius:11px;background:#f7f9fc}.poc-field b{font-size:12px}.poc-field p{margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.65}.log-row{display:grid;grid-template-columns:105px 1fr auto;gap:12px;padding:14px 18px;border-bottom:1px solid #eef1f5;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}.log-row:last-child{border:0}.log-time{color:#8b99aa}.log-status{color:#1356bd;font-family:Inter,"PingFang SC",sans-serif;font-weight:700}.log-row.simulated{background:#effaf4}.log-row.simulated .log-status{color:#087646}
-      @media(max-width:650px){.field-grid,.kind-fields.active,.batch-fields.active,.poc-grid{grid-template-columns:1fr}.batch-items{grid-template-columns:1fr}.batch-detail{padding-left:14px}.form-actions{align-items:stretch;flex-direction:column-reverse}.form-actions .primary{justify-content:center}.log-row{grid-template-columns:1fr;gap:5px}}
+      .batch-detail {
+        display: none;
+        padding: 15px 20px 17px 38px;
+        border-top: 1px solid #dbeafe;
+        background: #f2f7ff;
+      }
+      .batch-detail.open {
+        display: block;
+      }
+      .batch-detail-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: start;
+      }
+      .batch-detail h3 {
+        margin: 0;
+        font-size: 13px;
+      }
+      .batch-detail p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .batch-items {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px;
+        margin-top: 13px;
+      }
+      .batch-item {
+        padding: 11px;
+        border: 1px solid #dfe7f1;
+        border-radius: 10px;
+        background: #fff;
+        text-align: left;
+      }
+      .batch-item b,
+      .batch-item span {
+        display: block;
+        font-size: 11px;
+      }
+      .batch-item span {
+        margin-top: 5px;
+        color: var(--muted);
+      }
+      .form-wrap {
+        max-width: 780px;
+        margin: auto;
+      }
+      .form-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 14px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+      }
+      .form-tabs button {
+        padding: 11px 8px;
+        border-radius: 10px;
+        color: #596a81;
+        background: transparent;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .form-tabs button.active {
+        color: #fff;
+        background: #152238;
+      }
+      .form-card {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: #fff;
+        box-shadow: 0 12px 36px -28px rgba(15, 23, 42, 0.6);
+      }
+      .form-intro {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #eef1f5;
+      }
+      .form-intro h2 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .form-intro p {
+        margin: 5px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .field-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 17px;
+      }
+      .field {
+        display: block;
+      }
+      .field.wide {
+        grid-column: 1/-1;
+      }
+      .field > span {
+        display: block;
+        margin-bottom: 6px;
+        color: #566579;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 10px 11px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: var(--ink);
+        background: #fff;
+        outline: none;
+        font-size: 13px;
+      }
+      .field textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: #75a7f4;
+        box-shadow: 0 0 0 4px #e2efff;
+      }
+      .kind-fields,
+      .batch-fields {
+        display: none;
+        grid-column: 1/-1;
+      }
+      .kind-fields.active,
+      .batch-fields.active {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+      .mode-switch {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .mode-switch button {
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: #596a81;
+        background: #fff;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .mode-switch button.active {
+        color: #1356bd;
+        border-color: #5d97e6;
+        background: #eef5ff;
+      }
+      .form-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        align-items: center;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #eef1f5;
+      }
+      .success-note {
+        display: none;
+        margin-top: 14px;
+        padding: 11px 13px;
+        border: 1px solid #bcebd3;
+        border-radius: 10px;
+        color: #087646;
+        background: #eefbf4;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .success-note.show {
+        display: block;
+      }
+      .notice {
+        padding: 14px 16px;
+        border: 1px solid #f2d590;
+        border-radius: 12px;
+        color: #76500b;
+        background: #fffaf0;
+        font-size: 12px;
+        line-height: 1.65;
+      }
+      .poc-grid {
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 17px;
+        margin-top: 18px;
+      }
+      .poc-stack {
+        display: grid;
+        gap: 14px;
+      }
+      .poc-field {
+        padding: 13px;
+        border-radius: 11px;
+        background: #f7f9fc;
+      }
+      .poc-field b {
+        font-size: 12px;
+      }
+      .poc-field p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.65;
+      }
+      .log-row {
+        display: grid;
+        grid-template-columns: 105px 1fr auto;
+        gap: 12px;
+        padding: 14px 18px;
+        border-bottom: 1px solid #eef1f5;
+        font:
+          11px/1.5 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+      }
+      .log-row:last-child {
+        border: 0;
+      }
+      .log-time {
+        color: #8b99aa;
+      }
+      .log-status {
+        color: #1356bd;
+        font-family: Inter, 'PingFang SC', sans-serif;
+        font-weight: 700;
+      }
+      .log-row.simulated {
+        background: #effaf4;
+      }
+      .log-row.simulated .log-status {
+        color: #087646;
+      }
+      @media (max-width: 650px) {
+        .field-grid,
+        .kind-fields.active,
+        .batch-fields.active,
+        .poc-grid {
+          grid-template-columns: 1fr;
+        }
+        .batch-items {
+          grid-template-columns: 1fr;
+        }
+        .batch-detail {
+          padding-left: 14px;
+        }
+        .form-actions {
+          align-items: stretch;
+          flex-direction: column-reverse;
+        }
+        .form-actions .primary {
+          justify-content: center;
+        }
+        .log-row {
+          grid-template-columns: 1fr;
+          gap: 5px;
+        }
+      }
+    </style>
+    <style>
+      html,
+      body {
+        overflow-x: hidden;
+        background: #f4f5f8;
+        color: #33354d;
+      }
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .workspace {
+        min-width: 0;
+        flex: 1;
+      }
+      .app-shell.sidebar-collapsed > .sidebar {
+        display: none;
+      }
+      .sidebar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: flex;
+        width: 212px;
+        height: 100vh;
+        flex: none;
+        flex-direction: column;
+        overflow-y: auto;
+        padding: 0;
+        color: #d9dbea;
+        background: #3a3d69;
+        border: 0;
+      }
+      .brand-lockup {
+        display: flex;
+        height: 56px;
+        align-items: center;
+        gap: 10px;
+        padding: 0 15px;
+        color: #fff;
+        background: #30325d;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-mark {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        flex: none;
+        place-items: center;
+        border: 1px solid #f0b28d;
+        color: #f0b28d;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .brand-title {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .brand-subtitle {
+        margin-top: 1px;
+        color: #bec1d7;
+        font-size: 8px;
+        letter-spacing: 0.13em;
+      }
+      .sidebar-label {
+        margin: 19px 18px 8px;
+        color: #aeb1ca;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+      }
+      .module-head {
+        display: flex;
+        width: 100%;
+        min-height: 38px;
+        align-items: center;
+        gap: 9px;
+        padding: 0 16px 0 18px;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-align: left;
+        font-size: 12px;
+        font-weight: 650;
+      }
+      .module-head .glyph {
+        color: #f0b28d;
+      }
+      .module-head svg,
+      .future-modules svg,
+      .sidebar .nav svg,
+      .drawer .nav svg {
+        width: 14px;
+        height: 14px;
+        flex: none;
+        stroke-width: 1.7;
+      }
+      .module-head .chev {
+        margin-left: auto;
+      }
+      .sidebar .nav {
+        margin: 5px 8px 9px;
+      }
+      .sidebar .nav button,
+      .drawer .nav button {
+        min-height: 34px;
+        padding: 0 10px 0 14px;
+        border-radius: 0;
+        color: #d9dbea;
+        font-size: 11.5px;
+        font-weight: 500;
+      }
+      .sidebar .nav button:hover,
+      .drawer .nav button:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .sidebar .nav button.active,
+      .drawer .nav button.active {
+        color: #30325d;
+        background: #fff1e7;
+        box-shadow: none;
+      }
+      .sidebar .nav .glyph,
+      .drawer .nav .glyph {
+        color: #b8bbd1;
+      }
+      .sidebar .nav button.active .glyph,
+      .drawer .nav button.active .glyph {
+        color: #b86f48;
+      }
+      .count {
+        border-radius: 8px;
+        color: #fff;
+        background: #cf5567;
+      }
+      .future-modules {
+        padding: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .future-modules button {
+        display: flex;
+        width: 100%;
+        min-height: 36px;
+        align-items: center;
+        gap: 9px;
+        padding: 0 10px;
+        color: #c7c9da;
+        background: transparent;
+        text-align: left;
+        font-size: 11.5px;
+      }
+      .future-modules button:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .future-modules small {
+        margin-left: auto;
+        padding: 2px 5px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #aeb1ca;
+        font-size: 8px;
+      }
+      .sidebar-foot {
+        margin-top: auto;
+        padding: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        color: #b8bbcf;
+        font-size: 9px;
+        line-height: 1.7;
+      }
+      .sidebar-foot b {
+        color: #f0b28d;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        height: 56px;
+        padding: 0 18px;
+        color: #fff;
+        background: #3e416f;
+        border-bottom: 1px solid #50537e;
+        backdrop-filter: none;
+      }
+      .top-left {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 8px;
+      }
+      .org {
+        overflow: hidden;
+        color: #f3f3f8;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .topbar .search {
+        width: min(31vw, 360px);
+      }
+      .topbar .search input {
+        padding: 8px 12px 8px 34px;
+        border: 1px solid #666990;
+        border-radius: 1px;
+        color: #fff;
+        background: #34375f;
+        font-size: 11px;
+      }
+      .topbar .search input::placeholder {
+        color: #b5b7ca;
+      }
+      .topbar .search input:focus {
+        border-color: #f0b28d;
+        background: #34375f;
+        box-shadow: none;
+      }
+      .topbar .search span {
+        top: 6px;
+        color: #b9bbcf;
+      }
+      .topbar .tag {
+        border-radius: 1px;
+        color: #30325d;
+        background: #fff1e7;
+      }
+      .topbar .icon-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: auto;
+        min-width: 30px;
+        height: 30px;
+        padding: 0 8px;
+        border: 1px solid transparent;
+        border-radius: 1px;
+        color: #e1e2ed;
+        white-space: nowrap;
+      }
+      .topbar svg,
+      .primary svg,
+      .secondary svg,
+      .search svg {
+        width: 14px;
+        height: 14px;
+        flex: none;
+        stroke-width: 1.7;
+      }
+      .topbar .icon-btn:hover {
+        border-color: rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .topbar .user {
+        min-height: 30px;
+        padding: 0 5px 0 0;
+        color: #fff;
+        background: transparent;
+      }
+      .topbar .avatar {
+        width: 26px;
+        height: 26px;
+        border-radius: 0;
+        color: #30325d;
+        background: #fff1e7;
+      }
+      .workspace-tabs {
+        display: flex;
+        min-height: 36px;
+        align-items: end;
+        padding: 0 12px;
+        background: #fff;
+        border-bottom: 1px solid #dfe1e8;
+      }
+      .workspace-tab {
+        min-width: 92px;
+        height: 35px;
+        padding: 0 16px;
+        border-right: 1px solid #ececf1;
+        color: #777b90;
+        background: #fafafd;
+        font-size: 10.5px;
+        text-align: left;
+      }
+      .workspace-tab.active {
+        color: #30325d;
+        background: #fff;
+        box-shadow: inset 0 -2px #f0a777;
+        font-weight: 650;
+      }
+      .shell {
+        display: block;
+        max-width: none;
+        margin: 0;
+      }
+      .main {
+        width: 100%;
+        min-height: calc(100vh - 92px);
+        padding: 12px;
+        background: #f4f5f8;
+      }
+      .inner {
+        max-width: 1280px;
+      }
+      .breadcrumb {
+        display: flex;
+        min-height: 28px;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 10px;
+        color: #8b8e9d;
+        font-size: 10px;
+      }
+      .breadcrumb strong {
+        color: #4a4d63;
+      }
+      .hero {
+        display: flex;
+        min-height: 172px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        padding: 25px 30px;
+        color: #fff;
+        background: #07172e;
+        border: 1px solid #1c3154;
+      }
+      .hero-kicker {
+        margin: 0;
+        color: #f0b28d;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+      }
+      .hero h1 {
+        margin: 11px 0 0;
+        color: #fff;
+        font-size: 26px;
+        line-height: 1.35;
+        letter-spacing: -0.02em;
+      }
+      .hero-copy {
+        margin: 8px 0 0;
+        max-width: 650px;
+        color: #cbd4e2;
+        font-size: 11.5px;
+        line-height: 1.7;
+      }
+      .hero-date {
+        min-width: 185px;
+        padding-left: 22px;
+        border-left: 1px solid #29405f;
+      }
+      .hero-date small {
+        display: block;
+        color: #95a5ba;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.13em;
+      }
+      .hero-date strong {
+        display: block;
+        margin-top: 8px;
+        color: #fff;
+        font-size: 19px;
+      }
+      .hero-date span {
+        display: block;
+        margin-top: 6px;
+        color: #aebbcf;
+        font-size: 10px;
+      }
+      .page-head {
+        margin: 18px 0 14px;
+      }
+      .page-head h1 {
+        font-size: 21px;
+        color: #30324b;
+        letter-spacing: -0.02em;
+      }
+      .eyebrow {
+        color: #777b90;
+      }
+      .primary,
+      .secondary {
+        min-height: 34px;
+        padding: 8px 12px;
+        border-radius: 2px;
+        box-shadow: none;
+      }
+      .primary {
+        background: #315a89;
+        border: 1px solid #4f78a7;
+      }
+      .secondary {
+        border-color: #d3d6df;
+      }
+      .card,
+      .panel,
+      .guard,
+      .box,
+      .invoice,
+      .trace-card,
+      .warn,
+      .adapter,
+      .danger,
+      .form-tabs,
+      .form-card,
+      .notice {
+        border-radius: 1px;
+        box-shadow: none;
+      }
+      .split {
+        align-items: start;
+      }
+      .card {
+        position: relative;
+        padding: 16px;
+        border-color: #dfe1e8;
+      }
+      .card:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background: #8798b6;
+      }
+      .card-icon {
+        width: 31px;
+        height: 31px;
+        border-radius: 2px;
+      }
+      .card-icon svg {
+        width: 15px;
+        height: 15px;
+        stroke-width: 1.8;
+      }
+      .metric {
+        margin-top: 16px;
+      }
+      .panel,
+      .box,
+      .trace-card,
+      .adapter {
+        border-color: #dfe1e8;
+      }
+      .guard {
+        background: #07172e;
+      }
+      .number,
+      .request,
+      .snapshot,
+      .code,
+      .batch-item,
+      .contract,
+      .poc-field,
+      .field input,
+      .field select,
+      .field textarea,
+      .mode-switch button,
+      .success-note {
+        border-radius: 2px;
+      }
+      .pill,
+      .filters button {
+        border-radius: 8px;
+      }
+      .page-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 18px;
+        padding: 15px 4px calc(10px + env(safe-area-inset-bottom));
+        border-top: 1px solid #dfe1e8;
+        color: #8a8d9d;
+        font-size: 9.5px;
+      }
+      .mobile-drawer {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        background: rgba(5, 15, 30, 0.48);
+      }
+      .mobile-drawer.open {
+        display: block;
+      }
+      .drawer {
+        display: flex;
+        width: 290px;
+        height: 100%;
+        flex-direction: column;
+        padding: 0;
+        color: #fff;
+        background: #3a3d69;
+        box-shadow: 18px 0 44px rgba(15, 23, 42, 0.25);
+      }
+      .drawer-head {
+        display: flex;
+        height: 56px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px;
+        background: #30325d;
+      }
+      .drawer .nav {
+        margin: 5px 8px 9px;
+      }
+      .drawer .future-modules {
+        width: 100%;
+      }
+      .toast {
+        border-radius: 2px;
+      }
+      @media (max-width: 1000px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          padding: 10px;
+        }
+        .topbar {
+          padding: 0 14px;
+        }
+        .mobile-menu {
+          display: grid;
+        }
+        .split,
+        .errors {
+          grid-template-columns: 1fr;
+        }
+        .dual {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 650px) {
+        .topbar .search,
+        .top-actions .tag,
+        .top-actions .reset-label {
+          display: none;
+        }
+        .topbar .wide-control,
+        .topbar .user > span:last-child {
+          display: none;
+        }
+        .org {
+          max-width: 120px;
+        }
+        .workspace-tab {
+          min-width: 82px;
+        }
+        .hero {
+          min-height: 0;
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 22px 20px;
+        }
+        .hero h1 {
+          font-size: 23px;
+        }
+        .hero-date {
+          width: 100%;
+          padding: 14px 0 0;
+          border-top: 1px solid #29405f;
+          border-left: 0;
+        }
+        .page-footer {
+          align-items: flex-start;
+          flex-direction: column;
+          padding-bottom: calc(24px + env(safe-area-inset-bottom));
+        }
+        .safe {
+          display: none;
+        }
+        .mobile-drawer {
+          display: none;
+        }
+        .mobile-drawer.open {
+          display: block;
+        }
+      }
     </style>
   </head>
   <body>
-    <header class="topbar"><div class="brand"><button class="icon-btn mobile-menu" id="open-menu">☰</button><div class="logo">oa</div><div><b>Payment Control</b><small>prototype workspace</small></div></div><label class="search"><span>⌕</span><input id="search" placeholder="搜索单据、审批号或付款申请单…" /></label><div class="top-actions"><span class="tag">静态演示</span><button class="icon-btn">♧</button><button class="user"><span class="avatar">CJ</span><span>⌄</span></button></div></header>
-    <div class="shell"><aside class="sidebar"><p class="overline">Payment operations</p><div class="nav" id="desktop-nav"></div><div class="safe"><b>公开展示模式</b><p>无真实接口、账号、密钥或生产数据。</p></div></aside><main class="main"><div class="inner"><div id="search-result" class="tag" style="display:none;margin-bottom:18px">⌕ 正在检索模拟数据</div>
-      <section class="page active" id="overview"><div class="page-head"><div><p class="eyebrow">Operations workspace</p><h1>付款运营概览</h1></div><button class="primary" data-go="tracking">◌ 查看付款链路</button></div><div class="cards"><div class="card"><div class="card-top">本月付款申请 <span class="card-icon blue">¥</span></div><div class="metric">¥ 2.84M</div><div class="hint">较上月 +12.6%</div></div><div class="card"><div class="card-top">审批中的单据 <span class="card-icon purple">◷</span></div><div class="metric">18</div><div class="hint">含财务与出纳节点</div></div><div class="card"><div class="card-top">银行处理中 <span class="card-icon sky">▣</span></div><div class="metric">06</div><div class="hint">等待 CBS / 回执</div></div><div class="card"><div class="card-top">异常待处置 <span class="card-icon red">!</span></div><div class="metric">03</div><div class="hint">受控重试任务</div></div></div><div class="split"><div class="panel"><div class="panel-head"><div><h2>需要关注的付款</h2><p>实时演示数据 · 不连接生产系统</p></div><button class="link" data-go="all">查看全部</button></div><div class="payment-list"></div></div><aside class="guard"><p class="eyebrow">Acceptance focus</p><h2>防止重复付款的三个关卡</h2><div class="guard-list"><div><span class="number">01</span><div><b>SubmitRequestId</b><p>重复点击只创建一次审批</p></div></div><div><span class="number">02</span><div><b>V3 最终快照</b><p>财务与出纳修改后再建单</p></div></div><div><span class="number">03</span><div><b>受控重试</b><p>失败保留记录，不重复付款</p></div></div></div></aside></div></section>
-      <section class="page" id="all">
-        <div class="page-head"><div><p class="eyebrow">Reimbursement ledger</p><h1>全部报销</h1></div><button class="primary" data-go="initiate">＋ 新建发起</button></div>
-        <div class="filters" id="type-filter"><button class="active" data-filter="全部类型">全部类型</button><button data-filter="发票付款">发票付款</button><button data-filter="合同付款">合同付款</button><button data-filter="预付款">预付款</button><small id="filter-count">已按实际业务类型筛选 · 3 条</small></div>
-        <div class="panel"><div class="table-head"><span>业务单据 / 实际类型</span><span class="hide-small">申请人</span><span>本次金额</span><span>付款状态</span><span></span></div><div class="table-list"></div></div>
-        <div class="dual"><div class="box"><h2>主子单口径</h2><p class="small" style="margin-top:12px;line-height:1.7">合同与预付款的一次性或分批单据均保留主单；每次实际付款生成子单，状态与发票金额独立跟踪。</p></div><div class="invoice"><p class="eyebrow">Invoice checkpoint</p><h2>最终核票只在全部付款完成后触发</h2><p>付款过程可追加发票，差额与状态均为脱敏模拟数据。</p></div></div>
-      </section>
-      <section class="page" id="initiate">
-        <div class="page-head"><div><p class="eyebrow">Mobile-first request</p><h1>发起付款</h1></div><span class="pill blue">公开模拟表单</span></div>
-        <div class="form-wrap"><div class="form-tabs" id="kind-tabs"><button class="active" data-kind="invoice">发票付款</button><button data-kind="prepayment">预付款</button><button data-kind="contract">合同付款</button></div>
-          <div class="form-card"><div class="form-intro"><div><h2 id="form-title">发票付款申请</h2><p>移动端优先布局 · 字段与金额仅供原型演示</p></div><span class="pill amber">未接入真实审批</span></div>
-            <div class="field-grid"><label class="field"><span>收款方</span><input value="示例供应商（脱敏）" aria-label="收款方"></label><label class="field"><span>申请金额</span><input value="128400.00" inputmode="decimal" aria-label="申请金额"></label><label class="field"><span>费用归集</span><select aria-label="费用归集"><option>营销中心 / 品牌项目</option><option>管理中心 / 信息化项目</option></select></label><label class="field"><span>会计科目</span><select aria-label="会计科目"><option>660301 软件服务费</option><option>660304 外包服务费</option></select></label>
-              <div class="kind-fields active" data-kind-panel="invoice"><label class="field"><span>发票类型</span><select aria-label="发票类型"><option>增值税专用发票</option><option>增值税普通发票</option></select></label><label class="field"><span>税率</span><select aria-label="税率"><option>6%</option><option>3%</option><option>13%</option></select></label><label class="field"><span>不含税金额</span><input value="121132.08" inputmode="decimal" aria-label="不含税金额"></label><label class="field"><span>税额</span><input value="7267.92" inputmode="decimal" aria-label="税额"></label></div>
-              <div class="kind-fields" data-kind-panel="prepayment"><label class="field"><span>预付事由</span><input value="项目启动预付款（模拟）" aria-label="预付事由"></label><label class="field"><span>预计发票日期</span><input type="date" value="2026-09-30" aria-label="预计发票日期"></label></div>
-              <div class="kind-fields" data-kind-panel="contract"><label class="field"><span>合同编号</span><input value="HT2026-0088" aria-label="合同编号"></label><label class="field"><span>合同总额</span><input value="300000.00" inputmode="decimal" aria-label="合同总额"></label></div>
-              <div class="field wide"><span>付款方式</span><div class="mode-switch" id="mode-switch"><button class="active" data-mode="single">一次性付款</button><button data-mode="installment">分批付款</button></div></div>
-              <div class="batch-fields" id="batch-fields"><label class="field"><span>本次批次</span><select aria-label="本次批次"><option>第 1 批</option><option selected>第 2 批</option><option>第 3 批</option></select></label><label class="field"><span>本批占比</span><input value="42.8%" aria-label="本批占比"></label></div>
-              <label class="field wide"><span>付款说明</span><textarea aria-label="付款说明">本表单只保存脱敏模拟数据，不发送到钉钉。</textarea></label>
-            </div><div class="form-actions"><span class="small">提交后应以 SubmitRequestId 保证幂等。</span><button class="primary" id="submit-demo">▣ 模拟保存并提交</button></div><div class="success-note" id="submit-success">已生成模拟提交记录；未调用钉钉、云星空或 CBS。</div>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-lockup">
+          <span class="brand-mark">OA</span>
+          <div>
+            <div class="brand-title">OA SYSTEM</div>
+            <div class="brand-subtitle">ENTERPRISE OPERATIONS</div>
           </div>
         </div>
-      </section>
-      <section class="page" id="tracking"><div class="page-head"><div><p class="eyebrow">End-to-end trace</p><h1>付款流程跟踪</h1></div><div><button class="secondary">⌕ 查询单据</button> <button class="primary">＋ 创建提交任务</button></div></div><div class="trace-card"><div class="trace-top"><div><div style="display:flex;gap:9px;align-items:center"><h2>OA202609010023</h2><span class="pill blue">银行处理中</span></div><p>合同付款 · 第 2 批 · 陈静 · ¥128,400.00</p></div><div class="request">SubmitRequestId <b>sub_9f1d...c842</b></div></div><div class="steps"><div class="step done"><span class="dot">✓</span><div><b>OA 发起</b><p>V1 申请版已归档</p></div></div><div class="step done"><span class="dot">✓</span><div><b>钉钉审批</b><p>财务已确认归集与科目</p></div></div><div class="step done"><span class="dot">✓</span><div><b>付款申请单</b><p>云星空审核通过</p></div></div><div class="step active"><span class="dot">4</span><div><b>CBS 付款</b><p>银行正在处理中</p></div></div><div class="step next"><span class="dot">5</span><div><b>付款单下推</b><p>等待银行回执</p></div></div></div></div><div class="dual"><div class="box"><div style="display:flex;justify-content:space-between"><h2>关键数据快照</h2><span class="small">V1 → V2 → V3</span></div><div class="snapshots"><div class="snapshot"><i></i><div><b>V1 申请版</b><p>陈静提交 · 2026/09/01 09:30</p></div><span>归集金额 ¥128,400</span></div><div class="snapshot"><i></i><div><b>V2 财务确认版</b><p>财务节点通过 · 2026/09/01 10:48</p></div><span>科目：软件服务费</span></div><div class="snapshot"><i></i><div><b>V3 付款最终版</b><p>出纳节点通过 · 2026/09/01 11:12</p></div><span>付款账号：招商银行（脱敏）</span></div></div></div><div class="warn"><h2>幂等与补偿护栏</h2><p>重复提交只复用同一个 SubmitRequestId；付款失败不会触发付款单下推。</p><button class="primary" id="retry">↻ 模拟受控重试</button><p class="small" id="retry-state"></p></div></div></section>
-      <section class="page" id="poc">
-        <div class="page-head"><div><p class="eyebrow">DingTalk integration proof</p><h1>钉钉 POC 接口与日志</h1></div><div><span class="pill amber">待真实凭据 / 审批模板</span> <button class="primary" id="poc-simulate">↻ 模拟回调</button></div></div>
-        <div class="notice"><b>当前仅为 POC 界面。</b> 未配置真实 AppKey、AppSecret、审批模板编码或生产回调地址；公开页面不会展示这些配置。</div>
-        <div class="poc-grid"><div class="poc-stack"><div class="box"><div style="display:flex;justify-content:space-between;align-items:center"><h2>POC 验证字段</h2><span class="pill blue">模拟</span></div><div class="poc-stack" style="margin-top:14px"><div class="poc-field"><b>财务节点修改</b><p>expenseAllocation：营销中心 / 品牌项目<br>accountSubject：660301 软件服务费<br>approvedAmount：¥128,400.00</p></div><div class="poc-field"><b>出纳账户回传</b><p>payeeBankName：示例银行（脱敏）<br>payeeAccountMasked：**** **** **** 4821<br>cashierConfirmedAt：2026-09-01 11:12</p></div></div></div><div class="code"><b>POST</b> /mock/dingtalk/callback<br><span>GET</span> /mock/dingtalk/process/:demoId<br>● 只记录模拟字段，无真实请求、密钥或账号</div></div>
-          <div class="panel"><div class="panel-head"><div><h2>接口事件日志</h2><p>完整 POC 需在测试租户用真实模板重放</p></div><span class="pill" id="poc-status">等待模拟</span></div><div id="poc-new-log"></div><div class="log-row"><span class="log-time">10:48:31.006</span><span>finance.fields.changed · subject=660301 · amount=128400</span><span class="log-status">模拟样例</span></div><div class="log-row"><span class="log-time">09:30:02.119</span><span>process.created · processInstanceId=demo_pi_20260901</span><span class="log-status">模拟样例</span></div><div class="log-row"><span class="log-time">--:--:--.---</span><span>real_poc.pending · 缺少测试租户凭据与审批模板</span><span class="log-status" style="color:#a76708">待执行</span></div></div>
+        <p class="sidebar-label">OA BUSINESS MODULES</p>
+        <button class="module-head">
+          <i data-lucide="wallet-cards"></i>报销管理<span class="chev">⌄</span>
+        </button>
+        <div class="nav" id="desktop-nav"></div>
+        <div class="future-modules">
+          <button>
+            <i data-lucide="file-check-2"></i>合同管理<small
+              >规划中</small
+            ></button
+          ><button>
+            <i data-lucide="shopping-cart"></i>采购管理<small
+              >规划中</small
+            ></button
+          ><button>
+            <i data-lucide="users"></i>人事行政<small>规划中</small></button
+          ><button>
+            <i data-lucide="landmark"></i>资产管理<small>规划中</small></button
+          ><button><i data-lucide="settings"></i>系统设置</button>
         </div>
-      </section>
-      <section class="page" id="application"><div class="page-head"><div><p class="eyebrow">Kingdee adapter · mock</p><h1>云星空付款申请单</h1></div><button class="secondary">☷ 筛选状态</button></div><div class="adapter"><div class="adapter-top"><div><h2>K3-PA-2026-000238</h2><p>从 V3 最终版快照构造付款申请单，模拟创建、提交与审核。所有外部字段均为展示数据。</p></div><span class="pill green">审核成功</span></div><div class="adapter-grid"><div class="card"><div class="card-top">本次金额 <span class="card-icon blue">¥</span></div><div class="metric">¥128,400</div><div class="hint">V3 最终版快照</div></div><div class="card"><div class="card-top">归集行数 <span class="card-icon purple">≡</span></div><div class="metric">04</div><div class="hint">已校验合计</div></div><div class="card"><div class="card-top">接口状态 <span class="card-icon sky">✓</span></div><div class="metric">正常</div><div class="hint">模拟适配器</div></div></div><div class="code"><b>POST</b> /adapter/kingdee/payment-requests<br><span>✓</span> 演示模式：不包含真实地址、密钥或请求参数</div></div></section>
-      <section class="page" id="cbs"><div class="page-head"><div><p class="eyebrow">CBS adapter · mock</p><h1>CBS 付款</h1></div><button class="secondary">☷ 筛选状态</button></div><div class="adapter"><div class="adapter-top"><div><h2>CBS-2026-0001004</h2><p>展示待付款、财务复核、银行处理与回执状态。付款失败不会生成付款单。</p></div><span class="pill blue">银行处理中</span></div><div class="adapter-grid"><div class="card"><div class="card-top">付款金额 <span class="card-icon blue">¥</span></div><div class="metric">¥128,400</div><div class="hint">模拟待付款记录</div></div><div class="card"><div class="card-top">银行状态 <span class="card-icon purple">◷</span></div><div class="metric">处理中</div><div class="hint">等待回执</div></div><div class="card"><div class="card-top">回执状态 <span class="card-icon sky">⌁</span></div><div class="metric">待获取</div><div class="hint">不允许下推付款单</div></div></div><div class="code"><b>POST</b> /adapter/cbs/payment<br><span>✓</span> 演示模式：不包含真实地址、密钥或请求参数</div></div></section>
-      <section class="page" id="order"><div class="page-head"><div><p class="eyebrow">Downstream payment order</p><h1>云星空付款单</h1></div><button class="secondary">☷ 筛选状态</button></div><div class="adapter"><div class="adapter-top"><div><h2>K3-PO-2026-000238</h2><p>仅在 CBS 成功后按原付款申请单下推。原型明确演示此约束。</p></div><span class="pill amber">等待回执</span></div><div class="adapter-grid"><div class="card"><div class="card-top">原申请单 <span class="card-icon blue">↗</span></div><div class="metric">已关联</div><div class="hint">K3-PA-2026-000238</div></div><div class="card"><div class="card-top">下推状态 <span class="card-icon purple">◷</span></div><div class="metric">未触发</div><div class="hint">等待 CBS 成功</div></div><div class="card"><div class="card-top">幂等键 <span class="card-icon sky">✓</span></div><div class="metric">已保留</div><div class="hint">模拟适配器</div></div></div><div class="code"><b>POST</b> /adapter/kingdee/payment-order/downstream<br><span>✓</span> 演示模式：不包含真实地址、密钥或请求参数</div></div></section>
-      <section class="page" id="exceptions"><div class="page-head"><div><p class="eyebrow">Controlled recovery</p><h1>异常处理中心</h1></div><button class="secondary">♧ 订阅提醒</button></div><div class="errors"><div class="panel"><div class="panel-head"><h2>待处理任务</h2></div><div class="error-row"><span class="error-dot"></span><div><b id="first-error">钉钉成功 / OA 落库失败</b><p>可使用原 processInstanceId 补建正式单据</p></div><span class="pill red priority" id="first-priority">高优先级</span></div><div class="error-row"><span class="error-dot"></span><div><b>CBS 回执待获取</b><p>银行处理未结束，禁止下推付款单</p></div><span class="pill amber priority">中优先级</span></div><div class="error-row"><span class="error-dot"></span><div><b>付款申请单审核失败</b><p>保留请求与响应摘要，允许受控重试</p></div><span class="pill amber priority">中优先级</span></div></div><aside class="danger"><span class="card-icon red">!</span><h2>安全恢复提示</h2><p>重试必须具备权限、幂等校验与操作日志。此处仅模拟任务记录。</p><button id="resolve">模拟记录补偿</button></aside></div></section>
-      <section class="page" id="subjects"><div class="page-head"><div><p class="eyebrow">Master data · mock</p><h1>会计科目</h1></div><button class="primary" id="sync">↻ 模拟云星空同步</button></div><div class="panel"><div class="subject-head"><span>科目编码</span><span>科目名称</span><span>分类</span><span>状态</span></div><div class="subject-row"><code>660201</code><b>差旅费</b><span>管理费用</span><span class="pill green">启用</span></div><div class="subject-row"><code>660202</code><b>业务招待费</b><span>管理费用</span><span class="pill green">启用</span></div><div class="subject-row"><code>660301</code><b>软件服务费</b><span>销售费用</span><span class="pill green">启用</span></div><div class="subject-row"><code>660304</code><b>外包服务费</b><span>管理费用</span><span class="pill green">启用</span></div></div><p class="small" style="margin-top:14px">来源标记为云星空同步。公开演示版不连接任何外部系统。</p></section>
-    </div></main></div><div class="mobile-drawer" id="drawer"><aside class="drawer"><div class="drawer-head">付款运营 <button class="icon-btn" id="close-menu">×</button></div><div class="nav" id="mobile-nav"></div></aside></div><div class="toast" id="toast"></div>
+        <div class="sidebar-foot">
+          <b>公开展示模式</b><br />OA System v1.0 · 仅含脱敏模拟数据
+        </div>
+      </aside>
+      <div class="workspace">
+        <header class="topbar">
+          <div class="top-left">
+            <button
+              class="icon-btn mobile-menu"
+              id="open-menu"
+              aria-label="打开导航"
+            >
+              <i data-lucide="menu"></i></button
+            ><span class="org">总部 · 企业运营中心</span>
+          </div>
+          <label class="search"
+            ><span><i data-lucide="search"></i></span
+            ><input id="search" placeholder="搜索单据、审批号或付款申请单…"
+          /></label>
+          <div class="top-actions">
+            <button class="icon-btn">ZH</button
+            ><button class="icon-btn wide-control">
+              <i data-lucide="refresh-cw"></i
+              ><span class="reset-label">重置演示</span></button
+            ><button
+              class="icon-btn wide-control"
+              id="fullscreen"
+              aria-label="全屏"
+            >
+              <i data-lucide="maximize-2"></i></button
+            ><button class="icon-btn" aria-label="通知">
+              <i data-lucide="bell"></i></button
+            ><button class="user">
+              <span class="avatar">CJ</span><span>陈静</span>
+            </button>
+          </div>
+        </header>
+        <nav class="workspace-tabs" aria-label="已打开模块">
+          <button class="workspace-tab">工作台</button
+          ><button class="workspace-tab active">报销管理</button>
+        </nav>
+        <div class="shell">
+          <main class="main">
+            <div class="inner">
+              <div class="breadcrumb">
+                <span>OA</span><span>›</span><span>报销管理</span><span>›</span
+                ><strong id="current-section">概览</strong>
+              </div>
+              <div
+                id="search-result"
+                class="tag"
+                style="display: none; margin-bottom: 12px"
+              >
+                ⌕ 正在检索模拟数据
+              </div>
+              <section class="page active" id="overview">
+                <div class="hero">
+                  <div>
+                    <p class="hero-kicker">OA · REIMBURSEMENT MANAGEMENT</p>
+                    <h1>报销付款，过程可控。</h1>
+                    <p class="hero-copy">
+                      从费用申请、钉钉审批到云星空付款申请单、CBS
+                      回执与付款单下推，在同一业务视图中追踪状态、快照与异常补偿。
+                    </p>
+                  </div>
+                  <div class="hero-date">
+                    <small>OPERATING DAY</small><strong>03 SEP 2026</strong
+                    ><span>14:30 CST · 演示环境正常</span>
+                  </div>
+                </div>
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">Operations workspace</p>
+                    <h1>付款运营概览</h1>
+                  </div>
+                  <button class="primary" data-go="tracking">
+                    <i data-lucide="network"></i>查看付款链路
+                  </button>
+                </div>
+                <div class="cards">
+                  <div class="card">
+                    <div class="card-top">
+                      本月付款申请
+                      <span class="card-icon blue"
+                        ><i data-lucide="circle-dollar-sign"></i
+                      ></span>
+                    </div>
+                    <div class="metric">¥ 2.84M</div>
+                    <div class="hint">较上月 +12.6%</div>
+                  </div>
+                  <div class="card">
+                    <div class="card-top">
+                      审批中的单据
+                      <span class="card-icon purple"
+                        ><i data-lucide="clock-3"></i
+                      ></span>
+                    </div>
+                    <div class="metric">18</div>
+                    <div class="hint">含财务与出纳节点</div>
+                  </div>
+                  <div class="card">
+                    <div class="card-top">
+                      银行处理中
+                      <span class="card-icon sky"
+                        ><i data-lucide="banknote"></i
+                      ></span>
+                    </div>
+                    <div class="metric">06</div>
+                    <div class="hint">等待 CBS / 回执</div>
+                  </div>
+                  <div class="card">
+                    <div class="card-top">
+                      异常待处置
+                      <span class="card-icon red"
+                        ><i data-lucide="triangle-alert"></i
+                      ></span>
+                    </div>
+                    <div class="metric">03</div>
+                    <div class="hint">受控重试任务</div>
+                  </div>
+                </div>
+                <div class="split">
+                  <div class="panel">
+                    <div class="panel-head">
+                      <div>
+                        <h2>需要关注的付款</h2>
+                        <p>实时演示数据 · 不连接生产系统</p>
+                      </div>
+                      <button class="link" data-go="all">查看全部</button>
+                    </div>
+                    <div class="payment-list"></div>
+                  </div>
+                  <aside class="guard">
+                    <p class="eyebrow">Acceptance focus</p>
+                    <h2>防止重复付款的三个关卡</h2>
+                    <div class="guard-list">
+                      <div>
+                        <span class="number">01</span>
+                        <div>
+                          <b>SubmitRequestId</b>
+                          <p>重复点击只创建一次审批</p>
+                        </div>
+                      </div>
+                      <div>
+                        <span class="number">02</span>
+                        <div>
+                          <b>V3 最终快照</b>
+                          <p>财务与出纳修改后再建单</p>
+                        </div>
+                      </div>
+                      <div>
+                        <span class="number">03</span>
+                        <div>
+                          <b>受控重试</b>
+                          <p>失败保留记录，不重复付款</p>
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
+                </div>
+              </section>
+              <section class="page" id="all">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">Reimbursement ledger</p>
+                    <h1>全部报销</h1>
+                  </div>
+                  <button class="primary" data-go="initiate">
+                    ＋ 新建发起
+                  </button>
+                </div>
+                <div class="filters" id="type-filter">
+                  <button class="active" data-filter="全部类型">全部类型</button
+                  ><button data-filter="发票付款">发票付款</button
+                  ><button data-filter="合同付款">合同付款</button
+                  ><button data-filter="预付款">预付款</button
+                  ><small id="filter-count">已按实际业务类型筛选 · 3 条</small>
+                </div>
+                <div class="panel">
+                  <div class="table-head">
+                    <span>业务单据 / 实际类型</span
+                    ><span class="hide-small">申请人</span><span>本次金额</span
+                    ><span>付款状态</span><span></span>
+                  </div>
+                  <div class="table-list"></div>
+                </div>
+                <div class="dual">
+                  <div class="box">
+                    <h2>主子单口径</h2>
+                    <p class="small" style="margin-top: 12px; line-height: 1.7">
+                      合同与预付款的一次性或分批单据均保留主单；每次实际付款生成子单，状态与发票金额独立跟踪。
+                    </p>
+                  </div>
+                  <div class="invoice">
+                    <p class="eyebrow">Invoice checkpoint</p>
+                    <h2>最终核票只在全部付款完成后触发</h2>
+                    <p>付款过程可追加发票，差额与状态均为脱敏模拟数据。</p>
+                  </div>
+                </div>
+              </section>
+              <section class="page" id="initiate">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">Mobile-first request</p>
+                    <h1>发起付款</h1>
+                  </div>
+                  <span class="pill blue">公开模拟表单</span>
+                </div>
+                <div class="form-wrap">
+                  <div class="form-tabs" id="kind-tabs">
+                    <button class="active" data-kind="invoice">发票付款</button
+                    ><button data-kind="prepayment">预付款</button
+                    ><button data-kind="contract">合同付款</button>
+                  </div>
+                  <div class="form-card">
+                    <div class="form-intro">
+                      <div>
+                        <h2 id="form-title">发票付款申请</h2>
+                        <p>移动端优先布局 · 字段与金额仅供原型演示</p>
+                      </div>
+                      <span class="pill amber">未接入真实审批</span>
+                    </div>
+                    <div class="field-grid">
+                      <label class="field"
+                        ><span>收款方</span
+                        ><input
+                          value="示例供应商（脱敏）"
+                          aria-label="收款方" /></label
+                      ><label class="field"
+                        ><span>申请金额</span
+                        ><input
+                          value="128400.00"
+                          inputmode="decimal"
+                          aria-label="申请金额" /></label
+                      ><label class="field"
+                        ><span>费用归集</span
+                        ><select aria-label="费用归集">
+                          <option>营销中心 / 品牌项目</option>
+                          <option>管理中心 / 信息化项目</option>
+                        </select></label
+                      ><label class="field"
+                        ><span>会计科目</span
+                        ><select aria-label="会计科目">
+                          <option>660301 软件服务费</option>
+                          <option>660304 外包服务费</option>
+                        </select></label
+                      >
+                      <div class="kind-fields active" data-kind-panel="invoice">
+                        <label class="field"
+                          ><span>发票类型</span
+                          ><select aria-label="发票类型">
+                            <option>增值税专用发票</option>
+                            <option>增值税普通发票</option>
+                          </select></label
+                        ><label class="field"
+                          ><span>税率</span
+                          ><select aria-label="税率">
+                            <option>6%</option>
+                            <option>3%</option>
+                            <option>13%</option>
+                          </select></label
+                        ><label class="field"
+                          ><span>不含税金额</span
+                          ><input
+                            value="121132.08"
+                            inputmode="decimal"
+                            aria-label="不含税金额" /></label
+                        ><label class="field"
+                          ><span>税额</span
+                          ><input
+                            value="7267.92"
+                            inputmode="decimal"
+                            aria-label="税额"
+                        /></label>
+                      </div>
+                      <div class="kind-fields" data-kind-panel="prepayment">
+                        <label class="field"
+                          ><span>预付事由</span
+                          ><input
+                            value="项目启动预付款（模拟）"
+                            aria-label="预付事由" /></label
+                        ><label class="field"
+                          ><span>预计发票日期</span
+                          ><input
+                            type="date"
+                            value="2026-09-30"
+                            aria-label="预计发票日期"
+                        /></label>
+                      </div>
+                      <div class="kind-fields" data-kind-panel="contract">
+                        <label class="field"
+                          ><span>合同编号</span
+                          ><input
+                            value="HT2026-0088"
+                            aria-label="合同编号" /></label
+                        ><label class="field"
+                          ><span>合同总额</span
+                          ><input
+                            value="300000.00"
+                            inputmode="decimal"
+                            aria-label="合同总额"
+                        /></label>
+                      </div>
+                      <div class="field wide">
+                        <span>付款方式</span>
+                        <div class="mode-switch" id="mode-switch">
+                          <button class="active" data-mode="single">
+                            一次性付款</button
+                          ><button data-mode="installment">分批付款</button>
+                        </div>
+                      </div>
+                      <div class="batch-fields" id="batch-fields">
+                        <label class="field"
+                          ><span>本次批次</span
+                          ><select aria-label="本次批次">
+                            <option>第 1 批</option>
+                            <option selected>第 2 批</option>
+                            <option>第 3 批</option>
+                          </select></label
+                        ><label class="field"
+                          ><span>本批占比</span
+                          ><input value="42.8%" aria-label="本批占比"
+                        /></label>
+                      </div>
+                      <label class="field wide"
+                        ><span>付款说明</span
+                        ><textarea aria-label="付款说明">
+本表单只保存脱敏模拟数据，不发送到钉钉。</textarea>
+                      </label>
+                    </div>
+                    <div class="form-actions">
+                      <span class="small"
+                        >提交后应以 SubmitRequestId 保证幂等。</span
+                      ><button class="primary" id="submit-demo">
+                        ▣ 模拟保存并提交
+                      </button>
+                    </div>
+                    <div class="success-note" id="submit-success">
+                      已生成模拟提交记录；未调用钉钉、云星空或 CBS。
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="page" id="tracking">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">End-to-end trace</p>
+                    <h1>付款流程跟踪</h1>
+                  </div>
+                  <div>
+                    <button class="secondary">⌕ 查询单据</button>
+                    <button class="primary">＋ 创建提交任务</button>
+                  </div>
+                </div>
+                <div class="trace-card">
+                  <div class="trace-top">
+                    <div>
+                      <div style="display: flex; gap: 9px; align-items: center">
+                        <h2>OA202609010023</h2>
+                        <span class="pill blue">银行处理中</span>
+                      </div>
+                      <p>合同付款 · 第 2 批 · 陈静 · ¥128,400.00</p>
+                    </div>
+                    <div class="request">
+                      SubmitRequestId <b>sub_9f1d...c842</b>
+                    </div>
+                  </div>
+                  <div class="steps">
+                    <div class="step done">
+                      <span class="dot">✓</span>
+                      <div>
+                        <b>OA 发起</b>
+                        <p>V1 申请版已归档</p>
+                      </div>
+                    </div>
+                    <div class="step done">
+                      <span class="dot">✓</span>
+                      <div>
+                        <b>钉钉审批</b>
+                        <p>财务已确认归集与科目</p>
+                      </div>
+                    </div>
+                    <div class="step done">
+                      <span class="dot">✓</span>
+                      <div>
+                        <b>付款申请单</b>
+                        <p>云星空审核通过</p>
+                      </div>
+                    </div>
+                    <div class="step active">
+                      <span class="dot">4</span>
+                      <div>
+                        <b>CBS 付款</b>
+                        <p>银行正在处理中</p>
+                      </div>
+                    </div>
+                    <div class="step next">
+                      <span class="dot">5</span>
+                      <div>
+                        <b>付款单下推</b>
+                        <p>等待银行回执</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="dual">
+                  <div class="box">
+                    <div style="display: flex; justify-content: space-between">
+                      <h2>关键数据快照</h2>
+                      <span class="small">V1 → V2 → V3</span>
+                    </div>
+                    <div class="snapshots">
+                      <div class="snapshot">
+                        <i></i>
+                        <div>
+                          <b>V1 申请版</b>
+                          <p>陈静提交 · 2026/09/01 09:30</p>
+                        </div>
+                        <span>归集金额 ¥128,400</span>
+                      </div>
+                      <div class="snapshot">
+                        <i></i>
+                        <div>
+                          <b>V2 财务确认版</b>
+                          <p>财务节点通过 · 2026/09/01 10:48</p>
+                        </div>
+                        <span>科目：软件服务费</span>
+                      </div>
+                      <div class="snapshot">
+                        <i></i>
+                        <div>
+                          <b>V3 付款最终版</b>
+                          <p>出纳节点通过 · 2026/09/01 11:12</p>
+                        </div>
+                        <span>付款账号：招商银行（脱敏）</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="warn">
+                    <h2>幂等与补偿护栏</h2>
+                    <p>
+                      重复提交只复用同一个
+                      SubmitRequestId；付款失败不会触发付款单下推。
+                    </p>
+                    <button class="primary" id="retry">↻ 模拟受控重试</button>
+                    <p class="small" id="retry-state"></p>
+                  </div>
+                </div>
+              </section>
+              <section class="page" id="poc">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">DingTalk integration proof</p>
+                    <h1>钉钉 POC 接口与日志</h1>
+                  </div>
+                  <div>
+                    <span class="pill amber">待真实凭据 / 审批模板</span>
+                    <button class="primary" id="poc-simulate">
+                      ↻ 模拟回调
+                    </button>
+                  </div>
+                </div>
+                <div class="notice">
+                  <b>当前仅为 POC 界面。</b> 未配置真实
+                  AppKey、AppSecret、审批模板编码或生产回调地址；公开页面不会展示这些配置。
+                </div>
+                <div class="poc-grid">
+                  <div class="poc-stack">
+                    <div class="box">
+                      <div
+                        style="
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                        "
+                      >
+                        <h2>POC 验证字段</h2>
+                        <span class="pill blue">模拟</span>
+                      </div>
+                      <div class="poc-stack" style="margin-top: 14px">
+                        <div class="poc-field">
+                          <b>财务节点修改</b>
+                          <p>
+                            expenseAllocation：营销中心 / 品牌项目<br />accountSubject：660301
+                            软件服务费<br />approvedAmount：¥128,400.00
+                          </p>
+                        </div>
+                        <div class="poc-field">
+                          <b>出纳账户回传</b>
+                          <p>
+                            payeeBankName：示例银行（脱敏）<br />payeeAccountMasked：****
+                            **** **** 4821<br />cashierConfirmedAt：2026-09-01
+                            11:12
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="code">
+                      <b>POST</b> /mock/dingtalk/callback<br /><span>GET</span>
+                      /mock/dingtalk/process/:demoId<br />●
+                      只记录模拟字段，无真实请求、密钥或账号
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <div class="panel-head">
+                      <div>
+                        <h2>接口事件日志</h2>
+                        <p>完整 POC 需在测试租户用真实模板重放</p>
+                      </div>
+                      <span class="pill" id="poc-status">等待模拟</span>
+                    </div>
+                    <div id="poc-new-log"></div>
+                    <div class="log-row">
+                      <span class="log-time">10:48:31.006</span
+                      ><span
+                        >finance.fields.changed · subject=660301 ·
+                        amount=128400</span
+                      ><span class="log-status">模拟样例</span>
+                    </div>
+                    <div class="log-row">
+                      <span class="log-time">09:30:02.119</span
+                      ><span
+                        >process.created ·
+                        processInstanceId=demo_pi_20260901</span
+                      ><span class="log-status">模拟样例</span>
+                    </div>
+                    <div class="log-row">
+                      <span class="log-time">--:--:--.---</span
+                      ><span>real_poc.pending · 缺少测试租户凭据与审批模板</span
+                      ><span class="log-status" style="color: #a76708"
+                        >待执行</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="page" id="application">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">Kingdee adapter · mock</p>
+                    <h1>云星空付款申请单</h1>
+                  </div>
+                  <button class="secondary">☷ 筛选状态</button>
+                </div>
+                <div class="adapter">
+                  <div class="adapter-top">
+                    <div>
+                      <h2>K3-PA-2026-000238</h2>
+                      <p>
+                        从 V3
+                        最终版快照构造付款申请单，模拟创建、提交与审核。所有外部字段均为展示数据。
+                      </p>
+                    </div>
+                    <span class="pill green">审核成功</span>
+                  </div>
+                  <div class="adapter-grid">
+                    <div class="card">
+                      <div class="card-top">
+                        本次金额 <span class="card-icon blue">¥</span>
+                      </div>
+                      <div class="metric">¥128,400</div>
+                      <div class="hint">V3 最终版快照</div>
+                    </div>
+                    <div class="card">
+                      <div class="card-top">
+                        归集行数 <span class="card-icon purple">≡</span>
+                      </div>
+                      <div class="metric">04</div>
+                      <div class="hint">已校验合计</div>
+                    </div>
+                    <div class="card">
+                      <div class="card-top">
+                        接口状态 <span class="card-icon sky">✓</span>
+                      </div>
+                      <div class="metric">正常</div>
+                      <div class="hint">模拟适配器</div>
+                    </div>
+                  </div>
+                  <div class="code">
+                    <b>POST</b> /adapter/kingdee/payment-requests<br /><span
+                      >✓</span
+                    >
+                    演示模式：不包含真实地址、密钥或请求参数
+                  </div>
+                </div>
+              </section>
+              <section class="page" id="cbs">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">CBS adapter · mock</p>
+                    <h1>CBS 付款</h1>
+                  </div>
+                  <button class="secondary">☷ 筛选状态</button>
+                </div>
+                <div class="adapter">
+                  <div class="adapter-top">
+                    <div>
+                      <h2>CBS-2026-0001004</h2>
+                      <p>
+                        展示待付款、财务复核、银行处理与回执状态。付款失败不会生成付款单。
+                      </p>
+                    </div>
+                    <span class="pill blue">银行处理中</span>
+                  </div>
+                  <div class="adapter-grid">
+                    <div class="card">
+                      <div class="card-top">
+                        付款金额 <span class="card-icon blue">¥</span>
+                      </div>
+                      <div class="metric">¥128,400</div>
+                      <div class="hint">模拟待付款记录</div>
+                    </div>
+                    <div class="card">
+                      <div class="card-top">
+                        银行状态 <span class="card-icon purple">◷</span>
+                      </div>
+                      <div class="metric">处理中</div>
+                      <div class="hint">等待回执</div>
+                    </div>
+                    <div class="card">
+                      <div class="card-top">
+                        回执状态 <span class="card-icon sky">⌁</span>
+                      </div>
+                      <div class="metric">待获取</div>
+                      <div class="hint">不允许下推付款单</div>
+                    </div>
+                  </div>
+                  <div class="code">
+                    <b>POST</b> /adapter/cbs/payment<br /><span>✓</span>
+                    演示模式：不包含真实地址、密钥或请求参数
+                  </div>
+                </div>
+              </section>
+              <section class="page" id="order">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">Downstream payment order</p>
+                    <h1>云星空付款单</h1>
+                  </div>
+                  <button class="secondary">☷ 筛选状态</button>
+                </div>
+                <div class="adapter">
+                  <div class="adapter-top">
+                    <div>
+                      <h2>K3-PO-2026-000238</h2>
+                      <p>
+                        仅在 CBS 成功后按原付款申请单下推。原型明确演示此约束。
+                      </p>
+                    </div>
+                    <span class="pill amber">等待回执</span>
+                  </div>
+                  <div class="adapter-grid">
+                    <div class="card">
+                      <div class="card-top">
+                        原申请单 <span class="card-icon blue">↗</span>
+                      </div>
+                      <div class="metric">已关联</div>
+                      <div class="hint">K3-PA-2026-000238</div>
+                    </div>
+                    <div class="card">
+                      <div class="card-top">
+                        下推状态 <span class="card-icon purple">◷</span>
+                      </div>
+                      <div class="metric">未触发</div>
+                      <div class="hint">等待 CBS 成功</div>
+                    </div>
+                    <div class="card">
+                      <div class="card-top">
+                        幂等键 <span class="card-icon sky">✓</span>
+                      </div>
+                      <div class="metric">已保留</div>
+                      <div class="hint">模拟适配器</div>
+                    </div>
+                  </div>
+                  <div class="code">
+                    <b>POST</b>
+                    /adapter/kingdee/payment-order/downstream<br /><span
+                      >✓</span
+                    >
+                    演示模式：不包含真实地址、密钥或请求参数
+                  </div>
+                </div>
+              </section>
+              <section class="page" id="exceptions">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">Controlled recovery</p>
+                    <h1>异常处理中心</h1>
+                  </div>
+                  <button class="secondary">♧ 订阅提醒</button>
+                </div>
+                <div class="errors">
+                  <div class="panel">
+                    <div class="panel-head"><h2>待处理任务</h2></div>
+                    <div class="error-row">
+                      <span class="error-dot"></span>
+                      <div>
+                        <b id="first-error">钉钉成功 / OA 落库失败</b>
+                        <p>可使用原 processInstanceId 补建正式单据</p>
+                      </div>
+                      <span class="pill red priority" id="first-priority"
+                        >高优先级</span
+                      >
+                    </div>
+                    <div class="error-row">
+                      <span class="error-dot"></span>
+                      <div>
+                        <b>CBS 回执待获取</b>
+                        <p>银行处理未结束，禁止下推付款单</p>
+                      </div>
+                      <span class="pill amber priority">中优先级</span>
+                    </div>
+                    <div class="error-row">
+                      <span class="error-dot"></span>
+                      <div>
+                        <b>付款申请单审核失败</b>
+                        <p>保留请求与响应摘要，允许受控重试</p>
+                      </div>
+                      <span class="pill amber priority">中优先级</span>
+                    </div>
+                  </div>
+                  <aside class="danger">
+                    <span class="card-icon red">!</span>
+                    <h2>安全恢复提示</h2>
+                    <p>
+                      重试必须具备权限、幂等校验与操作日志。此处仅模拟任务记录。
+                    </p>
+                    <button id="resolve">模拟记录补偿</button>
+                  </aside>
+                </div>
+              </section>
+              <section class="page" id="subjects">
+                <div class="page-head">
+                  <div>
+                    <p class="eyebrow">Master data · mock</p>
+                    <h1>会计科目</h1>
+                  </div>
+                  <button class="primary" id="sync">↻ 模拟云星空同步</button>
+                </div>
+                <div class="panel">
+                  <div class="subject-head">
+                    <span>科目编码</span><span>科目名称</span><span>分类</span
+                    ><span>状态</span>
+                  </div>
+                  <div class="subject-row">
+                    <code>660201</code><b>差旅费</b><span>管理费用</span
+                    ><span class="pill green">启用</span>
+                  </div>
+                  <div class="subject-row">
+                    <code>660202</code><b>业务招待费</b><span>管理费用</span
+                    ><span class="pill green">启用</span>
+                  </div>
+                  <div class="subject-row">
+                    <code>660301</code><b>软件服务费</b><span>销售费用</span
+                    ><span class="pill green">启用</span>
+                  </div>
+                  <div class="subject-row">
+                    <code>660304</code><b>外包服务费</b><span>管理费用</span
+                    ><span class="pill green">启用</span>
+                  </div>
+                </div>
+                <p class="small" style="margin-top: 14px">
+                  来源标记为云星空同步。公开演示版不连接任何外部系统。
+                </p>
+              </section>
+              <footer class="page-footer">
+                <span>OA SYSTEM · 报销管理模块</span
+                ><span>展示环境 · 无真实接口、账号、密钥或生产数据</span>
+              </footer>
+            </div>
+          </main>
+        </div>
+      </div>
+      <div class="mobile-drawer" id="drawer">
+        <aside class="drawer">
+          <div class="drawer-head">
+            <div style="display: flex; align-items: center; gap: 9px">
+              <span class="brand-mark">OA</span><b>OA SYSTEM</b>
+            </div>
+            <button class="icon-btn" id="close-menu" aria-label="关闭导航">
+              <i data-lucide="x"></i>
+            </button>
+          </div>
+          <p class="sidebar-label">OA BUSINESS MODULES</p>
+          <button class="module-head">
+            <i data-lucide="wallet-cards"></i>报销管理
+          </button>
+          <div class="nav" id="mobile-nav"></div>
+          <div class="future-modules">
+            <button>
+              <i data-lucide="file-check-2"></i>合同管理<small
+                >规划中</small
+              ></button
+            ><button>
+              <i data-lucide="shopping-cart"></i>采购管理<small
+                >规划中</small
+              ></button
+            ><button>
+              <i data-lucide="users"></i>人事行政<small>规划中</small></button
+            ><button>
+              <i data-lucide="landmark"></i>资产管理<small>规划中</small>
+            </button>
+          </div>
+        </aside>
+      </div>
+      <div class="toast" id="toast"></div>
+    </div>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
     <script>
-      const pages={overview:'概览',all:'全部报销',initiate:'发起付款',tracking:'付款流程跟踪',poc:'钉钉POC',application:'付款申请单',cbs:'CBS付款',order:'云星空付款单',exceptions:'异常处理中心',subjects:'会计科目'};
-      const payments=[
-        {id:'OA202609010023',type:'合同付款 · 第 2 批',actualType:'合同付款',applicant:'陈静',amount:'¥ 128,400.00',state:'银行处理中',tone:'blue',trace:'钉钉：已通过 · 云星空：已审核 · CBS：处理中'},
-        {id:'OA202609010022',type:'发票付款',actualType:'发票付款',applicant:'王浩',amount:'¥ 36,800.00',state:'已完成',tone:'green',trace:'钉钉：已通过 · 云星空：付款单已审核 · CBS：付款成功'},
-        {id:'OA202609010021',type:'预付款 · 第 1 批',actualType:'预付款',applicant:'林悦',amount:'¥ 65,000.00',state:'待补票',tone:'amber',trace:'钉钉：已通过 · 云星空：已审核 · CBS：付款成功'}
+      const pages = {
+        overview: '概览',
+        all: '全部报销',
+        initiate: '发起付款',
+        tracking: '付款流程跟踪',
+        poc: '钉钉POC',
+        application: '付款申请单',
+        cbs: 'CBS付款',
+        order: '云星空付款单',
+        exceptions: '异常处理中心',
+        subjects: '会计科目',
+      };
+      const payments = [
+        {
+          id: 'OA202609010023',
+          type: '合同付款 · 第 2 批',
+          actualType: '合同付款',
+          applicant: '陈静',
+          amount: '¥ 128,400.00',
+          state: '银行处理中',
+          tone: 'blue',
+          trace: '钉钉：已通过 · 云星空：已审核 · CBS：处理中',
+        },
+        {
+          id: 'OA202609010022',
+          type: '发票付款',
+          actualType: '发票付款',
+          applicant: '王浩',
+          amount: '¥ 36,800.00',
+          state: '已完成',
+          tone: 'green',
+          trace: '钉钉：已通过 · 云星空：付款单已审核 · CBS：付款成功',
+        },
+        {
+          id: 'OA202609010021',
+          type: '预付款 · 第 1 批',
+          actualType: '预付款',
+          applicant: '林悦',
+          amount: '¥ 65,000.00',
+          state: '待补票',
+          tone: 'amber',
+          trace: '钉钉：已通过 · 云星空：已审核 · CBS：付款成功',
+        },
       ];
-      const icons=['▦','▤','＋','◎','✓','▣','▰','▧','!','≡'];
-      function tableRow(p){
-        const row=`<button class="table-row" ${p.actualType==='合同付款'?`data-expand="${p.id}"`:'data-go="tracking"'}><span><b class="row-title">${p.id}</b><span class="small" style="display:block;margin-top:4px">${p.type} · 实际类型：${p.actualType}</span></span><span class="hide-small">${p.applicant}</span><b>${p.amount}</b><span class="pill ${p.tone}">${p.state}</span><span>${p.actualType==='合同付款'?'⌄':'›'}</span></button>`;
-        if(p.actualType!=='合同付款')return row;
+      const icons = [
+        'layout-dashboard',
+        'file-text',
+        'plus',
+        'network',
+        'shield-check',
+        'file-check-2',
+        'landmark',
+        'wallet-cards',
+        'triangle-alert',
+        'list-filter',
+      ];
+      function tableRow(p) {
+        const row = `<button class="table-row" ${p.actualType === '合同付款' ? `data-expand="${p.id}"` : 'data-go="tracking"'}><span><b class="row-title">${p.id}</b><span class="small" style="display:block;margin-top:4px">${p.type} · 实际类型：${p.actualType}</span></span><span class="hide-small">${p.applicant}</span><b>${p.amount}</b><span class="pill ${p.tone}">${p.state}</span><span>${p.actualType === '合同付款' ? '⌄' : '›'}</span></button>`;
+        if (p.actualType !== '合同付款') return row;
         return `<div>${row}<div class="batch-detail open" id="batch-${p.id}"><div class="batch-detail-head"><div><h3>HT2026-0088 · 品牌服务合同（主单）</h3><p>合同总额 ¥300,000 · 累计付款 ¥248,400 · 全部付款完成后最终核票</p></div><span class="pill amber">待最后一批</span></div><div class="batch-items"><button class="batch-item" data-go="tracking"><b>子单 01 · 第 1 批</b><span>¥120,000 · 已付款 · 发票 ¥120,000</span></button><button class="batch-item" data-go="tracking"><b>子单 02 · 第 2 批</b><span>¥128,400 · 银行处理中 · 发票 ¥63,400</span></button></div></div></div>`;
       }
-      function paymentHTML(simple=false,filter='全部类型'){const visible=filter==='全部类型'?payments:payments.filter(p=>p.actualType===filter);return visible.map(p=>simple?`<button class="payment" data-go="tracking"><div><b>${p.id}<span>${p.type}</span></b><p>${p.trace}</p></div><div class="amount">${p.amount}<br><span class="pill ${p.tone}">${p.state}</span></div></button>`:tableRow(p)).join('')}
-      function renderTable(filter='全部类型'){const visible=filter==='全部类型'?payments:payments.filter(p=>p.actualType===filter);document.querySelector('.table-list').innerHTML=paymentHTML(false,filter);document.querySelector('#filter-count').textContent=`已按实际业务类型筛选 · ${visible.length} 条`}
-      document.querySelector('.payment-list').innerHTML=paymentHTML(true);renderTable();
-      function buildNav(target){target.innerHTML=Object.entries(pages).map(([id,label],i)=>`<button data-go="${id}" class="${i===0?'active':''}"><span class="glyph">${icons[i]}</span>${label}${id==='exceptions'?'<span class="count">3</span>':''}</button>`).join('')};buildNav(document.querySelector('#desktop-nav'));buildNav(document.querySelector('#mobile-nav'));
-      function go(id){const target=document.querySelector('#'+id);if(!target)return;document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));target.classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.go===id));document.querySelector('#drawer').classList.remove('open');window.scrollTo({top:0,behavior:'smooth'})}
-      document.addEventListener('click',e=>{const expand=e.target.closest('[data-expand]');if(expand){document.querySelector('#batch-'+expand.dataset.expand)?.classList.toggle('open');return}const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});
-      document.querySelector('#open-menu').onclick=()=>document.querySelector('#drawer').classList.add('open');document.querySelector('#close-menu').onclick=()=>document.querySelector('#drawer').classList.remove('open');document.querySelector('#drawer').onclick=e=>{if(e.target.id==='drawer')e.currentTarget.classList.remove('open')};
-      document.querySelectorAll('#type-filter button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#type-filter button').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderTable(b.dataset.filter)});
-      document.querySelectorAll('#kind-tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#kind-tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('[data-kind-panel]').forEach(x=>x.classList.toggle('active',x.dataset.kindPanel===b.dataset.kind));document.querySelector('#form-title').textContent=b.textContent+'申请';document.querySelector('#submit-success').classList.remove('show')});
-      document.querySelectorAll('#mode-switch button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#mode-switch button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelector('#batch-fields').classList.toggle('active',b.dataset.mode==='installment')});
-      function toast(t){const el=document.querySelector('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
-      document.querySelector('#submit-demo').onclick=()=>{document.querySelector('#submit-success').classList.add('show');toast('已保存模拟提交记录')};
-      document.querySelector('#poc-simulate').onclick=()=>{document.querySelector('#poc-new-log').innerHTML='<div class="log-row simulated"><span class="log-time">11:12:08.418</span><span>cashier.account.returned · payeeAccountMasked=****4821</span><span class="log-status">模拟成功</span></div>';const status=document.querySelector('#poc-status');status.textContent='已追加模拟事件';status.className='pill green';toast('已追加钉钉模拟回调')};
-      document.querySelector('#retry').onclick=()=>{document.querySelector('#retry-state').textContent='已复用原审批实例；不会创建重复单据。';toast('已记录受控重试（演示）')};document.querySelector('#resolve').onclick=()=>{document.querySelector('#first-error').textContent='补偿任务已受控处理';document.querySelector('#first-priority').textContent='已记录';toast('补偿记录已更新（演示）')};document.querySelector('#sync').onclick=()=>toast('已完成模拟云星空同步');document.querySelector('#search').oninput=e=>{document.querySelector('#search-result').style.display=e.target.value?'inline-flex':'none';document.querySelector('#search-result').textContent='⌕ 正在检索“'+e.target.value+'”（演示模式）'};
-      const modelContext=document.modelContext;
-      if(modelContext?.registerTool){const lifecycle=new AbortController();try{Promise.resolve(modelContext.registerTool({name:'start_payment_request_creation',title:'开始创建付款申请',description:'打开公开演示中的付款申请表单；不会发送数据或调用外部系统。',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},async execute(input){if(input!==undefined&&(input===null||typeof input!=='object'||Array.isArray(input)))throw new Error('Input must be an object.');go('initiate');return{status:'ready',section:'发起付款',mode:'mock'}}},{signal:lifecycle.signal})).catch(()=>{})}catch{}}
+      function paymentHTML(simple = false, filter = '全部类型') {
+        const visible =
+          filter === '全部类型'
+            ? payments
+            : payments.filter((p) => p.actualType === filter);
+        return visible
+          .map((p) =>
+            simple
+              ? `<button class="payment" data-go="tracking"><div><b>${p.id}<span>${p.type}</span></b><p>${p.trace}</p></div><div class="amount">${p.amount}<br><span class="pill ${p.tone}">${p.state}</span></div></button>`
+              : tableRow(p),
+          )
+          .join('');
+      }
+      function renderTable(filter = '全部类型') {
+        const visible =
+          filter === '全部类型'
+            ? payments
+            : payments.filter((p) => p.actualType === filter);
+        document.querySelector('.table-list').innerHTML = paymentHTML(
+          false,
+          filter,
+        );
+        document.querySelector('#filter-count').textContent =
+          `已按实际业务类型筛选 · ${visible.length} 条`;
+      }
+      document.querySelector('.payment-list').innerHTML = paymentHTML(true);
+      renderTable();
+      function buildNav(target) {
+        target.innerHTML = Object.entries(pages)
+          .map(
+            ([id, label], i) =>
+              `<button data-go="${id}" class="${i === 0 ? 'active' : ''}"><i data-lucide="${icons[i]}"></i>${label}${id === 'exceptions' ? '<span class="count">3</span>' : ''}</button>`,
+          )
+          .join('');
+      }
+      buildNav(document.querySelector('#desktop-nav'));
+      buildNav(document.querySelector('#mobile-nav'));
+      window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
+      function go(id) {
+        const target = document.querySelector('#' + id);
+        if (!target) return;
+        document
+          .querySelectorAll('.page')
+          .forEach((x) => x.classList.remove('active'));
+        target.classList.add('active');
+        document
+          .querySelectorAll('.nav button')
+          .forEach((x) => x.classList.toggle('active', x.dataset.go === id));
+        document.querySelector('#current-section').textContent = pages[id];
+        document.querySelector('#drawer').classList.remove('open');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      document.addEventListener('click', (e) => {
+        const expand = e.target.closest('[data-expand]');
+        if (expand) {
+          document
+            .querySelector('#batch-' + expand.dataset.expand)
+            ?.classList.toggle('open');
+          return;
+        }
+        const b = e.target.closest('[data-go]');
+        if (b) go(b.dataset.go);
+      });
+      document.querySelector('#open-menu').onclick = () => {
+        if (window.innerWidth > 1000)
+          document
+            .querySelector('.app-shell')
+            .classList.toggle('sidebar-collapsed');
+        else document.querySelector('#drawer').classList.add('open');
+      };
+      document.querySelector('#close-menu').onclick = () =>
+        document.querySelector('#drawer').classList.remove('open');
+      document.querySelector('#drawer').onclick = (e) => {
+        if (e.target.id === 'drawer') e.currentTarget.classList.remove('open');
+      };
+      document.querySelector('#fullscreen').onclick = () =>
+        document.documentElement.requestFullscreen?.();
+      document.querySelectorAll('#type-filter button').forEach(
+        (b) =>
+          (b.onclick = () => {
+            document
+              .querySelectorAll('#type-filter button')
+              .forEach((x) => x.classList.remove('active'));
+            b.classList.add('active');
+            renderTable(b.dataset.filter);
+          }),
+      );
+      document.querySelectorAll('#kind-tabs button').forEach(
+        (b) =>
+          (b.onclick = () => {
+            document
+              .querySelectorAll('#kind-tabs button')
+              .forEach((x) => x.classList.remove('active'));
+            b.classList.add('active');
+            document
+              .querySelectorAll('[data-kind-panel]')
+              .forEach((x) =>
+                x.classList.toggle(
+                  'active',
+                  x.dataset.kindPanel === b.dataset.kind,
+                ),
+              );
+            document.querySelector('#form-title').textContent =
+              b.textContent + '申请';
+            document.querySelector('#submit-success').classList.remove('show');
+          }),
+      );
+      document.querySelectorAll('#mode-switch button').forEach(
+        (b) =>
+          (b.onclick = () => {
+            document
+              .querySelectorAll('#mode-switch button')
+              .forEach((x) => x.classList.remove('active'));
+            b.classList.add('active');
+            document
+              .querySelector('#batch-fields')
+              .classList.toggle('active', b.dataset.mode === 'installment');
+          }),
+      );
+      function toast(t) {
+        const el = document.querySelector('#toast');
+        el.textContent = t;
+        el.classList.add('show');
+        setTimeout(() => el.classList.remove('show'), 2600);
+      }
+      document.querySelector('#submit-demo').onclick = () => {
+        document.querySelector('#submit-success').classList.add('show');
+        toast('已保存模拟提交记录');
+      };
+      document.querySelector('#poc-simulate').onclick = () => {
+        document.querySelector('#poc-new-log').innerHTML =
+          '<div class="log-row simulated"><span class="log-time">11:12:08.418</span><span>cashier.account.returned · payeeAccountMasked=****4821</span><span class="log-status">模拟成功</span></div>';
+        const status = document.querySelector('#poc-status');
+        status.textContent = '已追加模拟事件';
+        status.className = 'pill green';
+        toast('已追加钉钉模拟回调');
+      };
+      document.querySelector('#retry').onclick = () => {
+        document.querySelector('#retry-state').textContent =
+          '已复用原审批实例；不会创建重复单据。';
+        toast('已记录受控重试（演示）');
+      };
+      document.querySelector('#resolve').onclick = () => {
+        document.querySelector('#first-error').textContent =
+          '补偿任务已受控处理';
+        document.querySelector('#first-priority').textContent = '已记录';
+        toast('补偿记录已更新（演示）');
+      };
+      document.querySelector('#sync').onclick = () =>
+        toast('已完成模拟云星空同步');
+      document.querySelector('#search').oninput = (e) => {
+        document.querySelector('#search-result').style.display = e.target.value
+          ? 'inline-flex'
+          : 'none';
+        document.querySelector('#search-result').textContent =
+          '⌕ 正在检索“' + e.target.value + '”（演示模式）';
+      };
+      const modelContext = document.modelContext;
+      if (modelContext?.registerTool) {
+        const lifecycle = new AbortController();
+        try {
+          Promise.resolve(
+            modelContext.registerTool(
+              {
+                name: 'start_payment_request_creation',
+                title: '开始创建付款申请',
+                description:
+                  '打开公开演示中的付款申请表单；不会发送数据或调用外部系统。',
+                inputSchema: {
+                  type: 'object',
+                  properties: {},
+                  additionalProperties: false,
+                },
+                annotations: {
+                  readOnlyHint: false,
+                  untrustedContentHint: false,
+                },
+                async execute(input) {
+                  if (
+                    input !== undefined &&
+                    (input === null ||
+                      typeof input !== 'object' ||
+                      Array.isArray(input))
+                  )
+                    throw new Error('Input must be an object.');
+                  go('initiate');
+                  return { status: 'ready', section: '发起付款', mode: 'mock' };
+                },
+              },
+              { signal: lifecycle.signal },
+            ),
+          ).catch(() => {});
+        } catch {}
+      }
     </script>
   </body>
 </html>
