@@ -1374,18 +1374,23 @@
       }
       .workspace {
         min-width: 0;
-        flex: 1;
+        width: calc(100% - 212px);
+        margin-left: 212px;
       }
       .app-shell.sidebar-collapsed > .sidebar {
         display: none;
       }
+      .app-shell.sidebar-collapsed > .workspace {
+        width: 100%;
+        margin-left: 0;
+      }
       .sidebar {
-        position: sticky;
-        top: 0;
+        position: fixed;
+        inset: 0 auto 0 0;
         z-index: 50;
         display: flex;
         width: 212px;
-        height: 100vh;
+        height: 100dvh;
         flex: none;
         flex-direction: column;
         overflow-y: auto;
@@ -1459,6 +1464,13 @@
       }
       .module-head .chev {
         margin-left: auto;
+        transition: transform 0.16s ease;
+      }
+      .module-head.is-collapsed .chev {
+        transform: rotate(-90deg);
+      }
+      .nav.is-collapsed {
+        display: none;
       }
       .sidebar .nav {
         margin: 5px 8px 9px;
@@ -1881,6 +1893,10 @@
         .sidebar {
           display: none;
         }
+        .workspace {
+          width: 100%;
+          margin-left: 0;
+        }
         .main {
           padding: 10px;
         }
@@ -1957,8 +1973,11 @@
           </div>
         </div>
         <p class="sidebar-label">OA BUSINESS MODULES</p>
-        <button class="module-head">
-          <i data-lucide="wallet-cards"></i>报销管理<span class="chev">⌄</span>
+        <button class="module-head" type="button" aria-expanded="true">
+          <i data-lucide="wallet-cards"></i>报销管理<i
+            data-lucide="chevron-down"
+            class="chev"
+          ></i>
         </button>
         <div class="nav" id="desktop-nav"></div>
         <div class="future-modules">
@@ -2760,8 +2779,11 @@
             </button>
           </div>
           <p class="sidebar-label">OA BUSINESS MODULES</p>
-          <button class="module-head">
-            <i data-lucide="wallet-cards"></i>报销管理
+          <button class="module-head" type="button" aria-expanded="true">
+            <i data-lucide="wallet-cards"></i>报销管理<i
+              data-lucide="chevron-down"
+              class="chev"
+            ></i>
           </button>
           <div class="nav" id="mobile-nav"></div>
           <div class="future-modules">
@@ -2883,6 +2905,13 @@
       }
       buildNav(document.querySelector('#desktop-nav'));
       buildNav(document.querySelector('#mobile-nav'));
+      document.querySelectorAll('.module-head').forEach((head) => {
+        head.onclick = () => {
+          const collapsed = head.classList.toggle('is-collapsed');
+          head.setAttribute('aria-expanded', String(!collapsed));
+          head.nextElementSibling?.classList.toggle('is-collapsed', collapsed);
+        };
+      });
       window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
       function go(id) {
         const target = document.querySelector('#' + id);
