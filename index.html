@@ -2212,6 +2212,18 @@
           minmax(210px, 1.5fr) repeat(4, minmax(75px, 0.55fr))
           65px;
       }
+      .wr-report-list-head {
+        display: grid;
+        grid-template-columns:
+          minmax(210px, 1.5fr) repeat(4, minmax(75px, 0.55fr))
+          65px;
+        gap: 10px;
+        padding: 9px 14px;
+        color: #767b8e;
+        background: #f6f7f9;
+        font-size: 9px;
+        font-weight: 700;
+      }
       .wr-report-row b,
       .wr-report-row small,
       .wr-project-row b,
@@ -2387,6 +2399,342 @@
         box-shadow: 0 10px 30px rgba(7, 23, 46, 0.24);
         font-size: 11px;
       }
+      .wr-config-tabs {
+        display: inline-flex;
+        margin-bottom: 12px;
+      }
+      .wr-config-layout {
+        display: grid;
+        grid-template-columns: minmax(520px, 1.25fr) minmax(320px, 0.75fr);
+        align-items: start;
+        gap: 12px;
+      }
+      .wr-config-form {
+        padding: 0;
+      }
+      .wr-config-form > .wr-form-grid {
+        padding: 12px;
+      }
+      .wr-config-form > .wr-panel-title,
+      .wr-config-preview > .wr-panel-title {
+        padding: 12px 14px;
+        border-bottom: 1px solid #e6e8ed;
+      }
+      .wr-config-section {
+        margin: 0 12px 12px;
+        border: 1px solid #e0e3e9;
+      }
+      .wr-config-section > .wr-panel-title {
+        padding: 10px 12px;
+        background: #f6f7f9;
+      }
+      .wr-org-layout {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.8fr) minmax(260px, 1.2fr);
+        min-height: 280px;
+      }
+      .wr-org-tree {
+        padding: 12px;
+        border-right: 1px solid #e6e8ed;
+        color: #303548;
+        font-size: 10px;
+      }
+      .wr-org-tree details {
+        padding-left: 13px;
+      }
+      .wr-org-tree > details {
+        padding-left: 0;
+      }
+      .wr-org-tree summary {
+        padding: 6px 4px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+      .wr-org-tree label {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 4px 6px 18px;
+      }
+      .wr-member-preview {
+        max-height: 330px;
+        overflow-y: auto;
+        padding: 12px;
+        color: #555a6d;
+        font-size: 10px;
+      }
+      .wr-member-preview > b {
+        display: block;
+        margin-bottom: 10px;
+        color: #202538;
+        font-size: 11px;
+      }
+      .wr-member-preview > div {
+        margin-bottom: 12px;
+      }
+      .wr-member-preview strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #315f92;
+      }
+      .wr-member-preview p {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin: 0;
+        padding: 5px 0;
+        border-bottom: 1px solid #eff0f3;
+      }
+      .wr-member-preview p span {
+        color: #8a8ea0;
+      }
+      .wr-config-preview {
+        position: sticky;
+        top: 68px;
+        padding: 0 14px 16px;
+      }
+      .wr-ding-card,
+      .wr-ding-task {
+        margin-top: 14px;
+        padding: 16px;
+        border: 1px solid #dfe2e8;
+        border-radius: 6px;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(28, 38, 58, 0.08);
+      }
+      .wr-ding-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #707588;
+        font-size: 9px;
+      }
+      .wr-ding-brand > span {
+        display: grid;
+        width: 24px;
+        height: 24px;
+        place-items: center;
+        border-radius: 5px;
+        color: #fff;
+        background: #1677ff;
+        font-weight: 800;
+      }
+      .wr-ding-card h3,
+      .wr-ding-task h3 {
+        margin: 14px 0 6px;
+        color: #1f2435;
+        font-size: 15px;
+      }
+      .wr-ding-card > p,
+      .wr-ding-task > p {
+        margin: 0 0 10px;
+        color: #777c8e;
+        font-size: 10px;
+      }
+      .wr-ding-card > div:not(.wr-ding-brand) {
+        margin: 12px 0;
+        color: #4e5365;
+        font-size: 11px;
+        line-height: 1.75;
+      }
+      .wr-ding-card > button,
+      .wr-ding-task > button,
+      .wr-mobile-submit > button,
+      .wr-phone-success > button {
+        width: 100%;
+        min-height: 38px;
+        margin-top: 14px;
+        border-radius: 4px;
+        color: #fff;
+        background: #1677ff;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .wr-config-meta {
+        margin: 14px 0 0;
+      }
+      .wr-config-meta > div,
+      .wr-push-summary dl > div {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 0;
+        border-bottom: 1px solid #eceef2;
+        font-size: 10px;
+      }
+      .wr-config-meta dt,
+      .wr-push-summary dt {
+        color: #85899b;
+      }
+      .wr-config-meta dd,
+      .wr-push-summary dd {
+        margin: 0;
+        color: #262b3d;
+        text-align: right;
+        font-weight: 700;
+      }
+      .wr-push-summary {
+        padding: 16px;
+        color: #555a6c;
+        font-size: 10px;
+        line-height: 1.7;
+      }
+      .wr-push-summary dl {
+        margin: 0 0 14px;
+      }
+      .wr-phone-stage {
+        display: grid;
+        min-height: 720px;
+        place-items: start center;
+        padding: 24px;
+        border: 1px solid #dfe1e8;
+        background: #e9edf3;
+      }
+      .wr-phone {
+        width: min(390px, 100%);
+        min-height: 680px;
+        overflow: hidden;
+        border: 8px solid #202431;
+        border-radius: 28px;
+        background: #f4f6f9;
+        box-shadow: 0 18px 48px rgba(19, 27, 43, 0.18);
+      }
+      .wr-phone-topbar {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        min-height: 52px;
+        padding: 0 14px;
+        color: #fff;
+        background: #1677ff;
+        font-size: 11px;
+      }
+      .wr-phone-topbar button {
+        justify-self: start;
+        padding: 0;
+        color: #fff;
+        background: transparent;
+        font-size: 10px;
+      }
+      .wr-phone-topbar > :last-child {
+        justify-self: end;
+      }
+      .wr-phone-body {
+        padding: 14px;
+      }
+      .wr-phone-heading > span {
+        color: #1677ff;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+      }
+      .wr-phone-heading h2 {
+        margin: 5px 0;
+        color: #1d2232;
+        font-size: 20px;
+      }
+      .wr-phone-heading p {
+        margin: 0;
+        color: #858a9a;
+        font-size: 10px;
+      }
+      .wr-ding-task {
+        margin-top: 12px;
+      }
+      .wr-phone-editor {
+        display: grid;
+        gap: 12px;
+      }
+      .wr-mobile-project {
+        display: grid;
+        gap: 11px;
+        padding: 12px;
+        border: 1px solid #e0e3e8;
+        border-radius: 5px;
+        background: #fff;
+      }
+      .wr-mobile-project .wr-project-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 9px 12px;
+        border-bottom: 1px solid #e0e3e8;
+        background: #f7f8fa;
+        margin: -12px -12px 0;
+      }
+      .wr-mobile-add {
+        min-height: 40px;
+        border: 1px dashed #8eb9ec;
+        border-radius: 4px;
+        color: #1769bd;
+        background: #f2f8ff;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .wr-mobile-section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .wr-mobile-section-title h3 {
+        margin: 0;
+        font-size: 13px;
+      }
+      .wr-mobile-section-title button {
+        color: #1677ff;
+        background: transparent;
+        font-size: 10px;
+      }
+      .wr-mobile-suggestion {
+        padding: 12px;
+        border: 1px solid #e0e3e8;
+        border-radius: 5px;
+        background: #fff;
+      }
+      .wr-mobile-submit {
+        position: sticky;
+        bottom: 0;
+        z-index: 2;
+        margin: 4px -14px -14px;
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+        border-top: 1px solid #e0e3e8;
+        background: #fff;
+      }
+      .wr-mobile-submit small {
+        display: block;
+        color: #8a5560;
+        text-align: center;
+        font-size: 9px;
+      }
+      .wr-phone-success {
+        display: grid;
+        place-items: center;
+        padding: 100px 24px;
+        text-align: center;
+      }
+      .wr-phone-success > span {
+        display: grid;
+        width: 52px;
+        height: 52px;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: #27a66f;
+        font-size: 26px;
+      }
+      .wr-phone-success h2 {
+        margin: 18px 0 6px;
+        font-size: 18px;
+      }
+      .wr-phone-success p {
+        margin: 0 0 10px;
+        color: #777c8e;
+        font-size: 11px;
+      }
+      .wr-exit-confirm {
+        width: min(520px, 100%);
+      }
       .toast {
         border-radius: 2px;
       }
@@ -2473,7 +2821,9 @@
         .wr-metrics,
         .wr-grid,
         .wr-inline-stats,
-        .wr-audit-layout {
+        .wr-audit-layout,
+        .wr-config-layout,
+        .wr-org-layout {
           grid-template-columns: 1fr;
         }
         .wr-inline-stats div {
@@ -2496,6 +2846,15 @@
         .wr-audit-row > :nth-child(3) {
           display: none;
         }
+        .wr-report-list-head {
+          display: none;
+        }
+        .wr-report-row > .wr-report-status {
+          display: block;
+        }
+        .wr-report-row > .wr-report-submitted {
+          display: none;
+        }
         .wr-form-grid {
           grid-template-columns: 1fr;
         }
@@ -2509,6 +2868,25 @@
           width: 100%;
           height: 100vh;
           max-height: 100vh;
+        }
+        .wr-config-preview {
+          position: static;
+        }
+        .wr-org-tree {
+          border-right: 0;
+          border-bottom: 1px solid #e6e8ed;
+        }
+        .wr-phone-stage {
+          min-height: 0;
+          padding: 0;
+          border: 0;
+        }
+        .wr-phone {
+          width: 100%;
+          min-height: 100vh;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
         }
         .mobile-drawer {
           display: none;
@@ -3405,6 +3783,8 @@
         'project-ledger': '项目工作台账',
         'monthly-ledger': '月工作心得台账',
         'project-maintenance': '项目维护',
+        configuration: '汇报配置',
+        'ding-mobile': '钉钉移动端模拟',
       };
       const workIcons = [
         'chart-no-axes-combined',
@@ -3415,6 +3795,8 @@
         'folder-kanban',
         'book-open-check',
         'settings-2',
+        'send',
+        'smartphone',
       ];
       const wrMock = {
         departments: ['产品研发部', '硬件工程部', '软件工程部', '质量与测试部'],
@@ -3619,9 +4001,9 @@
                 project: 7,
                 stage: '设计',
                 hours: 8,
-                risk: '正常',
+                risk: '高风险',
                 content: '完成本周软件设计任务。',
-                support: '暂无。',
+                support: '核心接口联调窗口不足，需要项目组协调资源。',
               },
             ],
           },
@@ -3740,6 +4122,92 @@
                 item.month === month,
             ),
         );
+      const wrOrganization = [
+        {
+          id: 'dev-1',
+          name: '开发一课',
+          group: '开发一部',
+          members: [
+            ['洪丰都（Henry）', '主管/副经理'],
+            ['陈晏中', '副课长'],
+            ['陈冬莲', '结构工程师'],
+            ['黄启清', '包装工程师'],
+            ['黄敬嗣', '助理结构工程师'],
+            ['张晓杰', '结构工程师'],
+            ['王俊杰', '助理结构工程师'],
+            ['叶月松', '结构工程师'],
+          ],
+        },
+        {
+          id: 'dev-2',
+          name: '开发二课',
+          group: '开发一部',
+          members: [
+            ['林佳伟', '结构工程师'],
+            ['郑文博', '电子工程师'],
+            ['吴欣怡', '项目工程师'],
+          ],
+        },
+        {
+          id: 'control',
+          name: '电控课',
+          group: '开发一部',
+          members: [
+            ['许志鹏', '电控主管'],
+            ['周明', '软件工程师'],
+            ['郭琳', '测试工程师'],
+          ],
+        },
+        ...[
+          ['premium', '尚品开发部'],
+          ['dev-b', '开发二部'],
+          ['core', '核心部件开发部'],
+          ['support', '支持部'],
+          ['planning', '产品策划部'],
+          ['dev-c', '开发三部'],
+          ['project-team', '项目组'],
+        ].map(([id, name], index) => ({
+          id,
+          name,
+          group: '技术中心R.D.',
+          members: [
+            [
+              `${['宋倩', '罗博', '徐毅', '蒋雯', '邓程', '姚俊', '陆航'][index]}`,
+              '部门负责人',
+            ],
+            [
+              `${['何嘉俊', '唐心怡', '章文', '方磊', '夏雨', '顾菲', '高宁'][index]}`,
+              '项目成员',
+            ],
+          ],
+        })),
+      ];
+      const wrInitialRules = {
+        week: {
+          name: '技术中心周工作小结',
+          enabled: true,
+          cadence: '每周（固定）',
+          pushDay: '每周四',
+          pushTime: '09:00',
+          deadline: '每周五 17:30',
+          departments: ['dev-1'],
+          title: '第{week}周工作小结待填写',
+          body: '您的第{week}周工作小结已生成，请于{deadline}前完成填写并提交主管审核。',
+          button: '立即填写',
+        },
+        month: {
+          name: '技术中心月工作心得',
+          enabled: true,
+          cadence: '每月（固定）',
+          pushDay: '每月25日',
+          pushTime: '09:00',
+          deadline: '当月最后一天 17:30',
+          departments: ['dev-1', 'planning'],
+          title: '{month}月工作心得待填写',
+          body: '请于{deadline}前完成{month}月工作心得并提交主管审核。',
+          button: '立即填写',
+        },
+      };
       const wrState = {
         section: 'dashboard',
         week: 36,
@@ -3753,6 +4221,13 @@
         auditType: '全部',
         feedback: '',
         modal: null,
+        configType: 'week',
+        rules: wrClone(wrInitialRules),
+        pushPreview: false,
+        mobileDraft: null,
+        mobileDirty: false,
+        mobileSuccess: false,
+        mobileExitConfirm: false,
         allFilters: {
           type: '全部类型',
           period: '全部周期',
@@ -3810,25 +4285,33 @@
         `<div class="wr-table-wrap"><table class="wr-table"><thead><tr>${headers.map((x) => `<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
       function wrDashboard() {
         const data = wrMock.dashboards[wrState.week];
-        const highRows = wrMock.weekly
-          .filter((report) => report.week === wrState.week)
+        const riskEntries = wrMock.weekly
+          .filter(
+            (report) =>
+              report.week === wrState.week && report.status === '已审核',
+          )
           .flatMap((report) => {
             const user = wrUser(report.user);
-            return report.projects
-              .filter((entry) => entry.risk === '高风险')
-              .map(
-                (entry) =>
-                  `<tr><td>${wrState.projects[entry.project]?.name || '-'}</td><td>${user[0]}</td><td>${user[1]}</td><td>${wrTag('高风险')}</td><td>${entry.support || '-'}</td><td><button class="wr-link" data-wr-view="${report.id}">查看周报</button></td></tr>`,
-              );
+            return report.projects.map((entry) => ({ report, entry, user }));
           });
-        const maxRiskValue = Math.max(...data.risks);
+        const riskCounts = ['正常', '延迟', '高风险'].map(
+          (risk) =>
+            riskEntries.filter((item) => item.entry.risk === risk).length,
+        );
+        const highRows = riskEntries
+          .filter((item) => item.entry.risk === '高风险')
+          .map(
+            ({ report, entry, user }) =>
+              `<tr><td>${wrState.projects[entry.project]?.name || '-'}</td><td>${user[0]}</td><td>${user[1]}</td><td>${wrTag('高风险')}</td><td>${entry.support || '-'}</td><td><button class="wr-link" data-wr-view="${report.id}">查看周报</button></td></tr>`,
+          );
+        const maxRiskValue = Math.max(1, ...riskCounts);
         return (
           wrHead(
             '工作汇报可视化看板',
             '管理层快速查看提交进度、审核情况和本周项目风险。',
             wrWeekSwitch(),
           ) +
-          `<div class="wr-metrics"><div class="wr-metric"><span>本周提交率</span><strong>${data.rate}%</strong><small>应提交 139</small></div><div class="wr-metric"><span>已审核周小结</span><strong>${data.audited}</strong><small>本周累计</small></div><button class="wr-metric" data-wr-action="high"><span>高风险项目</span><strong>${data.high}</strong><small>点击穿透查看</small></button><div class="wr-metric"><span>月度心得完成率</span><strong>${data.month}%</strong><small>2026年08月</small></div></div><div class="wr-grid"><section class="wr-panel"><div class="wr-panel-title"><h2>各部门提交进度</h2><span>第${wrState.week}周</span></div><div class="wr-progress">${wrMock.departments.map((name, i) => `<div><p><b>${name}</b><span>${data.departments[i]}/${wrMock.targets[i]}</span></p><div><i style="width:${(data.departments[i] / wrMock.targets[i]) * 100}%"></i></div></div>`).join('')}</div></section><section class="wr-panel"><div class="wr-panel-title"><h2>风险分布</h2><span>项目记录</span></div><div class="wr-risk-bars">${['正常', '延迟', '高风险'].map((risk, index) => `<button ${risk === '高风险' ? 'data-wr-action="high"' : ''}><i class="risk-bar-${risk}" style="height:${Math.max(18, (data.risks[index] / maxRiskValue) * 104)}px"></i><strong>${data.risks[index]}</strong>${wrTag(risk)}</button>`).join('')}</div><p class="wr-muted">点击高风险数量或柱形进入项目工作台账，并保留当前周次。</p></section></div><section class="wr-panel"><div class="wr-panel-title"><h2>高风险项目快捷列表</h2><button class="wr-link" data-wr-action="high">查看项目台账 ›</button></div>${wrTable(['项目', '人员', '部门', '风险', '风险说明', '操作'], highRows.length ? highRows : ['<tr><td colspan="6">当前周暂无高风险项目明细。</td></tr>'])}</section>`
+          `<div class="wr-metrics"><div class="wr-metric"><span>本周提交率</span><strong>${data.rate}%</strong><small>应提交 139</small></div><div class="wr-metric"><span>已审核周小结</span><strong>${data.audited}</strong><small>本周累计</small></div><button class="wr-metric" data-wr-action="high"><span>高风险项目</span><strong>${riskCounts[2]}</strong><small>点击穿透查看</small></button><div class="wr-metric"><span>月度心得完成率</span><strong>${data.month}%</strong><small>2026年08月</small></div></div><div class="wr-grid"><section class="wr-panel"><div class="wr-panel-title"><h2>各部门提交进度</h2><span>第${wrState.week}周</span></div><div class="wr-progress">${wrMock.departments.map((name, i) => `<div><p><b>${name}</b><span>${data.departments[i]}/${wrMock.targets[i]}</span></p><div><i style="width:${(data.departments[i] / wrMock.targets[i]) * 100}%"></i></div></div>`).join('')}</div></section><section class="wr-panel"><div class="wr-panel-title"><h2>风险分布</h2><span>已审核项目记录</span></div><div class="wr-risk-bars">${['正常', '延迟', '高风险'].map((risk, index) => `<button ${risk === '高风险' ? 'data-wr-action="high"' : ''}><i class="risk-bar-${risk}" style="height:${Math.max(18, (riskCounts[index] / maxRiskValue) * 104)}px"></i><strong>${riskCounts[index]}</strong>${wrTag(risk)}</button>`).join('')}</div><p class="wr-muted">点击高风险数量或柱形进入项目工作台账，并保留当前周次。</p></section></div><section class="wr-panel"><div class="wr-panel-title"><h2>高风险项目快捷列表</h2><button class="wr-link" data-wr-action="high">查看项目台账 ›</button></div>${wrTable(['项目', '人员', '部门', '风险', '风险说明', '操作'], highRows.length ? highRows : ['<tr><td colspan="6">当前周已审核汇报中暂无高风险项目。</td></tr>'])}</section>`
         );
       }
       function wrPersonal() {
@@ -3857,7 +4340,7 @@
           )
           .map(
             (r) =>
-              `<button class="wr-report-row" data-wr-view="${r.id}"><span><b>2026年${String(r.month).padStart(2, '0')}月工作心得</b><small>${r.submitted === '-' ? '尚未提交' : '提交于 ' + r.submitted}</small></span><span>${r.achievements.length} 项成果</span><span>${r.reflections.length} 项反思</span><span>-</span>${wrTag(r.status)}<span class="wr-link">${['待提交', '已驳回'].includes(r.status) ? '编辑' : '查看'} ›</span></button>`,
+              `<button class="wr-report-row" data-wr-view="${r.id}"><span><b>2026年${String(r.month).padStart(2, '0')}月工作心得</b></span><span>${r.achievements.length} 项成果</span><span>${r.reflections.length} 项反思</span><span class="wr-report-status">${wrTag(r.status)}</span><span class="wr-report-submitted">${r.submitted === '-' ? '尚未提交' : r.submitted}</span><span class="wr-link">${['待提交', '已驳回'].includes(r.status) ? '编辑' : '查看'} ›</span></button>`,
           )
           .join('');
         return (
@@ -3865,7 +4348,7 @@
             '个人工作汇报',
             '填写自己的周工作小结和月工作心得；仅可补建缺失周期。',
           ) +
-          `<div class="wr-toolbar between"><div class="wr-segment"><button data-wr-action="personal-week" class="${wrState.personalType === 'week' ? 'active' : ''}">周工作小结</button><button data-wr-action="personal-month" class="${wrState.personalType === 'month' ? 'active' : ''}">月工作心得</button></div><select data-wr-change="status">${['全部', '待提交', '待审核', '已驳回', '已审核'].map((x) => `<option ${x === wrState.status ? 'selected' : ''}>${x}</option>`).join('')}</select><div class="wr-create">${wrState.personalType === 'week' ? `<select data-wr-change="create-week" ${missingWeeks.length ? '' : 'disabled'}>${missingWeeks.length ? missingWeeks.map((x) => `<option value="${x}" ${x === wrState.createWeek ? 'selected' : ''}>${wrCurrent.year}年第${x}周｜${wrPeriod(wrCurrent.year, x)}</option>`).join('') : '<option>当前无缺失周工作小结</option>'}</select><button class="primary" data-wr-action="create-week" ${missingWeeks.length ? '' : 'disabled'}>＋新增周工作小结</button>` : `<select data-wr-change="create-month" ${missingMonths.length ? '' : 'disabled'}>${missingMonths.length ? missingMonths.map((x) => `<option value="${x}" ${x === wrState.createMonth ? 'selected' : ''}>${wrCurrent.year}年${String(x).padStart(2, '0')}月</option>`).join('') : '<option>当前无缺失月工作心得</option>'}</select><button class="primary" data-wr-action="create-month" ${missingMonths.length ? '' : 'disabled'}>＋新增月工作心得</button>`}</div></div><section class="wr-panel" style="padding:0">${wrState.personalType === 'week' ? weekRows : monthRows}</section>`
+          `<div class="wr-toolbar between"><div class="wr-segment"><button data-wr-action="personal-week" class="${wrState.personalType === 'week' ? 'active' : ''}">周工作小结</button><button data-wr-action="personal-month" class="${wrState.personalType === 'month' ? 'active' : ''}">月工作心得</button></div><select data-wr-change="status">${['全部', '待提交', '待审核', '已驳回', '已审核'].map((x) => `<option ${x === wrState.status ? 'selected' : ''}>${x}</option>`).join('')}</select><div class="wr-create">${wrState.personalType === 'week' ? `<select data-wr-change="create-week" ${missingWeeks.length ? '' : 'disabled'}>${missingWeeks.length ? missingWeeks.map((x) => `<option value="${x}" ${x === wrState.createWeek ? 'selected' : ''}>${wrCurrent.year}年第${x}周｜${wrPeriod(wrCurrent.year, x)}</option>`).join('') : '<option>当前无缺失周工作小结</option>'}</select><button class="primary" data-wr-action="create-week" ${missingWeeks.length ? '' : 'disabled'}>＋新增周工作小结</button>` : `<select data-wr-change="create-month" ${missingMonths.length ? '' : 'disabled'}>${missingMonths.length ? missingMonths.map((x) => `<option value="${x}" ${x === wrState.createMonth ? 'selected' : ''}>${wrCurrent.year}年${String(x).padStart(2, '0')}月</option>`).join('') : '<option>当前无缺失月工作心得</option>'}</select><button class="primary" data-wr-action="create-month" ${missingMonths.length ? '' : 'disabled'}>＋新增月工作心得</button>`}</div></div><section class="wr-panel" style="padding:0"><div class="wr-report-list-head">${(wrState.personalType === 'week' ? ['汇报周期', '项目数', '总工时', '最高风险', '状态', '操作'] : ['汇报月份', '核心成果', '问题反思', '状态', '提交时间', '操作']).map((label) => `<span>${label}</span>`).join('')}</div>${wrState.personalType === 'week' ? weekRows : monthRows}</section>`
         );
       }
       function wrAll() {
@@ -3874,58 +4357,57 @@
           ...wrMock.weekly.map((item) => ({ kind: '周工作小结', item })),
           ...wrMock.monthly.map((item) => ({ kind: '月工作心得', item })),
         ];
-        const statusCounts = (status) =>
-          all.filter(({ item }) => item.status === status).length;
-        const rows = all
-          .filter(({ kind, item }) => {
-            const user = wrUser(item.user);
-            if (filters.type !== '全部类型' && filters.type !== kind)
-              return false;
-            const period = item.week ? `W${item.week}` : `M${item.month}`;
-            if (filters.period !== '全部周期' && filters.period !== period)
+        const filtered = all.filter(({ kind, item }) => {
+          const user = wrUser(item.user);
+          if (filters.type !== '全部类型' && filters.type !== kind)
+            return false;
+          const period = item.week ? `W${item.week}` : `M${item.month}`;
+          if (filters.period !== '全部周期' && filters.period !== period)
+            return false;
+          if (
+            filters.department !== '全部部门' &&
+            filters.department !== user[1]
+          )
+            return false;
+          if (filters.user !== '全部人员' && filters.user !== item.user)
+            return false;
+          if (filters.status !== '全部状态' && filters.status !== item.status)
+            return false;
+          if (item.week) {
+            if (
+              filters.project !== '全部项目' &&
+              !item.projects.some(
+                (entry) => String(entry.project) === filters.project,
+              )
+            )
               return false;
             if (
-              filters.department !== '全部部门' &&
-              filters.department !== user[1]
+              filters.risk !== '全部风险' &&
+              !item.projects.some((entry) => entry.risk === filters.risk)
             )
               return false;
-            if (filters.user !== '全部人员' && filters.user !== item.user)
-              return false;
-            if (filters.status !== '全部状态' && filters.status !== item.status)
-              return false;
-            if (item.week) {
-              if (
-                filters.project !== '全部项目' &&
-                !item.projects.some(
-                  (entry) => String(entry.project) === filters.project,
-                )
-              )
-                return false;
-              if (
-                filters.risk !== '全部风险' &&
-                !item.projects.some((entry) => entry.risk === filters.risk)
-              )
-                return false;
-            } else if (
-              filters.project !== '全部项目' ||
-              filters.risk !== '全部风险'
-            )
-              return false;
-            return true;
-          })
-          .map(({ kind, item: r }) => {
-            const u = wrUser(r.user);
-            return r.week
-              ? `<tr><td>W${r.week}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>周小结</td><td>${r.projects.length || '-'}</td><td>${r.projects.length ? wrHours(r) + 'h' : '-'}</td><td>${r.projects.length ? wrTag(wrMaxRisk(r)) : '-'}</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`
-              : `<tr><td>${r.year || 2026}-${String(r.month).padStart(2, '0')}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>月心得</td><td>-</td><td>-</td><td>-</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`;
-          });
+          } else if (
+            filters.project !== '全部项目' ||
+            filters.risk !== '全部风险'
+          )
+            return false;
+          return true;
+        });
+        const statusCounts = (status) =>
+          filtered.filter(({ item }) => item.status === status).length;
+        const rows = filtered.map(({ kind, item: r }) => {
+          const u = wrUser(r.user);
+          return r.week
+            ? `<tr><td>W${r.week}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>周小结</td><td>${r.projects.length || '-'}</td><td>${r.projects.length ? wrHours(r) + 'h' : '-'}</td><td>${r.projects.length ? wrTag(wrMaxRisk(r)) : '-'}</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`
+            : `<tr><td>${r.year || 2026}-${String(r.month).padStart(2, '0')}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>月心得</td><td>-</td><td>-</td><td>-</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`;
+        });
         return (
           wrHead(
             '全部工作汇报',
             '全员汇报进度总览；页面严格只读，不代员工新增、编辑或审核。',
           ) +
           `<div class="wr-inline-stats">${[
-            ['应提交', all.length],
+            ['应提交', filtered.length],
             ['待提交', statusCounts('待提交')],
             ['待审核', statusCounts('待审核')],
             ['已驳回', statusCounts('已驳回')],
@@ -3965,14 +4447,13 @@
         );
       }
       function wrAudit() {
-        const pending = [
+        const auditSource = [
           ...wrMock.weekly.map((x) => ({ ...x, type: '周小结' })),
           ...wrMock.monthly.map((x) => ({ ...x, type: '月心得' })),
         ].filter(
-          (x) =>
-            x.status === '待审核' &&
-            (wrState.auditType === '全部' || x.type === wrState.auditType),
+          (x) => wrState.auditType === '全部' || x.type === wrState.auditType,
         );
+        const pending = auditSource.filter((x) => x.status === '待审核');
         const selected =
           pending.find((x) => x.id === wrState.audit) || pending[0];
         if (selected) wrState.audit = selected.id;
@@ -3989,14 +4470,25 @@
         return (
           wrHead('主管审核', '员工正文只读；主管填写反馈后执行通过或驳回。') +
           `<div class="wr-metrics">${[
-            ['待审核', 12],
-            ['本周已审核', 26],
-            ['高风险项', 5],
+            ['待审核', pending.length],
+            [
+              '本周已审核',
+              wrMock.weekly.filter(
+                (x) => x.week === wrState.week && x.status === '已审核',
+              ).length,
+            ],
+            [
+              '高风险项',
+              wrMock.weekly
+                .filter((x) => x.status === '待审核')
+                .flatMap((x) => x.projects)
+                .filter((x) => x.risk === '高风险').length,
+            ],
             ['逾期未填', 8],
           ]
             .map(
               (x) =>
-                `<div class="wr-metric"><span>${x[0]}</span><strong>${x[1]}</strong><small>Mock统计</small></div>`,
+                `<div class="wr-metric"><span>${x[0]}</span><strong>${x[1]}</strong><small>${x[0] === '逾期未填' ? 'Mock统计' : '实时联动'}</small></div>`,
             )
             .join(
               '',
@@ -4057,7 +4549,9 @@
         );
       }
       function wrProjectLedger() {
-        const reports = wrMock.weekly.filter((x) => x.week === wrState.week);
+        const reports = wrMock.weekly.filter(
+          (x) => x.week === wrState.week && x.status === '已审核',
+        );
         const filters = wrState.projectFilters;
         const groups = wrState.projects
           .map((project, index) => {
@@ -4195,6 +4689,127 @@
           `<div class="wr-toolbar"><input class="wr-search" placeholder="搜索项目名称"><span class="wr-muted">共 ${wrState.projects.length} 条统一项目数据</span></div><section class="wr-panel">${wrTable(['序号', '项目名称', '负责人', '所属部门', '状态', '备注', '操作'], rows)}</section>`
         );
       }
+      const wrRule = () => wrState.rules[wrState.configType];
+      const wrSelectedLeaves = () =>
+        wrOrganization.filter((leaf) => wrRule().departments.includes(leaf.id));
+      const wrCoveredMembers = () =>
+        wrSelectedLeaves().flatMap((leaf) => leaf.members);
+      const wrReplaceVariables = (value) => {
+        const rule = wrRule();
+        const values = {
+          name: '洪丰都（Henry）',
+          week: String(wrCurrent.week),
+          period: wrPeriod(wrCurrent.year, wrCurrent.week),
+          month: String(wrCurrentMonth),
+          deadline: rule.deadline,
+        };
+        return value.replace(
+          /\{(name|week|period|month|deadline)\}/g,
+          (_, key) => values[key] || '',
+        );
+      };
+      function wrConfiguration() {
+        const rule = wrRule();
+        const leaves = wrSelectedLeaves();
+        const members = wrCoveredMembers();
+        const leafOption = (leaf) =>
+          `<label><input type="checkbox" data-wr-config-dept="${leaf.id}" ${rule.departments.includes(leaf.id) ? 'checked' : ''}>${leaf.name}</label>`;
+        return (
+          wrHead(
+            '汇报配置',
+            '模拟自动生成任务与钉钉待办推送；本页不调用真实钉钉接口。',
+            `<button class="primary" data-wr-action="mock-push" ${rule.departments.length ? '' : 'disabled'}>模拟推送</button>`,
+          ) +
+          `<div class="wr-segment wr-config-tabs"><button data-wr-action="config-week" class="${wrState.configType === 'week' ? 'active' : ''}">周工作小结</button><button data-wr-action="config-month" class="${wrState.configType === 'month' ? 'active' : ''}">月工作心得</button></div><div class="wr-config-layout"><section class="wr-panel wr-config-form"><div class="wr-panel-title"><h2>${wrState.configType === 'week' ? '周工作小结' : '月工作心得'}规则</h2><span>独立配置</span></div><div class="wr-form-grid"><label class="wr-field full"><span>规则名称</span><input data-wr-config-field="name" value="${rule.name}"></label><label class="wr-field"><span>启用状态</span><select data-wr-config-field="enabled"><option ${rule.enabled ? 'selected' : ''}>启用</option><option ${!rule.enabled ? 'selected' : ''}>停用</option></select></label><label class="wr-field"><span>推送周期</span><input value="${rule.cadence}" disabled></label><label class="wr-field"><span>${wrState.configType === 'week' ? '推送星期' : '推送日期'}</span><input data-wr-config-field="pushDay" value="${rule.pushDay}"></label><label class="wr-field"><span>推送时间</span><input type="time" data-wr-config-field="pushTime" value="${rule.pushTime}"></label><label class="wr-field full"><span>截止时间</span><input data-wr-config-field="deadline" value="${rule.deadline}"></label></div><div class="wr-config-section"><div class="wr-panel-title"><h3>推送部门</h3><span>仅叶子部门可选</span></div><div class="wr-org-layout"><div class="wr-org-tree"><details open><summary>技术中心R.D.</summary><details open><summary>开发一部</summary>${wrOrganization
+            .filter((x) => x.group === '开发一部')
+            .map(leafOption)
+            .join('')}</details>${wrOrganization
+            .filter((x) => x.group !== '开发一部')
+            .map(leafOption)
+            .join(
+              '',
+            )}</details></div><div class="wr-member-preview"><b>覆盖成员 · ${members.length} 人</b>${leaves.length ? leaves.map((leaf) => `<div><strong>${leaf.name}</strong>${leaf.members.map((member) => `<p>${member[0]}<span>${member[1]}</span></p>`).join('')}</div>`).join('') : '<small>请选择至少一个末级部门。</small>'}</div></div></div><div class="wr-form-grid"><label class="wr-field full"><span>通知标题</span><input data-wr-config-field="title" value="${rule.title}"></label><label class="wr-field full"><span>通知正文</span><textarea rows="4" data-wr-config-field="body">${rule.body}</textarea><small>可用变量：{name}、{week}、{period}、{month}、{deadline}</small></label><label class="wr-field full"><span>卡片按钮</span><input data-wr-config-field="button" value="${rule.button}"></label></div></section><aside class="wr-panel wr-config-preview"><div class="wr-panel-title"><h2>钉钉卡片实时预览</h2><span>${rule.enabled ? '规则启用' : '规则停用'}</span></div><div class="wr-ding-card"><div class="wr-ding-brand"><span>钉</span><b>OA工作汇报 · 自动推送</b></div><h3 data-wr-preview-title>${wrReplaceVariables(rule.title)}</h3>${wrState.configType === 'week' ? `<p>${wrPeriod(wrCurrent.year, wrCurrent.week)}</p>` : ''}<div data-wr-preview-body>${wrReplaceVariables(rule.body)}</div><button data-wr-preview-button>${rule.button || '立即填写'}</button></div><dl class="wr-config-meta"><div><dt>计划推送</dt><dd>${rule.pushDay} ${rule.pushTime}</dd></div><div><dt>截止时间</dt><dd>${rule.deadline}</dd></div><div><dt>推送范围</dt><dd>${leaves.length} 个部门 / ${members.length} 人</dd></div></dl></aside></div>`
+        );
+      }
+      const wrDingTask = (title, period, status, action, key) =>
+        `<article class="wr-ding-task"><div class="wr-ding-brand"><span>钉</span><b>OA工作汇报 · 自动推送</b></div><h3>${title}</h3><p>${period}</p>${wrTag(status)}<button data-wr-action="${key}">${action}</button></article>`;
+      function wrDingMobile() {
+        const draft = wrState.mobileDraft;
+        const missingWeek = wrMissingWeeks()[0];
+        const missingMonth = wrMissingMonths()[0];
+        const rejected = wrMock.weekly.find(
+          (x) => x.user === 'u01' && x.status === '已驳回',
+        );
+        const pendingWeek = wrMock.weekly.find(
+          (x) => x.user === 'u01' && x.status === '待审核',
+        );
+        const pendingMonth = wrMock.monthly.find(
+          (x) => x.user === 'u01' && x.status === '待审核',
+        );
+        let body = '';
+        if (!draft) {
+          body = `<div class="wr-phone-body"><div class="wr-phone-heading"><span>OA工作汇报</span><h2>待办</h2><p>自动推送 · Mock演示</p></div>${missingWeek ? wrDingTask(`第${missingWeek}周工作小结待填写`, wrPeriod(wrCurrent.year, missingWeek), '待提交', '立即填写', 'ding-new-week') : ''}${rejected ? wrDingTask(`第${rejected.week}周工作小结已驳回`, rejected.period, '已驳回', '重新填写', 'ding-rejected-week') : ''}${missingMonth ? wrDingTask(`${missingMonth}月工作心得待填写`, '请于当月最后一天 17:30 前提交', '待提交', '立即填写', 'ding-new-month') : ''}${pendingWeek ? wrDingTask(`第${pendingWeek.week}周工作小结`, pendingWeek.period, '待审核', '查看详情', 'ding-pending-week') : ''}${pendingMonth ? wrDingTask(`${pendingMonth.month}月工作心得`, '已提交主管审核', '待审核', '查看详情', 'ding-pending-month') : ''}</div>`;
+        } else if (wrState.mobileSuccess) {
+          body = `<div class="wr-phone-success"><span>✓</span><h2>工作汇报已提交</h2><p>等待主管审核</p><button data-wr-action="ding-back-list">返回待办列表</button></div>`;
+        } else {
+          const report = draft.report;
+          const editable = ['待提交', '已驳回'].includes(report.status);
+          const heading =
+            draft.kind === 'week'
+              ? `第${report.week}周工作小结`
+              : `${report.month}月工作心得`;
+          const period =
+            draft.kind === 'week'
+              ? report.period
+              : `${report.year || 2026}年${String(report.month).padStart(2, '0')}月`;
+          let fields = '';
+          if (draft.kind === 'week') {
+            fields = report.projects
+              .map(
+                (entry, index) =>
+                  `<article class="wr-mobile-project"><div class="wr-project-card-head"><h3>项目 ${String(index + 1).padStart(2, '0')}</h3>${editable && report.projects.length > 1 ? `<button data-wr-ding-delete-project="${index}">删除</button>` : ''}</div><label class="wr-field"><span>项目名称</span><select data-wr-ding-week-index="${index}" data-wr-ding-field="project" ${editable ? '' : 'disabled'}>${wrState.projects
+                    .filter((x) => x.status === '启用')
+                    .map(
+                      (project) =>
+                        `<option value="${project.id}" ${project.id === entry.project ? 'selected' : ''}>${project.name}</option>`,
+                    )
+                    .join(
+                      '',
+                    )}</select></label><label class="wr-field"><span>阶段</span><select data-wr-ding-week-index="${index}" data-wr-ding-field="stage" ${editable ? '' : 'disabled'}>${['立项', '设计', '过程', '试产验证', '大货'].map((value) => `<option ${value === entry.stage ? 'selected' : ''}>${value}</option>`).join('')}</select></label><label class="wr-field"><span>本周主要工作内容</span><textarea rows="4" data-wr-ding-week-index="${index}" data-wr-ding-field="content" ${editable ? '' : 'disabled'}>${entry.content || ''}</textarea></label><label class="wr-field"><span>工时投入（h）</span><input type="number" step="0.5" data-wr-ding-week-index="${index}" data-wr-ding-field="hours" value="${entry.hours}" ${editable ? '' : 'disabled'}></label><label class="wr-field"><span>成果 / 备注</span><textarea rows="3" data-wr-ding-week-index="${index}" data-wr-ding-field="result" ${editable ? '' : 'disabled'}>${entry.result || ''}</textarea></label><label class="wr-field"><span>风险等级</span><select data-wr-ding-week-index="${index}" data-wr-ding-field="risk" ${editable ? '' : 'disabled'}>${['正常', '延迟', '高风险'].map((value) => `<option ${value === entry.risk ? 'selected' : ''}>${value}</option>`).join('')}</select></label><label class="wr-field"><span>风险前置 / 所需支持</span><textarea rows="3" data-wr-ding-week-index="${index}" data-wr-ding-field="support" ${editable ? '' : 'disabled'}>${entry.support || ''}</textarea></label><label class="wr-field"><span>附件</span><input type="file" data-wr-ding-week-index="${index}" data-wr-ding-field="file" ${editable ? '' : 'disabled'}>${entry.file ? `<small>${entry.file}</small>` : ''}</label></article>`,
+              )
+              .join('');
+            if (editable)
+              fields +=
+                '<button class="wr-mobile-add" data-wr-action="ding-add-project">＋ 新增项目</button>';
+          } else {
+            fields = `<div class="wr-mobile-section-title"><h3>本月核心成果</h3>${editable ? '<button data-wr-action="ding-add-achievement">＋新增</button>' : ''}</div>${report.achievements.map((entry, index) => `<article class="wr-mobile-project"><label class="wr-field"><span>具体产出</span><textarea rows="3" data-wr-ding-month-kind="achievements" data-wr-ding-index="${index}" data-wr-ding-part="0" ${editable ? '' : 'disabled'}>${entry[0]}</textarea></label><label class="wr-field"><span>价值与影响</span><textarea rows="3" data-wr-ding-month-kind="achievements" data-wr-ding-index="${index}" data-wr-ding-part="1" ${editable ? '' : 'disabled'}>${entry[1]}</textarea></label></article>`).join('')}<div class="wr-mobile-section-title"><h3>本月问题与反思</h3>${editable ? '<button data-wr-action="ding-add-reflection">＋新增</button>' : ''}</div>${report.reflections.map((entry, index) => `<article class="wr-mobile-project">${['问题描述', '原因分析', '能力成长与学习'].map((label, part) => `<label class="wr-field"><span>${label}</span><textarea rows="3" data-wr-ding-month-kind="reflections" data-wr-ding-index="${index}" data-wr-ding-part="${part}" ${editable ? '' : 'disabled'}>${entry[part]}</textarea></label>`).join('')}</article>`).join('')}<label class="wr-field wr-mobile-suggestion"><span>合理化建议</span><textarea rows="4" data-wr-ding-suggestion ${editable ? '' : 'disabled'}>${report.suggestion || ''}</textarea></label>`;
+          }
+          body = `<div class="wr-phone-body wr-phone-editor"><div class="wr-phone-heading"><span>OA工作汇报 · 自动推送</span><h2>${heading}</h2><p>${period}</p></div>${report.feedback ? `<div class="wr-feedback"><b>主管反馈</b><p>${report.feedback}</p></div>` : ''}${fields}${editable ? `<div class="wr-mobile-submit">${wrState.mobileDirty ? '<small>内容仅保留在当前页面，退出后不会保存。</small>' : ''}<button data-wr-action="ding-submit">${report.status === '已驳回' ? '重新提交' : '提交'}</button></div>` : ''}</div>`;
+        }
+        return (
+          wrHead(
+            '钉钉移动端模拟',
+            '演示员工从自动待办卡片进入移动填写并提交主管审核。',
+          ) +
+          `<div class="wr-phone-stage"><section class="wr-phone"><header class="wr-phone-topbar">${draft ? '<button data-wr-action="ding-exit">‹ 返回待办</button>' : '<span>工作台</span>'}<b>钉钉</b><span>···</span></header>${body}</section></div>`
+        );
+      }
+      function wrAuxModal() {
+        if (wrState.pushPreview) {
+          const rule = wrRule();
+          const leaves = wrSelectedLeaves();
+          const members = wrCoveredMembers();
+          return `<div class="wr-modal-backdrop"><section class="wr-modal"><header><div><small>MOCK PUSH CONFIRMATION</small><h2>确认模拟推送</h2></div><button data-wr-action="close-push">×</button></header><div class="wr-push-summary"><dl><div><dt>汇报类型</dt><dd>${wrState.configType === 'week' ? '周工作小结' : '月工作心得'}</dd></div><div><dt>计划推送时间</dt><dd>${rule.pushDay} ${rule.pushTime}</dd></div><div><dt>末级部门</dt><dd>${leaves.length} 个</dd></div><div><dt>覆盖成员</dt><dd>${members.length} 人</dd></div></dl><p>部门：${leaves.map((leaf) => leaf.name).join('、')}</p><p>人员预览：${members
+            .slice(0, 6)
+            .map((member) => member[0])
+            .join(
+              '、',
+            )}${members.length > 6 ? '…' : ''}</p></div><footer><span>仅生成前端 Mock 结果，不创建真实钉钉待办。</span><div class="wr-actions"><button class="secondary" data-wr-action="close-push">取消</button><button class="primary" data-wr-action="confirm-push">确认模拟</button></div></footer></section></div>`;
+        }
+        if (wrState.mobileExitConfirm)
+          return `<div class="wr-modal-backdrop"><section class="wr-modal wr-exit-confirm"><header><h2>确认退出填写？</h2></header><div class="wr-push-summary">当前填写内容尚未提交，退出后本次填写内容将不会保留，是否确认退出？</div><footer><span></span><div class="wr-actions"><button class="secondary" data-wr-action="ding-continue">继续填写</button><button class="primary" data-wr-action="ding-confirm-exit">确认退出</button></div></footer></section></div>`;
+        return '';
+      }
       function wrModal() {
         const modal = wrState.modal;
         if (!modal) return '';
@@ -4231,9 +4846,11 @@
           'project-ledger': wrProjectLedger,
           'monthly-ledger': wrMonthlyLedger,
           'project-maintenance': wrMaintenance,
+          configuration: wrConfiguration,
+          'ding-mobile': wrDingMobile,
         };
         document.querySelector('#wr-root').innerHTML =
-          views[wrState.section]() + wrModal();
+          views[wrState.section]() + wrModal() + wrAuxModal();
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
       }
       function wrSyncReportField(target) {
@@ -4247,9 +4864,10 @@
           if (field === 'project') {
             entry.projectName = target.value;
             const match = wrState.projects.find(
-              (project) => project.name === target.value,
+              (project) =>
+                project.name === target.value && project.status === '启用',
             );
-            if (match) entry.project = match.id;
+            entry.project = match ? match.id : null;
           } else if (field === 'hours') entry.hours = Number(target.value || 0);
           else if (field === 'file') {
             if (target.files?.[0]) entry.file = target.files[0].name;
@@ -4270,6 +4888,41 @@
           modal.kind === 'month'
         ) {
           modal.report.suggestion = target.value;
+          return true;
+        }
+        return false;
+      }
+      function wrSyncDingField(target) {
+        const draft = wrState.mobileDraft;
+        if (!draft) return false;
+        if (target.dataset.wrDingField && draft.kind === 'week') {
+          const entry =
+            draft.report.projects[Number(target.dataset.wrDingWeekIndex)];
+          if (!entry) return false;
+          const field = target.dataset.wrDingField;
+          if (field === 'project') entry.project = Number(target.value);
+          else if (field === 'hours') entry.hours = Number(target.value || 0);
+          else if (field === 'file') {
+            if (target.files?.[0]) entry.file = target.files[0].name;
+          } else entry[field] = target.value;
+          wrState.mobileDirty = true;
+          return true;
+        }
+        if (target.dataset.wrDingMonthKind && draft.kind === 'month') {
+          const row =
+            draft.report[target.dataset.wrDingMonthKind]?.[
+              Number(target.dataset.wrDingIndex)
+            ];
+          if (row) row[Number(target.dataset.wrDingPart)] = target.value;
+          wrState.mobileDirty = true;
+          return true;
+        }
+        if (
+          target.matches('[data-wr-ding-suggestion]') &&
+          draft.kind === 'month'
+        ) {
+          draft.report.suggestion = target.value;
+          wrState.mobileDirty = true;
           return true;
         }
         return false;
@@ -4511,8 +5164,203 @@
           renderWorkReport();
           return;
         }
+        const dingDeleteProject = e.target.closest(
+          '[data-wr-ding-delete-project]',
+        );
+        if (dingDeleteProject && wrState.mobileDraft?.kind === 'week') {
+          wrState.mobileDraft.report.projects.splice(
+            Number(dingDeleteProject.dataset.wrDingDeleteProject),
+            1,
+          );
+          wrState.mobileDirty = true;
+          renderWorkReport();
+          return;
+        }
         const action = e.target.closest('[data-wr-action]')?.dataset.wrAction;
         if (action) {
+          if (action === 'config-week') wrState.configType = 'week';
+          if (action === 'config-month') wrState.configType = 'month';
+          if (action === 'mock-push') wrState.pushPreview = true;
+          if (action === 'close-push') wrState.pushPreview = false;
+          if (action === 'confirm-push') {
+            const count = wrCoveredMembers().length;
+            wrState.pushPreview = false;
+            toast(`已生成 ${count} 条 Mock 待办。`);
+          }
+          if (action === 'ding-new-week') {
+            const week = wrMissingWeeks()[0] || Math.max(1, wrCurrent.week - 1);
+            const existing = wrMock.weekly.find(
+              (item) =>
+                item.user === 'u01' &&
+                (item.year || 2026) === wrCurrent.year &&
+                item.week === week,
+            );
+            wrState.mobileDraft = {
+              kind: 'week',
+              report: wrClone(
+                existing || {
+                  id: `W${week}-DING`,
+                  year: wrCurrent.year,
+                  week,
+                  period: wrPeriod(wrCurrent.year, week),
+                  user: 'u01',
+                  status: '待提交',
+                  submitted: '-',
+                  projects: [
+                    {
+                      project: wrState.projects.find(
+                        (project) => project.status === '启用',
+                      ).id,
+                      stage: '设计',
+                      hours: 0,
+                      risk: '正常',
+                      content: '',
+                      result: '',
+                      support: '',
+                    },
+                  ],
+                },
+              ),
+            };
+            wrState.mobileDirty = false;
+            wrState.mobileSuccess = false;
+          }
+          if (action === 'ding-new-month') {
+            const month = wrMissingMonths()[0] || wrCurrentMonth;
+            const existing = wrMock.monthly.find(
+              (item) =>
+                item.user === 'u01' &&
+                (item.year || 2026) === wrCurrent.year &&
+                item.month === month,
+            );
+            wrState.mobileDraft = {
+              kind: 'month',
+              report: wrClone(
+                existing || {
+                  id: `M${month}-DING`,
+                  year: wrCurrent.year,
+                  month,
+                  user: 'u01',
+                  status: '待提交',
+                  submitted: '-',
+                  achievements: [['', '']],
+                  reflections: [['', '', '']],
+                  suggestion: '',
+                },
+              ),
+            };
+            wrState.mobileDirty = false;
+            wrState.mobileSuccess = false;
+          }
+          if (action === 'ding-rejected-week') {
+            const report = wrMock.weekly.find(
+              (item) => item.user === 'u01' && item.status === '已驳回',
+            );
+            if (report)
+              wrState.mobileDraft = {
+                kind: 'week',
+                report: wrClone(report),
+              };
+            wrState.mobileDirty = false;
+            wrState.mobileSuccess = false;
+          }
+          if (action === 'ding-pending-week') {
+            const report = wrMock.weekly.find(
+              (item) => item.user === 'u01' && item.status === '待审核',
+            );
+            if (report)
+              wrState.mobileDraft = {
+                kind: 'week',
+                report: wrClone(report),
+              };
+            wrState.mobileDirty = false;
+            wrState.mobileSuccess = false;
+          }
+          if (action === 'ding-pending-month') {
+            const report = wrMock.monthly.find(
+              (item) => item.user === 'u01' && item.status === '待审核',
+            );
+            if (report)
+              wrState.mobileDraft = {
+                kind: 'month',
+                report: wrClone(report),
+              };
+            wrState.mobileDirty = false;
+            wrState.mobileSuccess = false;
+          }
+          if (action === 'ding-back-list') {
+            wrState.mobileDraft = null;
+            wrState.mobileSuccess = false;
+          }
+          if (action === 'ding-exit') {
+            if (wrState.mobileDirty) wrState.mobileExitConfirm = true;
+            else wrState.mobileDraft = null;
+          }
+          if (action === 'ding-continue') wrState.mobileExitConfirm = false;
+          if (action === 'ding-confirm-exit') {
+            wrState.mobileExitConfirm = false;
+            wrState.mobileDraft = null;
+            wrState.mobileDirty = false;
+          }
+          if (
+            action === 'ding-add-project' &&
+            wrState.mobileDraft?.kind === 'week'
+          ) {
+            wrState.mobileDraft.report.projects.push({
+              project: wrState.projects.find(
+                (project) => project.status === '启用',
+              ).id,
+              stage: '设计',
+              hours: 0,
+              risk: '正常',
+              content: '',
+              result: '',
+              support: '',
+            });
+            wrState.mobileDirty = true;
+          }
+          if (
+            action === 'ding-add-achievement' &&
+            wrState.mobileDraft?.kind === 'month'
+          ) {
+            wrState.mobileDraft.report.achievements.push(['', '']);
+            wrState.mobileDirty = true;
+          }
+          if (
+            action === 'ding-add-reflection' &&
+            wrState.mobileDraft?.kind === 'month'
+          ) {
+            wrState.mobileDraft.report.reflections.push(['', '', '']);
+            wrState.mobileDirty = true;
+          }
+          if (action === 'ding-submit' && wrState.mobileDraft) {
+            const draft = wrState.mobileDraft;
+            if (
+              draft.kind === 'week' &&
+              draft.report.projects.some(
+                (entry) =>
+                  !wrState.projects.some(
+                    (project) =>
+                      project.id === Number(entry.project) &&
+                      project.status === '启用',
+                  ),
+              )
+            ) {
+              toast('请选择项目维护中已启用的有效项目。');
+              return;
+            }
+            draft.report.status = '待审核';
+            draft.report.submitted = '刚刚';
+            const collection =
+              draft.kind === 'week' ? wrMock.weekly : wrMock.monthly;
+            const index = collection.findIndex(
+              (item) => item.id === draft.report.id,
+            );
+            if (index >= 0) collection[index] = wrClone(draft.report);
+            else collection.unshift(wrClone(draft.report));
+            wrState.mobileDirty = false;
+            wrState.mobileSuccess = true;
+          }
           if (action === 'prev' && wrState.week > 34) wrState.week--;
           if (action === 'next' && wrState.week < 36) wrState.week++;
           if (action === 'high') {
@@ -4610,6 +5458,24 @@
           ) {
             const modal = wrState.modal;
             const report = modal.report;
+            if (modal.kind === 'week') {
+              const invalidProject = report.projects.some((entry) => {
+                const value =
+                  entry.projectName ||
+                  wrState.projects[entry.project]?.name ||
+                  '';
+                const match = wrState.projects.find(
+                  (project) =>
+                    project.name === value && project.status === '启用',
+                );
+                if (match) entry.project = match.id;
+                return !match;
+              });
+              if (invalidProject) {
+                toast('请选择项目维护中已启用的有效项目后再保存。');
+                return;
+              }
+            }
             report.status =
               action === 'submit-report'
                 ? '待审核'
@@ -4699,6 +5565,28 @@
         if (b) go(b.dataset.go);
       });
       document.addEventListener('change', (e) => {
+        const department = e.target.dataset.wrConfigDept;
+        if (department) {
+          const rule = wrRule();
+          rule.departments = rule.departments.includes(department)
+            ? rule.departments.filter((item) => item !== department)
+            : [...rule.departments, department];
+          renderWorkReport();
+          return;
+        }
+        const configField = e.target.dataset.wrConfigField;
+        if (configField) {
+          wrRule()[configField] =
+            configField === 'enabled'
+              ? e.target.value === '启用'
+              : e.target.value;
+          renderWorkReport();
+          return;
+        }
+        if (wrSyncDingField(e.target)) {
+          if (e.target.dataset.wrDingField === 'file') renderWorkReport();
+          return;
+        }
         if (wrSyncReportField(e.target)) {
           if (e.target.dataset.wrWeekField === 'file') renderWorkReport();
           return;
@@ -4727,6 +5615,18 @@
         renderWorkReport();
       });
       document.addEventListener('input', (e) => {
+        if (e.target.dataset.wrConfigField) {
+          const field = e.target.dataset.wrConfigField;
+          wrRule()[field] = e.target.value;
+          const title = document.querySelector('[data-wr-preview-title]');
+          const body = document.querySelector('[data-wr-preview-body]');
+          const button = document.querySelector('[data-wr-preview-button]');
+          if (title) title.textContent = wrReplaceVariables(wrRule().title);
+          if (body) body.textContent = wrReplaceVariables(wrRule().body);
+          if (button) button.textContent = wrRule().button || '立即填写';
+          return;
+        }
+        if (wrSyncDingField(e.target)) return;
         wrSyncReportField(e.target);
         if (e.target.matches('[data-wr-feedback]'))
           wrState.feedback = e.target.value;
