@@ -2050,6 +2050,40 @@
         margin-top: 7px;
         font-size: 19px;
       }
+      .wr-risk-bars {
+        display: grid;
+        min-height: 160px;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: end;
+        gap: 12px;
+        padding: 8px 12px 2px;
+        border-bottom: 1px solid #e1e3e9;
+      }
+      .wr-risk-bars button {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
+        background: transparent;
+      }
+      .wr-risk-bars button > i {
+        display: block;
+        width: min(52px, 70%);
+        min-height: 18px;
+      }
+      .wr-risk-bars strong {
+        font-size: 16px;
+      }
+      .wr-risk-bars .risk-bar-正常 {
+        background: #50ad88;
+      }
+      .wr-risk-bars .risk-bar-延迟 {
+        background: #e3ae4b;
+      }
+      .wr-risk-bars .risk-bar-高风险 {
+        background: #d85c70;
+      }
       .wr-tag {
         display: inline-flex;
         min-height: 21px;
@@ -2250,6 +2284,13 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
+      }
+      .wr-form-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .wr-delete-entry {
+        grid-column: 1 / -1;
+        justify-self: end;
       }
       .wr-field.full {
         grid-column: span 2;
@@ -3643,19 +3684,103 @@
           },
         ],
       };
+      const wrClone = (value) => JSON.parse(JSON.stringify(value));
+      const wrIsoWeek = (date = new Date()) => {
+        const utc = new Date(
+          Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+        );
+        const day = utc.getUTCDay() || 7;
+        utc.setUTCDate(utc.getUTCDate() + 4 - day);
+        const year = utc.getUTCFullYear();
+        const start = new Date(Date.UTC(year, 0, 1));
+        return {
+          year,
+          week: Math.ceil(
+            ((utc.getTime() - start.getTime()) / 86400000 + 1) / 7,
+          ),
+        };
+      };
+      const wrPeriod = (year, week) => {
+        const fourth = new Date(Date.UTC(year, 0, 4));
+        const monday = new Date(fourth);
+        monday.setUTCDate(fourth.getUTCDate() - (fourth.getUTCDay() || 7) + 1);
+        monday.setUTCDate(monday.getUTCDate() + (week - 1) * 7);
+        const sunday = new Date(monday);
+        sunday.setUTCDate(monday.getUTCDate() + 6);
+        const md = (date) =>
+          `${String(date.getUTCMonth() + 1).padStart(2, '0')}/${String(date.getUTCDate()).padStart(2, '0')}`;
+        return `${md(monday)}-${md(sunday)}`;
+      };
+      const wrToday = new Date();
+      const wrCurrent = wrIsoWeek(wrToday);
+      const wrCurrentMonth = wrToday.getMonth() + 1;
+      const wrMissingWeeks = () =>
+        Array.from(
+          { length: wrCurrent.week },
+          (_, index) => wrCurrent.week - index,
+        ).filter(
+          (week) =>
+            !wrMock.weekly.some(
+              (item) =>
+                item.user === 'u01' &&
+                (item.year || 2026) === wrCurrent.year &&
+                item.week === week,
+            ),
+        );
+      const wrMissingMonths = () =>
+        Array.from(
+          { length: wrCurrentMonth },
+          (_, index) => wrCurrentMonth - index,
+        ).filter(
+          (month) =>
+            !wrMock.monthly.some(
+              (item) =>
+                item.user === 'u01' &&
+                (item.year || 2026) === wrCurrent.year &&
+                item.month === month,
+            ),
+        );
       const wrState = {
         section: 'dashboard',
         week: 36,
         risk: '全部',
         personalType: 'week',
         status: '全部',
-        createWeek: 33,
-        createMonth: 9,
+        createWeek: Math.max(1, wrCurrent.week - 3),
+        createMonth: wrCurrentMonth,
         expanded: 0,
         audit: 'W36-01',
         auditType: '全部',
         feedback: '',
         modal: null,
+        allFilters: {
+          type: '全部类型',
+          period: '全部周期',
+          department: '全部部门',
+          user: '全部人员',
+          status: '全部状态',
+          project: '全部项目',
+          risk: '全部风险',
+        },
+        weeklyFilters: {
+          year: '2026',
+          week: '全部周次',
+          department: '全部部门',
+          user: '全部人员',
+          risk: '全部风险',
+        },
+        monthlyFilters: {
+          year: '2026',
+          month: '全部月份',
+          department: '全部部门',
+          user: '全部人员',
+        },
+        projectFilters: {
+          project: '全部项目',
+          stage: '全部阶段',
+          department: '全部部门',
+          user: '全部人员',
+        },
         projects: wrMock.projectNames.map((name, index) => ({
           id: index,
           name,
@@ -3685,16 +3810,34 @@
         `<div class="wr-table-wrap"><table class="wr-table"><thead><tr>${headers.map((x) => `<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
       function wrDashboard() {
         const data = wrMock.dashboards[wrState.week];
+        const highRows = wrMock.weekly
+          .filter((report) => report.week === wrState.week)
+          .flatMap((report) => {
+            const user = wrUser(report.user);
+            return report.projects
+              .filter((entry) => entry.risk === '高风险')
+              .map(
+                (entry) =>
+                  `<tr><td>${wrState.projects[entry.project]?.name || '-'}</td><td>${user[0]}</td><td>${user[1]}</td><td>${wrTag('高风险')}</td><td>${entry.support || '-'}</td><td><button class="wr-link" data-wr-view="${report.id}">查看周报</button></td></tr>`,
+              );
+          });
+        const maxRiskValue = Math.max(...data.risks);
         return (
           wrHead(
             '工作汇报可视化看板',
             '管理层快速查看提交进度、审核情况和本周项目风险。',
             wrWeekSwitch(),
           ) +
-          `<div class="wr-metrics"><div class="wr-metric"><span>本周提交率</span><strong>${data.rate}%</strong><small>应提交 139</small></div><div class="wr-metric"><span>已审核周小结</span><strong>${data.audited}</strong><small>本周累计</small></div><button class="wr-metric" data-wr-action="high"><span>高风险项目</span><strong>${data.high}</strong><small>点击穿透查看</small></button><div class="wr-metric"><span>月度心得完成率</span><strong>${data.month}%</strong><small>2026年08月</small></div></div><div class="wr-grid"><section class="wr-panel"><div class="wr-panel-title"><h2>各部门提交进度</h2><span>第${wrState.week}周</span></div><div class="wr-progress">${wrMock.departments.map((name, i) => `<div><p><b>${name}</b><span>${data.departments[i]}/${wrMock.targets[i]}</span></p><div><i style="width:${(data.departments[i] / wrMock.targets[i]) * 100}%"></i></div></div>`).join('')}</div></section><section class="wr-panel"><div class="wr-panel-title"><h2>风险分布</h2><span>项目记录</span></div><div class="wr-risk-summary"><button>${wrTag('正常')}<strong>${data.risks[0]}</strong></button><button>${wrTag('延迟')}<strong>${data.risks[1]}</strong></button><button data-wr-action="high">${wrTag('高风险')}<strong>${data.risks[2]}</strong></button></div><p class="wr-muted">点击高风险数据进入项目工作台账，并保留当前周次。</p></section></div><section class="wr-panel"><div class="wr-panel-title"><h2>高风险项目快捷列表</h2><button class="wr-link" data-wr-action="high">查看项目台账 ›</button></div>${wrTable(['项目', '人员', '部门', '风险', '风险说明', '操作'], [`<tr><td>X6U</td><td>陈远</td><td>产品研发部</td><td>${wrTag('高风险')}</td><td>关键物料交期不确定，需要采购协调。</td><td><button class="wr-link" data-wr-view="W36-01">查看周报</button></td></tr>`, `<tr><td>二代行走机械按摩项目</td><td>王磊</td><td>硬件工程部</td><td>${wrTag('高风险')}</td><td>样件验证窗口压缩，需要测试资源支持。</td><td><button class="wr-link" data-wr-view="W36-02">查看周报</button></td></tr>`])}</section>`
+          `<div class="wr-metrics"><div class="wr-metric"><span>本周提交率</span><strong>${data.rate}%</strong><small>应提交 139</small></div><div class="wr-metric"><span>已审核周小结</span><strong>${data.audited}</strong><small>本周累计</small></div><button class="wr-metric" data-wr-action="high"><span>高风险项目</span><strong>${data.high}</strong><small>点击穿透查看</small></button><div class="wr-metric"><span>月度心得完成率</span><strong>${data.month}%</strong><small>2026年08月</small></div></div><div class="wr-grid"><section class="wr-panel"><div class="wr-panel-title"><h2>各部门提交进度</h2><span>第${wrState.week}周</span></div><div class="wr-progress">${wrMock.departments.map((name, i) => `<div><p><b>${name}</b><span>${data.departments[i]}/${wrMock.targets[i]}</span></p><div><i style="width:${(data.departments[i] / wrMock.targets[i]) * 100}%"></i></div></div>`).join('')}</div></section><section class="wr-panel"><div class="wr-panel-title"><h2>风险分布</h2><span>项目记录</span></div><div class="wr-risk-bars">${['正常', '延迟', '高风险'].map((risk, index) => `<button ${risk === '高风险' ? 'data-wr-action="high"' : ''}><i class="risk-bar-${risk}" style="height:${Math.max(18, (data.risks[index] / maxRiskValue) * 104)}px"></i><strong>${data.risks[index]}</strong>${wrTag(risk)}</button>`).join('')}</div><p class="wr-muted">点击高风险数量或柱形进入项目工作台账，并保留当前周次。</p></section></div><section class="wr-panel"><div class="wr-panel-title"><h2>高风险项目快捷列表</h2><button class="wr-link" data-wr-action="high">查看项目台账 ›</button></div>${wrTable(['项目', '人员', '部门', '风险', '风险说明', '操作'], highRows.length ? highRows : ['<tr><td colspan="6">当前周暂无高风险项目明细。</td></tr>'])}</section>`
         );
       }
       function wrPersonal() {
+        const missingWeeks = wrMissingWeeks();
+        const missingMonths = wrMissingMonths();
+        if (!missingWeeks.includes(wrState.createWeek))
+          wrState.createWeek = missingWeeks[0] || 0;
+        if (!missingMonths.includes(wrState.createMonth))
+          wrState.createMonth = missingMonths[0] || 0;
         const weekRows = wrMock.weekly
           .filter(
             (x) =>
@@ -3722,42 +3865,103 @@
             '个人工作汇报',
             '填写自己的周工作小结和月工作心得；仅可补建缺失周期。',
           ) +
-          `<div class="wr-toolbar between"><div class="wr-segment"><button data-wr-action="personal-week" class="${wrState.personalType === 'week' ? 'active' : ''}">周工作小结</button><button data-wr-action="personal-month" class="${wrState.personalType === 'month' ? 'active' : ''}">月工作心得</button></div><select data-wr-change="status">${['全部', '待提交', '待审核', '已驳回', '已审核'].map((x) => `<option ${x === wrState.status ? 'selected' : ''}>${x}</option>`).join('')}</select><div class="wr-create">${wrState.personalType === 'week' ? `<select data-wr-change="create-week">${[33, 34, 35, 36].map((x) => `<option value="${x}" ${x === wrState.createWeek ? 'selected' : ''}>2026年第${x}周</option>`).join('')}</select><button class="primary" data-wr-action="create-week">＋新增周工作小结</button>` : `<select data-wr-change="create-month"><option value="8" ${wrState.createMonth === 8 ? 'selected' : ''}>2026年08月</option><option value="9" ${wrState.createMonth === 9 ? 'selected' : ''}>2026年09月</option></select><button class="primary" data-wr-action="create-month">＋新增月工作心得</button>`}</div></div><section class="wr-panel" style="padding:0">${wrState.personalType === 'week' ? weekRows : monthRows}</section>`
+          `<div class="wr-toolbar between"><div class="wr-segment"><button data-wr-action="personal-week" class="${wrState.personalType === 'week' ? 'active' : ''}">周工作小结</button><button data-wr-action="personal-month" class="${wrState.personalType === 'month' ? 'active' : ''}">月工作心得</button></div><select data-wr-change="status">${['全部', '待提交', '待审核', '已驳回', '已审核'].map((x) => `<option ${x === wrState.status ? 'selected' : ''}>${x}</option>`).join('')}</select><div class="wr-create">${wrState.personalType === 'week' ? `<select data-wr-change="create-week" ${missingWeeks.length ? '' : 'disabled'}>${missingWeeks.length ? missingWeeks.map((x) => `<option value="${x}" ${x === wrState.createWeek ? 'selected' : ''}>${wrCurrent.year}年第${x}周｜${wrPeriod(wrCurrent.year, x)}</option>`).join('') : '<option>当前无缺失周工作小结</option>'}</select><button class="primary" data-wr-action="create-week" ${missingWeeks.length ? '' : 'disabled'}>＋新增周工作小结</button>` : `<select data-wr-change="create-month" ${missingMonths.length ? '' : 'disabled'}>${missingMonths.length ? missingMonths.map((x) => `<option value="${x}" ${x === wrState.createMonth ? 'selected' : ''}>${wrCurrent.year}年${String(x).padStart(2, '0')}月</option>`).join('') : '<option>当前无缺失月工作心得</option>'}</select><button class="primary" data-wr-action="create-month" ${missingMonths.length ? '' : 'disabled'}>＋新增月工作心得</button>`}</div></div><section class="wr-panel" style="padding:0">${wrState.personalType === 'week' ? weekRows : monthRows}</section>`
         );
       }
       function wrAll() {
-        const weekly = wrMock.weekly.map((r) => {
-          const u = wrUser(r.user);
-          return `<tr><td>W${r.week}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>周小结</td><td>${r.projects.length || '-'}</td><td>${r.projects.length ? wrHours(r) + 'h' : '-'}</td><td>${r.projects.length ? wrTag(wrMaxRisk(r)) : '-'}</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`;
-        });
-        const monthly = wrMock.monthly.map((r) => {
-          const u = wrUser(r.user);
-          return `<tr><td>2026-${String(r.month).padStart(2, '0')}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>月心得</td><td>-</td><td>-</td><td>-</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`;
-        });
+        const filters = wrState.allFilters;
+        const all = [
+          ...wrMock.weekly.map((item) => ({ kind: '周工作小结', item })),
+          ...wrMock.monthly.map((item) => ({ kind: '月工作心得', item })),
+        ];
+        const statusCounts = (status) =>
+          all.filter(({ item }) => item.status === status).length;
+        const rows = all
+          .filter(({ kind, item }) => {
+            const user = wrUser(item.user);
+            if (filters.type !== '全部类型' && filters.type !== kind)
+              return false;
+            const period = item.week ? `W${item.week}` : `M${item.month}`;
+            if (filters.period !== '全部周期' && filters.period !== period)
+              return false;
+            if (
+              filters.department !== '全部部门' &&
+              filters.department !== user[1]
+            )
+              return false;
+            if (filters.user !== '全部人员' && filters.user !== item.user)
+              return false;
+            if (filters.status !== '全部状态' && filters.status !== item.status)
+              return false;
+            if (item.week) {
+              if (
+                filters.project !== '全部项目' &&
+                !item.projects.some(
+                  (entry) => String(entry.project) === filters.project,
+                )
+              )
+                return false;
+              if (
+                filters.risk !== '全部风险' &&
+                !item.projects.some((entry) => entry.risk === filters.risk)
+              )
+                return false;
+            } else if (
+              filters.project !== '全部项目' ||
+              filters.risk !== '全部风险'
+            )
+              return false;
+            return true;
+          })
+          .map(({ kind, item: r }) => {
+            const u = wrUser(r.user);
+            return r.week
+              ? `<tr><td>W${r.week}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>周小结</td><td>${r.projects.length || '-'}</td><td>${r.projects.length ? wrHours(r) + 'h' : '-'}</td><td>${r.projects.length ? wrTag(wrMaxRisk(r)) : '-'}</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`
+              : `<tr><td>${r.year || 2026}-${String(r.month).padStart(2, '0')}</td><td><b>${u[0]}</b><small>${u[1]}</small></td><td>月心得</td><td>-</td><td>-</td><td>-</td><td>${wrTag(r.status)}</td><td>${r.submitted}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`;
+          });
         return (
           wrHead(
             '全部工作汇报',
             '全员汇报进度总览；页面严格只读，不代员工新增、编辑或审核。',
           ) +
           `<div class="wr-inline-stats">${[
-            ['应提交', 139],
-            ['待提交', 8],
-            ['待审核', 12],
-            ['已驳回', 3],
-            ['已审核', 116],
+            ['应提交', all.length],
+            ['待提交', statusCounts('待提交')],
+            ['待审核', statusCounts('待审核')],
+            ['已驳回', statusCounts('已驳回')],
+            ['已审核', statusCounts('已审核')],
           ]
             .map(
               (x) => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`,
             )
             .join(
               '',
-            )}</div><div class="wr-toolbar"><select><option>全部类型</option><option>周工作小结</option><option>月工作心得</option></select><select><option>2026年第36周</option><option>2026年08月</option></select><select><option>全部部门</option>${wrMock.departments.map((x) => `<option>${x}</option>`).join('')}</select><select><option>全部人员</option>${Object.values(
-            wrMock.users,
-          )
-            .map((x) => `<option>${x[0]}</option>`)
+            )}</div><div class="wr-toolbar"><select data-wr-filter="all.type"><option>全部类型</option><option ${filters.type === '周工作小结' ? 'selected' : ''}>周工作小结</option><option ${filters.type === '月工作心得' ? 'selected' : ''}>月工作心得</option></select><select data-wr-filter="all.period"><option>全部周期</option>${[
+            ...new Set(wrMock.weekly.map((x) => x.week)),
+          ]
+            .sort((a, b) => b - a)
+            .map(
+              (x) =>
+                `<option value="W${x}" ${filters.period === `W${x}` ? 'selected' : ''}>2026年第${x}周</option>`,
+            )
+            .join('')}${[...new Set(wrMock.monthly.map((x) => x.month))]
+            .sort((a, b) => b - a)
+            .map(
+              (x) =>
+                `<option value="M${x}" ${filters.period === `M${x}` ? 'selected' : ''}>2026年${String(x).padStart(2, '0')}月</option>`,
+            )
             .join(
               '',
-            )}</select><select><option>全部状态</option><option>待提交</option><option>待审核</option><option>已驳回</option><option>已审核</option></select></div><section class="wr-panel">${wrTable(['周期', '姓名 / 部门', '类型', '项目数', '总工时', '最高风险', '状态', '提交时间', '操作'], [...weekly, ...monthly])}</section>`
+            )}</select><select data-wr-filter="all.department"><option>全部部门</option>${wrMock.departments.map((x) => `<option ${filters.department === x ? 'selected' : ''}>${x}</option>`).join('')}</select><select data-wr-filter="all.user"><option>全部人员</option>${Object.entries(
+            wrMock.users,
+          )
+            .map(
+              ([id, x]) =>
+                `<option value="${id}" ${filters.user === id ? 'selected' : ''}>${x[0]}</option>`,
+            )
+            .join(
+              '',
+            )}</select><select data-wr-filter="all.status"><option>全部状态</option>${['待提交', '待审核', '已驳回', '已审核'].map((x) => `<option ${filters.status === x ? 'selected' : ''}>${x}</option>`).join('')}</select><select data-wr-filter="all.project"><option>全部项目</option>${wrState.projects.map((x) => `<option value="${x.id}" ${filters.project === String(x.id) ? 'selected' : ''}>${x.name}</option>`).join('')}</select><select data-wr-filter="all.risk"><option>全部风险</option>${['正常', '延迟', '高风险'].map((x) => `<option ${filters.risk === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div><section class="wr-panel">${wrTable(['周期', '姓名 / 部门', '类型', '项目数', '总工时', '最高风险', '状态', '提交时间', '操作'], rows.length ? rows : ['<tr><td colspan="9">当前筛选条件下没有汇报。</td></tr>'])}</section>`
         );
       }
       function wrAudit() {
@@ -3777,15 +3981,10 @@
             ? selected.projects
                 .map(
                   (p) =>
-                    `<div class="wr-readonly-card"><b>${wrState.projects[p.project].name}</b><p>${p.content}</p><small>${p.stage} · ${p.hours}h · ${wrTag(p.risk)}</small></div>`,
+                    `<div class="wr-readonly-card"><b>${wrState.projects[p.project].name}</b><p>${p.content}</p><p>成果 / 备注：${p.result || '-'}</p><p>风险前置 / 所需支持：${p.support || '-'}</p><small>${p.stage} · ${p.hours}h · ${wrTag(p.risk)}</small></div>`,
                 )
                 .join('')
-            : selected.achievements
-                .map(
-                  (a) =>
-                    `<div class="wr-readonly-card"><b>${a[0]}</b><p>${a[1]}</p></div>`,
-                )
-                .join('')
+            : `${selected.achievements.map((a) => `<div class="wr-readonly-card"><b>${a[0]}</b><p>价值与影响：${a[1]}</p></div>`).join('')}${selected.reflections.map((a) => `<div class="wr-readonly-card"><b>问题：${a[0]}</b><p>原因分析：${a[1]}</p><p>能力成长与学习：${a[2]}</p></div>`).join('')}<p>合理化建议：${selected.suggestion || '暂无建议'}</p>`
           : '<div class="wr-empty">当前筛选下没有待审核汇报。</div>';
         return (
           wrHead('主管审核', '员工正文只读；主管填写反馈后执行通过或驳回。') +
@@ -3812,26 +4011,72 @@
         );
       }
       function wrWeeklyLedger() {
+        const filters = wrState.weeklyFilters;
         const rows = wrMock.weekly
-          .filter((x) => x.status === '已审核')
+          .filter((x) => {
+            const user = wrUser(x.user);
+            return (
+              x.status === '已审核' &&
+              (filters.year === '全部年份' ||
+                String(x.year || 2026) === filters.year) &&
+              (filters.week === '全部周次' ||
+                String(x.week) === filters.week) &&
+              (filters.department === '全部部门' ||
+                user[1] === filters.department) &&
+              (filters.user === '全部人员' || x.user === filters.user) &&
+              (filters.risk === '全部风险' ||
+                x.projects.some((entry) => entry.risk === filters.risk))
+            );
+          })
           .map((r) => {
             const u = wrUser(r.user);
             return `<tr><td>第${r.week}周</td><td>${u[0]}</td><td>${u[1]}</td><td>${r.projects.length}</td><td>${wrHours(r)}h</td><td>${wrTag(wrMaxRisk(r))}</td><td>${r.reviewer}</td><td>${r.reviewed}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`;
           });
         return (
           wrHead('周工作小结台账', '仅展示已审核的周工作小结，全部内容只读。') +
-          `<div class="wr-toolbar"><select><option>2026年</option></select><select><option>全部周次</option><option>第36周</option><option>第35周</option></select><select><option>全部部门</option></select><select><option>全部人员</option></select><select><option>全部风险</option></select></div><section class="wr-panel">${wrTable(['周次', '人员', '部门', '项目数', '总工时', '最高风险', '审核人', '审核时间', '操作'], rows)}</section>`
+          `<div class="wr-toolbar"><select data-wr-filter="weekly.year"><option>全部年份</option><option value="2026" ${filters.year === '2026' ? 'selected' : ''}>2026年</option></select><select data-wr-filter="weekly.week"><option>全部周次</option>${[
+            ...new Set(wrMock.weekly.map((x) => x.week)),
+          ]
+            .sort((a, b) => b - a)
+            .map(
+              (x) =>
+                `<option value="${x}" ${filters.week === String(x) ? 'selected' : ''}>第${x}周</option>`,
+            )
+            .join(
+              '',
+            )}</select><select data-wr-filter="weekly.department"><option>全部部门</option>${wrMock.departments.map((x) => `<option ${filters.department === x ? 'selected' : ''}>${x}</option>`).join('')}</select><select data-wr-filter="weekly.user"><option>全部人员</option>${Object.entries(
+            wrMock.users,
+          )
+            .map(
+              ([id, x]) =>
+                `<option value="${id}" ${filters.user === id ? 'selected' : ''}>${x[0]}</option>`,
+            )
+            .join(
+              '',
+            )}</select><select data-wr-filter="weekly.risk"><option>全部风险</option>${['正常', '延迟', '高风险'].map((x) => `<option ${filters.risk === x ? 'selected' : ''}>${x}</option>`).join('')}</select></div><section class="wr-panel">${wrTable(['周次', '人员', '部门', '项目数', '总工时', '最高风险', '审核人', '审核时间', '操作'], rows.length ? rows : ['<tr><td colspan="9">当前筛选条件下没有已审核周工作小结。</td></tr>'])}</section>`
         );
       }
       function wrProjectLedger() {
         const reports = wrMock.weekly.filter((x) => x.week === wrState.week);
+        const filters = wrState.projectFilters;
         const groups = wrState.projects
           .map((project, index) => {
-            const people = reports.flatMap((report) =>
-              report.projects
-                .filter((p) => p.project === index)
-                .map((entry) => ({ report, entry, user: wrUser(report.user) })),
-            );
+            const people = reports.flatMap((report) => {
+              const user = wrUser(report.user);
+              return report.projects
+                .filter(
+                  (entry) =>
+                    entry.project === index &&
+                    (filters.stage === '全部阶段' ||
+                      entry.stage === filters.stage) &&
+                    (filters.department === '全部部门' ||
+                      user[1] === filters.department) &&
+                    (filters.user === '全部人员' ||
+                      report.user === filters.user) &&
+                    (wrState.risk === '全部' || entry.risk === wrState.risk),
+                )
+                .map((entry) => ({ report, entry, user }));
+            });
             return {
               project,
               index,
@@ -3842,8 +4087,8 @@
           .filter(
             (x) =>
               x.people.length &&
-              (wrState.risk === '全部' ||
-                x.people.some((y) => y.entry.risk === wrState.risk)),
+              (filters.project === '全部项目' ||
+                String(x.index) === filters.project),
           );
         return (
           wrHead(
@@ -3851,17 +4096,36 @@
             '按“项目 → 人员”反向查看本周投入、进展和风险。',
             wrWeekSwitch(),
           ) +
-          `<div class="wr-toolbar"><select data-wr-change="risk"><option>全部</option><option ${wrState.risk === '正常' ? 'selected' : ''}>正常</option><option ${wrState.risk === '延迟' ? 'selected' : ''}>延迟</option><option ${wrState.risk === '高风险' ? 'selected' : ''}>高风险</option></select><span class="wr-muted">当前共 ${groups.length} 个项目</span></div>${
+          `<div class="wr-toolbar"><select data-wr-filter="project.project"><option>全部项目</option>${wrState.projects.map((x) => `<option value="${x.id}" ${filters.project === String(x.id) ? 'selected' : ''}>${x.name}</option>`).join('')}</select><select data-wr-filter="project.stage"><option>全部阶段</option>${['立项', '设计', '过程', '试产验证', '大货'].map((x) => `<option ${filters.stage === x ? 'selected' : ''}>${x}</option>`).join('')}</select><select data-wr-filter="project.department"><option>全部部门</option>${wrMock.departments.map((x) => `<option ${filters.department === x ? 'selected' : ''}>${x}</option>`).join('')}</select><select data-wr-filter="project.user"><option>全部人员</option>${Object.entries(
+            wrMock.users,
+          )
+            .map(
+              ([id, x]) =>
+                `<option value="${id}" ${filters.user === id ? 'selected' : ''}>${x[0]}</option>`,
+            )
+            .join(
+              '',
+            )}</select><select data-wr-change="risk"><option>全部</option><option ${wrState.risk === '正常' ? 'selected' : ''}>正常</option><option ${wrState.risk === '延迟' ? 'selected' : ''}>延迟</option><option ${wrState.risk === '高风险' ? 'selected' : ''}>高风险</option></select><span class="wr-muted">当前共 ${groups.length} 个项目</span></div>${
             groups
               .map((g) => {
                 const counts = ['正常', '延迟', '高风险'].map(
                   (r) => g.people.filter((x) => x.entry.risk === r).length,
                 );
                 return `<section class="wr-panel" style="padding:0"><button class="wr-project-row" data-wr-project="${g.index}"><span><b>${g.project.name}</b><small>最新更新：09/04 16:20</small></span><span>${g.people.length} 人</span><span>${g.hours}h</span><span class="wr-risk-counts">${counts[0]} 正常 · ${counts[1]} 延迟 · ${counts[2]} 高风险</span><span>⌄</span></button><div class="wr-project-detail ${wrState.expanded === g.index ? 'open' : ''}">${wrTable(
-                  ['人员', '部门', '阶段', '工时', '风险', '主要内容', '操作'],
+                  [
+                    '人员',
+                    '部门',
+                    '阶段',
+                    '工时',
+                    '风险',
+                    '主要内容',
+                    '成果 / 备注',
+                    '风险前置 / 所需支持',
+                    '操作',
+                  ],
                   g.people.map(
                     (x) =>
-                      `<tr><td>${x.user[0]}</td><td>${x.user[1]}</td><td>${x.entry.stage}</td><td>${x.entry.hours}h</td><td>${wrTag(x.entry.risk)}</td><td>${x.entry.content}</td><td><button class="wr-link" data-wr-view="${x.report.id}">查看原周报</button></td></tr>`,
+                      `<tr><td><button class="wr-link" data-wr-view="${x.report.id}">${x.user[0]}</button></td><td>${x.user[1]}</td><td>${x.entry.stage}</td><td>${x.entry.hours}h</td><td>${wrTag(x.entry.risk)}</td><td>${x.entry.content}</td><td>${x.entry.result || '-'}</td><td>${x.entry.support || '-'}</td><td><button class="wr-link" data-wr-view="${x.report.id}">查看周报</button></td></tr>`,
                   ),
                 )}</div></section>`;
               })
@@ -3871,8 +4135,21 @@
         );
       }
       function wrMonthlyLedger() {
+        const filters = wrState.monthlyFilters;
         const rows = wrMock.monthly
-          .filter((x) => x.status === '已审核')
+          .filter((x) => {
+            const user = wrUser(x.user);
+            return (
+              x.status === '已审核' &&
+              (filters.year === '全部年份' ||
+                String(x.year || 2026) === filters.year) &&
+              (filters.month === '全部月份' ||
+                String(x.month) === filters.month) &&
+              (filters.department === '全部部门' ||
+                user[1] === filters.department) &&
+              (filters.user === '全部人员' || x.user === filters.user)
+            );
+          })
           .map((r) => {
             const u = wrUser(r.user);
             return `<tr><td>2026-${String(r.month).padStart(2, '0')}</td><td>${u[0]}</td><td>${u[1]}</td><td>${r.achievements.length}</td><td>${r.reviewer}</td><td>${r.reviewed}</td><td><button class="wr-link" data-wr-view="${r.id}">查看</button></td></tr>`;
@@ -3882,7 +4159,26 @@
             '月工作心得台账',
             '仅展示已审核月心得，支持查看完整成果、反思、建议和主管反馈。',
           ) +
-          `<div class="wr-toolbar"><select><option>2026年</option></select><select><option>08月</option></select><select><option>全部部门</option></select><select><option>全部人员</option></select></div><section class="wr-panel">${wrTable(['月份', '姓名', '部门', '核心成果数', '审核人', '审核时间', '操作'], rows)}</section>`
+          `<div class="wr-toolbar"><select data-wr-filter="monthly.year"><option>全部年份</option><option value="2026" ${filters.year === '2026' ? 'selected' : ''}>2026年</option></select><select data-wr-filter="monthly.month"><option>全部月份</option>${[
+            ...new Set(wrMock.monthly.map((x) => x.month)),
+          ]
+            .sort((a, b) => b - a)
+            .map(
+              (x) =>
+                `<option value="${x}" ${filters.month === String(x) ? 'selected' : ''}>${String(x).padStart(2, '0')}月</option>`,
+            )
+            .join(
+              '',
+            )}</select><select data-wr-filter="monthly.department"><option>全部部门</option>${wrMock.departments.map((x) => `<option ${filters.department === x ? 'selected' : ''}>${x}</option>`).join('')}</select><select data-wr-filter="monthly.user"><option>全部人员</option>${Object.entries(
+            wrMock.users,
+          )
+            .map(
+              ([id, x]) =>
+                `<option value="${id}" ${filters.user === id ? 'selected' : ''}>${x[0]}</option>`,
+            )
+            .join(
+              '',
+            )}</select></div><section class="wr-panel">${wrTable(['月份', '姓名', '部门', '核心成果数', '审核人', '审核时间', '操作'], rows.length ? rows : ['<tr><td colspan="7">当前筛选条件下没有已审核月工作心得。</td></tr>'])}</section>`
         );
       }
       function wrMaintenance() {
@@ -3908,27 +4204,22 @@
           const r = modal.report,
             u = wrUser(r.user),
             readonly = !['待提交', '已驳回'].includes(r.status);
-          return `<div class="wr-modal-backdrop"><section class="wr-modal"><header><h2>2026年${String(r.month).padStart(2, '0')}月工作心得</h2><button data-wr-action="close-modal">×</button></header><div class="wr-modal-body">${r.feedback ? `<div class="wr-feedback"><b>主管反馈</b><p>${r.feedback}</p></div>` : ''}<p class="wr-muted">填写人 ${u[0]} · ${u[1]} · ${wrTag(r.status)}</p><div class="wr-panel-title"><h3>本月核心成果</h3>${readonly ? '' : '<button class="wr-link">＋新增成果</button>'}</div>${(r.achievements.length ? r.achievements : [['', '']]).map((a, i) => `<div class="wr-form-grid"><label class="wr-field"><span>具体产出</span><textarea rows="3" ${readonly ? 'disabled' : ''}>${a[0]}</textarea></label><label class="wr-field"><span>价值与影响</span><textarea rows="3" ${readonly ? 'disabled' : ''}>${a[1]}</textarea></label></div>`).join('')}<div class="wr-panel-title"><h3>本月问题与反思</h3></div>${(r.reflections.length ? r.reflections : [['', '', '']]).map((a) => `<div class="wr-form-grid"><label class="wr-field"><span>问题描述</span><textarea rows="3" ${readonly ? 'disabled' : ''}>${a[0]}</textarea></label><label class="wr-field"><span>原因分析 / 能力成长</span><textarea rows="3" ${readonly ? 'disabled' : ''}>${a[1]} ${a[2]}</textarea></label></div>`).join('')}<label class="wr-field"><span>合理化建议</span><textarea rows="4" ${readonly ? 'disabled' : ''}>${r.suggestion}</textarea></label></div><footer><span>成果 ${r.achievements.length} 项</span><div class="wr-actions"><button class="secondary" data-wr-action="close-modal">关闭</button>${readonly ? '' : `<button class="secondary" data-wr-action="save-report">暂存</button><button class="primary" data-wr-action="submit-report">${r.status === '已驳回' ? '重新提交' : '提交'}</button>`}</div></footer></section></div>`;
+          return `<div class="wr-modal-backdrop"><section class="wr-modal"><header><h2>${r.year || 2026}年${String(r.month).padStart(2, '0')}月工作心得</h2><button data-wr-action="close-modal">×</button></header><div class="wr-modal-body">${r.feedback ? `<div class="wr-feedback"><b>主管反馈</b><p>${r.feedback}</p></div>` : ''}<p class="wr-muted">填写人 ${u[0]} · ${u[1]} · ${wrTag(r.status)}</p><div class="wr-panel-title"><h3>本月核心成果</h3>${readonly ? '' : '<button class="wr-link" data-wr-action="add-achievement">＋新增成果</button>'}</div>${r.achievements.map((a, i) => `<div class="wr-form-grid wr-editor-entry"><label class="wr-field"><span>具体产出</span><textarea rows="3" data-wr-month-kind="achievements" data-wr-index="${i}" data-wr-field="0" ${readonly ? 'disabled' : ''}>${a[0]}</textarea></label><label class="wr-field"><span>价值与影响</span><textarea rows="3" data-wr-month-kind="achievements" data-wr-index="${i}" data-wr-field="1" ${readonly ? 'disabled' : ''}>${a[1]}</textarea></label>${!readonly && r.achievements.length > 1 ? `<button class="wr-link wr-delete-entry" data-wr-delete-achievement="${i}">删除本条成果</button>` : ''}</div>`).join('')}<div class="wr-panel-title"><h3>本月问题与反思</h3>${readonly ? '' : '<button class="wr-link" data-wr-action="add-reflection">＋新增问题与反思</button>'}</div>${r.reflections.map((a, i) => `<div class="wr-form-grid wr-form-grid-3 wr-editor-entry"><label class="wr-field"><span>问题描述</span><textarea rows="3" data-wr-month-kind="reflections" data-wr-index="${i}" data-wr-field="0" ${readonly ? 'disabled' : ''}>${a[0]}</textarea></label><label class="wr-field"><span>原因分析</span><textarea rows="3" data-wr-month-kind="reflections" data-wr-index="${i}" data-wr-field="1" ${readonly ? 'disabled' : ''}>${a[1]}</textarea></label><label class="wr-field"><span>能力成长与学习</span><textarea rows="3" data-wr-month-kind="reflections" data-wr-index="${i}" data-wr-field="2" ${readonly ? 'disabled' : ''}>${a[2]}</textarea></label>${!readonly && r.reflections.length > 1 ? `<button class="wr-link wr-delete-entry" data-wr-delete-reflection="${i}">删除本条问题与反思</button>` : ''}</div>`).join('')}<label class="wr-field"><span>合理化建议</span><textarea rows="4" data-wr-month-suggestion ${readonly ? 'disabled' : ''}>${r.suggestion}</textarea></label></div><footer><span>成果 ${r.achievements.length} 项 · 问题反思 ${r.reflections.length} 项</span><div class="wr-actions"><button class="secondary" data-wr-action="close-modal">关闭</button>${readonly ? '' : `<button class="secondary" data-wr-action="save-report">暂存</button><button class="primary" data-wr-action="submit-report">${r.status === '已驳回' ? '重新提交' : '提交'}</button>`}</div></footer></section></div>`;
         }
         const r = modal.report,
           u = wrUser(r.user),
           readonly = !['待提交', '已驳回'].includes(r.status);
-        return `<div class="wr-modal-backdrop"><section class="wr-modal"><header><h2>2026年第${r.week}周工作小结</h2><button data-wr-action="close-modal">×</button></header><div class="wr-modal-body">${r.feedback ? `<div class="wr-feedback"><b>主管反馈</b><p>${r.feedback}</p></div>` : ''}<p class="wr-muted">周期 ${r.period} · 填写人 ${u[0]} · ${u[1]} · ${wrTag(r.status)}</p>${r.projects
+        return `<div class="wr-modal-backdrop"><section class="wr-modal"><header><h2>${r.year || 2026}年第${r.week}周工作小结</h2><button data-wr-action="close-modal">×</button></header><div class="wr-modal-body">${r.feedback ? `<div class="wr-feedback"><b>主管反馈</b><p>${r.feedback}</p></div>` : ''}<p class="wr-muted">周期 ${r.period} · 填写人 ${u[0]} · ${u[1]} · ${wrTag(r.status)}</p><datalist id="wr-project-options">${wrState.projects
+          .filter((x) => x.status === '启用')
+          .map((x) => `<option value="${x.name}"></option>`)
+          .join('')}</datalist>${r.projects
           .map(
             (p, i) =>
-              `<article class="wr-project-card"><header><h3>项目 ${String(i + 1).padStart(2, '0')}</h3>${!readonly && r.projects.length > 1 ? `<button class="wr-link" data-wr-delete-project="${i}">删除</button>` : ''}</header><div class="wr-form-grid"><label class="wr-field"><span>项目名称</span><select ${readonly ? 'disabled' : ''}>${wrState.projects
-                .filter((x) => x.status === '启用' || x.id === p.project)
-                .map(
-                  (x) =>
-                    `<option value="${x.id}" ${x.id === p.project ? 'selected' : ''}>${x.name}</option>`,
-                )
-                .join(
-                  '',
-                )}</select></label><label class="wr-field"><span>阶段 / 工时</span><input ${readonly ? 'disabled' : ''} value="${p.stage} · ${p.hours}h"></label><label class="wr-field full"><span>本周主要工作内容</span><textarea rows="3" ${readonly ? 'disabled' : ''}>${p.content}</textarea></label><label class="wr-field"><span>风险等级</span><select ${readonly ? 'disabled' : ''}><option ${p.risk === '正常' ? 'selected' : ''}>正常</option><option ${p.risk === '延迟' ? 'selected' : ''}>延迟</option><option ${p.risk === '高风险' ? 'selected' : ''}>高风险</option></select></label><label class="wr-field"><span>风险前置 / 所需支持</span><textarea rows="3" ${readonly ? 'disabled' : ''}>${p.support}</textarea></label><label class="wr-field full"><span>附件（仅显示文件名，不上传）</span><input type="file" ${readonly ? 'disabled' : ''}>${p.file ? `<small>${p.file}</small>` : ''}</label></div></article>`,
+              `<article class="wr-project-card"><header><h3>项目 ${String(i + 1).padStart(2, '0')}</h3>${!readonly && r.projects.length > 1 ? `<button class="wr-link" data-wr-delete-project="${i}">删除</button>` : ''}</header><div class="wr-form-grid"><label class="wr-field"><span>项目名称（支持搜索）</span><input list="wr-project-options" data-wr-week-index="${i}" data-wr-week-field="project" ${readonly ? 'disabled' : ''} value="${p.projectName || wrState.projects[p.project]?.name || ''}" placeholder="输入关键字搜索38个项目"></label><label class="wr-field"><span>阶段</span><select data-wr-week-index="${i}" data-wr-week-field="stage" ${readonly ? 'disabled' : ''}>${['立项', '设计', '过程', '试产验证', '大货'].map((x) => `<option ${p.stage === x ? 'selected' : ''}>${x}</option>`).join('')}</select></label><label class="wr-field"><span>工时投入（h）</span><input type="number" min="0" step="0.5" data-wr-week-index="${i}" data-wr-week-field="hours" ${readonly ? 'disabled' : ''} value="${p.hours}"></label><label class="wr-field"><span>风险等级</span><select data-wr-week-index="${i}" data-wr-week-field="risk" ${readonly ? 'disabled' : ''}><option ${p.risk === '正常' ? 'selected' : ''}>正常</option><option ${p.risk === '延迟' ? 'selected' : ''}>延迟</option><option ${p.risk === '高风险' ? 'selected' : ''}>高风险</option></select></label><label class="wr-field full"><span>本周主要工作内容</span><textarea rows="3" data-wr-week-index="${i}" data-wr-week-field="content" ${readonly ? 'disabled' : ''}>${p.content || ''}</textarea></label><label class="wr-field"><span>成果 / 备注</span><textarea rows="3" data-wr-week-index="${i}" data-wr-week-field="result" ${readonly ? 'disabled' : ''}>${p.result || ''}</textarea></label><label class="wr-field"><span>风险前置 / 所需支持</span><textarea rows="3" data-wr-week-index="${i}" data-wr-week-field="support" ${readonly ? 'disabled' : ''}>${p.support || ''}</textarea></label><label class="wr-field full"><span>附件（仅保存并显示文件名）</span><input type="file" data-wr-week-index="${i}" data-wr-week-field="file" ${readonly ? 'disabled' : ''}>${p.file ? `<small class="wr-file-name">${p.file}</small>` : ''}</label></div></article>`,
           )
           .join(
             '',
-          )}${!readonly ? '<button class="secondary" data-wr-action="add-project">＋新增项目</button>' : ''}</div><footer><span>项目 ${r.projects.length} 个 · 总工时 ${wrHours(r)}h</span><div class="wr-actions"><button class="secondary" data-wr-action="close-modal">关闭</button>${readonly ? '' : `<button class="secondary" data-wr-action="save-report">暂存</button><button class="primary" data-wr-action="submit-report">${r.status === '已驳回' ? '重新提交' : '提交'}</button>`}</div></footer></section></div>`;
+          )}${!readonly ? '<button class="secondary" data-wr-action="add-project">＋新增项目</button>' : ''}</div><footer><span data-wr-total>项目 ${r.projects.length} 个 · 总工时 ${wrHours(r)}h</span><div class="wr-actions"><button class="secondary" data-wr-action="close-modal">关闭</button>${readonly ? '' : `<button class="secondary" data-wr-action="save-report">暂存</button><button class="primary" data-wr-action="submit-report">${r.status === '已驳回' ? '重新提交' : '提交'}</button>`}</div></footer></section></div>`;
       }
       function renderWorkReport() {
         const views = {
@@ -3944,6 +4235,44 @@
         document.querySelector('#wr-root').innerHTML =
           views[wrState.section]() + wrModal();
         window.lucide?.createIcons({ attrs: { 'stroke-width': 1.7 } });
+      }
+      function wrSyncReportField(target) {
+        const modal = wrState.modal;
+        if (!modal || !['week', 'month'].includes(modal.kind)) return false;
+        if (target.dataset.wrWeekField && modal.kind === 'week') {
+          const entry =
+            modal.report.projects[Number(target.dataset.wrWeekIndex)];
+          if (!entry) return false;
+          const field = target.dataset.wrWeekField;
+          if (field === 'project') {
+            entry.projectName = target.value;
+            const match = wrState.projects.find(
+              (project) => project.name === target.value,
+            );
+            if (match) entry.project = match.id;
+          } else if (field === 'hours') entry.hours = Number(target.value || 0);
+          else if (field === 'file') {
+            if (target.files?.[0]) entry.file = target.files[0].name;
+          } else entry[field] = target.value;
+          const total = document.querySelector('[data-wr-total]');
+          if (total)
+            total.textContent = `项目 ${modal.report.projects.length} 个 · 总工时 ${wrHours(modal.report)}h`;
+          return true;
+        }
+        if (target.dataset.wrMonthKind && modal.kind === 'month') {
+          const collection = modal.report[target.dataset.wrMonthKind];
+          const row = collection?.[Number(target.dataset.wrIndex)];
+          if (row) row[Number(target.dataset.wrField)] = target.value;
+          return true;
+        }
+        if (
+          target.matches('[data-wr-month-suggestion]') &&
+          modal.kind === 'month'
+        ) {
+          modal.report.suggestion = target.value;
+          return true;
+        }
+        return false;
       }
       const payments = [
         {
@@ -4106,7 +4435,7 @@
           if (report)
             wrState.modal = {
               kind: report.week ? 'week' : 'month',
-              report,
+              report: wrClone(report),
             };
           renderWorkReport();
           return;
@@ -4160,6 +4489,28 @@
           renderWorkReport();
           return;
         }
+        const deleteAchievement = e.target.closest(
+          '[data-wr-delete-achievement]',
+        );
+        if (deleteAchievement && wrState.modal?.kind === 'month') {
+          wrState.modal.report.achievements.splice(
+            Number(deleteAchievement.dataset.wrDeleteAchievement),
+            1,
+          );
+          renderWorkReport();
+          return;
+        }
+        const deleteReflection = e.target.closest(
+          '[data-wr-delete-reflection]',
+        );
+        if (deleteReflection && wrState.modal?.kind === 'month') {
+          wrState.modal.report.reflections.splice(
+            Number(deleteReflection.dataset.wrDeleteReflection),
+            1,
+          );
+          renderWorkReport();
+          return;
+        }
         const action = e.target.closest('[data-wr-action]')?.dataset.wrAction;
         if (action) {
           if (action === 'prev' && wrState.week > 34) wrState.week--;
@@ -4172,8 +4523,15 @@
           if (action === 'personal-week') wrState.personalType = 'week';
           if (action === 'personal-month') wrState.personalType = 'month';
           if (action === 'create-week') {
+            if (!wrMissingWeeks().length) {
+              toast('当前无缺失周工作小结。');
+              return;
+            }
             const exists = wrMock.weekly.some(
-              (item) => item.user === 'u01' && item.week === wrState.createWeek,
+              (item) =>
+                item.user === 'u01' &&
+                (item.year || 2026) === wrCurrent.year &&
+                item.week === wrState.createWeek,
             );
             if (exists) {
               toast(`第${wrState.createWeek}周工作小结已存在，请勿重复创建。`);
@@ -4181,8 +4539,9 @@
             }
             const report = {
               id: `W${wrState.createWeek}-NEW`,
+              year: wrCurrent.year,
               week: wrState.createWeek,
-              period: '08/10-08/16',
+              period: wrPeriod(wrCurrent.year, wrState.createWeek),
               user: 'u01',
               status: '待提交',
               submitted: '-',
@@ -4193,17 +4552,23 @@
                   hours: 0,
                   risk: '正常',
                   content: '',
+                  result: '',
                   support: '',
                 },
               ],
             };
-            wrMock.weekly.unshift(report);
             wrState.modal = { kind: 'week', report };
           }
           if (action === 'create-month') {
+            if (!wrMissingMonths().length) {
+              toast('当前无缺失月工作心得。');
+              return;
+            }
             const exists = wrMock.monthly.some(
               (item) =>
-                item.user === 'u01' && item.month === wrState.createMonth,
+                item.user === 'u01' &&
+                (item.year || 2026) === wrCurrent.year &&
+                item.month === wrState.createMonth,
             );
             if (exists) {
               toast(
@@ -4213,6 +4578,7 @@
             }
             const report = {
               id: `M${wrState.createMonth}-NEW`,
+              year: wrCurrent.year,
               month: wrState.createMonth,
               user: 'u01',
               status: '待提交',
@@ -4221,7 +4587,6 @@
               reflections: [['', '', '']],
               suggestion: '',
             };
-            wrMock.monthly.unshift(report);
             wrState.modal = { kind: 'month', report };
           }
           if (action === 'close-modal') wrState.modal = null;
@@ -4232,23 +4597,41 @@
               hours: 0,
               risk: '正常',
               content: '',
+              result: '',
               support: '',
             });
+          if (action === 'add-achievement' && wrState.modal?.kind === 'month')
+            wrState.modal.report.achievements.push(['', '']);
+          if (action === 'add-reflection' && wrState.modal?.kind === 'month')
+            wrState.modal.report.reflections.push(['', '', '']);
           if (
             ['save-report', 'submit-report'].includes(action) &&
             ['week', 'month'].includes(wrState.modal?.kind)
           ) {
-            wrState.modal.report.status =
-              action === 'submit-report' ? '待审核' : '待提交';
-            wrState.modal.report.submitted =
+            const modal = wrState.modal;
+            const report = modal.report;
+            report.status =
               action === 'submit-report'
-                ? '刚刚'
-                : wrState.modal.report.submitted;
+                ? '待审核'
+                : report.status === '已驳回'
+                  ? '已驳回'
+                  : '待提交';
+            report.submitted =
+              action === 'submit-report' ? '刚刚' : report.submitted;
+            const collection =
+              modal.kind === 'week' ? wrMock.weekly : wrMock.monthly;
+            const existingIndex = collection.findIndex(
+              (item) => item.id === report.id,
+            );
+            if (existingIndex >= 0) collection[existingIndex] = wrClone(report);
+            else collection.unshift(wrClone(report));
             wrState.modal = null;
             toast(
               action === 'submit-report'
                 ? '已提交，状态更新为待审核。'
-                : '已暂存，状态仍为待提交。',
+                : report.status === '已驳回'
+                  ? '修改已保存，状态仍为已驳回。'
+                  : '已暂存，状态仍为待提交。',
             );
           }
           if (['approve', 'reject'].includes(action)) {
@@ -4316,6 +4699,23 @@
         if (b) go(b.dataset.go);
       });
       document.addEventListener('change', (e) => {
+        if (wrSyncReportField(e.target)) {
+          if (e.target.dataset.wrWeekField === 'file') renderWorkReport();
+          return;
+        }
+        const filter = e.target.dataset.wrFilter;
+        if (filter) {
+          const [scope, field] = filter.split('.');
+          const stateKey = {
+            all: 'allFilters',
+            weekly: 'weeklyFilters',
+            monthly: 'monthlyFilters',
+            project: 'projectFilters',
+          }[scope];
+          if (stateKey) wrState[stateKey][field] = e.target.value;
+          renderWorkReport();
+          return;
+        }
         const key = e.target.dataset.wrChange;
         if (!key) return;
         if (key === 'week') wrState.week = Number(e.target.value);
@@ -4327,6 +4727,7 @@
         renderWorkReport();
       });
       document.addEventListener('input', (e) => {
+        wrSyncReportField(e.target);
         if (e.target.matches('[data-wr-feedback]'))
           wrState.feedback = e.target.value;
       });
