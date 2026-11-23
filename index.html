@@ -2348,7 +2348,6 @@
       .wr-month-content-head {
         display: grid;
         min-height: 62px;
-        grid-template-columns: minmax(220px, 1.7fr) repeat(4, minmax(78px, 0.55fr)) 138px;
         align-items: center;
         gap: 10px;
         padding: 10px 14px;
@@ -2358,6 +2357,29 @@
       }
       .wr-month-content-head {
         grid-template-columns: minmax(260px, 1.8fr) repeat(3, minmax(88px, 0.55fr)) 72px;
+      }
+      .wr-content-report-head,
+      .wr-weekly-list-tools {
+        display: grid;
+        grid-template-columns: minmax(130px, 1.7fr) repeat(2, minmax(42px, .45fr)) minmax(72px, .55fr) repeat(2, minmax(44px, .45fr)) 126px;
+        align-items: center;
+        gap: 10px;
+      }
+      .wr-weekly-list-tools {
+        padding: 0 15px;
+        margin-bottom: 8px;
+      }
+      .wr-weekly-list-tools > b {
+        grid-column: 4;
+        color: #55596d;
+        font-size: 10px;
+      }
+      .wr-weekly-list-tools .wr-weekly-display-actions {
+        grid-column: 5 / -1;
+        margin: 0;
+      }
+      .wr-weekly-value small {
+        display: none;
       }
       .wr-report-card-actions {
         display: flex;
@@ -2624,6 +2646,44 @@
         width: 100%;
         padding: 8px 9px;
         resize: vertical;
+      }
+      .wr-weekly-fields {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #e4e6eb;
+      }
+      .wr-percent-input {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .wr-field .wr-percent-input input {
+        width: 8em;
+      }
+      .wr-weekly-fields .wr-field-error,
+      .wr-weekly-fields .wr-required {
+        color: #b23743;
+      }
+      .wr-field-error:empty {
+        display: none;
+      }
+      .wr-weekly-fields + .wr-field {
+        margin-top: 12px;
+      }
+      .wr-weekly-fields p,
+      .wr-report-remark p {
+        margin: 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .wr-report-remark {
+        display: grid;
+        gap: 4px;
+        padding: 10px 14px;
+        border-top: 1px solid #e4e6eb;
+        font-size: 10px;
       }
       .wr-form-grid {
         display: grid;
@@ -3195,6 +3255,18 @@
         .wr-month-content-head {
           grid-template-columns: 1fr auto;
           gap: 8px;
+        }
+        .wr-weekly-list-tools {
+          display: block;
+          padding: 0;
+        }
+        .wr-weekly-list-tools > b {
+          display: none;
+        }
+        .wr-weekly-value small {
+          display: inline;
+          margin-right: 5px;
+          color: #55596d;
         }
         .wr-content-report-head > span:first-child,
         .wr-month-content-head > span:first-child {
@@ -4279,6 +4351,7 @@
         weekly: [
           {
             id: 'W36-01',
+            weeklySaturation: 110,
             week: 36,
             period: '08/31-09/06',
             user: 'u01',
@@ -4317,6 +4390,8 @@
           },
           {
             id: 'W35-01',
+            weeklySaturation: 125,
+            weeklyRemark: '本周已完成方案评审，下周跟进验证结果。',
             week: 35,
             period: '08/24-08/30',
             user: 'u01',
@@ -4775,6 +4850,57 @@
           return `<div class="wr-content-field"><b>${label}</b><p>${text}</p></div>`;
         return `<div class="wr-content-field"><b>${label}</b><details class="wr-field-expander"><summary><span class="wr-field-preview">${text}</span><em class="wr-expand-label">${expandLabel}</em><em class="wr-collapse-label">${collapseLabel}</em></summary><p>${text}</p></details></div>`;
       };
+      const wrEscapeText = (value) =>
+        String(value ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;');
+      const wrSaturationLabel = (report) =>
+        Number.isInteger(report.weeklySaturation) ? `${report.weeklySaturation}%` : '—';
+      const wrCanEditWeeklyModal = (report) =>
+        wrState.section === 'personal' &&
+        report.user === 'u01' &&
+        ['待提交', '已驳回'].includes(report.status);
+      const wrWeeklyFields = (report, editable, scope) => {
+        const remark = wrEscapeText(report.weeklyRemark);
+        if (!editable)
+          return `<section class="wr-weekly-fields"><div class="wr-field"><b>每周总饱和度</b><p>${wrSaturationLabel(report)}</p></div><div class="wr-field"><b>备注</b><p>${remark || '—'}</p></div></section>`;
+
+        return `<section class="wr-weekly-fields">
+          <label class="wr-field"><span>每周总饱和度 <b class="wr-required" aria-hidden="true">*</b></span>
+            <span class="wr-percent-input"><input type="text" inputmode="numeric" required data-wr-${scope}-summary="weeklySaturation" aria-describedby="wr-${scope}-saturation-error" value="${wrEscapeText(report.weeklySaturation)}"><span aria-hidden="true">%</span></span>
+            <small class="wr-field-error" id="wr-${scope}-saturation-error" role="alert"></small>
+          </label>
+          <label class="wr-field"><span>备注</span><textarea rows="3" data-wr-${scope}-summary="weeklyRemark">\n${remark}</textarea></label>
+        </section>`;
+      };
+      function wrSyncWeeklySummary(target, report, scope) {
+        const field = target.getAttribute(`data-wr-${scope}-summary`);
+        if (field !== 'weeklySaturation' && field !== 'weeklyRemark') return false;
+        report[field] = target.value;
+        if (field === 'weeklySaturation') {
+          target.removeAttribute('aria-invalid');
+          document.getElementById(`wr-${scope}-saturation-error`).textContent = '';
+        }
+        return true;
+      }
+      function wrValidateWeeklySaturation(report, scope) {
+        const value = String(report.weeklySaturation ?? '').trim();
+        let message = '';
+        if (!value) message = '请填写每周总饱和度';
+        else if (!/^\d+$/.test(value) || Number(value) > 200)
+          message = '请输入 0 至 200 的整数';
+        if (message) {
+          const input = document.querySelector(`[data-wr-${scope}-summary="weeklySaturation"]`);
+          input.setAttribute('aria-invalid', 'true');
+          document.getElementById(`wr-${scope}-saturation-error`).textContent = message;
+          input.focus();
+          return false;
+        }
+        report.weeklySaturation = Number(value);
+        return true;
+      }
       const wrWeeklyContentCard = (report, readonly = false) => {
         const user = wrUser(report.user);
         const editable =
@@ -4788,11 +4914,12 @@
               })
               .join('')
           : '<div class="wr-empty">暂未填写项目明细。</div>';
-        return `<article class="wr-content-report-card"><header class="wr-content-report-head"><span><b>${report.year || 2026}年第${report.week}周工作小结</b><small>${report.period} · ${user[0]} / ${user[1]}</small></span><span>${report.projects.length} 个项目</span><span>${wrHours(report)}h</span>${report.projects.length ? wrTag(wrMaxRisk(report)) : '<span>-</span>'}${wrTag(report.status)}<span class="wr-report-card-actions"><button class="wr-link" data-wr-toggle-weekly="${report.id}">${expanded ? '收起 ▲' : '展开 ▼'}</button><button class="wr-link" data-wr-view="${report.id}">${editable ? '编辑' : '查看完整记录'} ›</button></span></header>${expanded ? `<div class="wr-week-project-list">${projects}</div>${report.feedback ? `<footer class="wr-inline-feedback"><b>主管反馈</b><p>${report.feedback}</p></footer>` : ''}` : ''}</article>`;
+        return `<article class="wr-content-report-card"><header class="wr-content-report-head"><span><b>${report.year || 2026}年第${report.week}周工作小结</b><small>${report.period} · ${user[0]} / ${user[1]}</small></span><span>${report.projects.length} 个项目</span><span>${wrHours(report)}h</span><span class="wr-weekly-value"><small>每周总饱和度</small>${wrSaturationLabel(report)}</span>${report.projects.length ? wrTag(wrMaxRisk(report)) : '<span>-</span>'}${wrTag(report.status)}<span class="wr-report-card-actions"><button class="wr-link" data-wr-toggle-weekly="${report.id}">${expanded ? '收起 ▲' : '展开 ▼'}</button><button class="wr-link" data-wr-view="${report.id}">${editable ? '编辑' : '查看完整记录'} ›</button></span></header>${expanded ? `<div class="wr-week-project-list">${projects}</div>${report.weeklyRemark ? `<div class="wr-report-remark"><b>备注</b><p>${wrEscapeText(report.weeklyRemark)}</p></div>` : ''}${report.feedback ? `<footer class="wr-inline-feedback"><b>主管反馈</b><p>${report.feedback}</p></footer>` : ''}` : ''}</article>`;
       };
       const wrWeeklyDisplayControls = (reports) => {
         const ids = reports.map((report) => report.id).join(',');
-        return `<div class="wr-weekly-display-actions"><span>周报展示</span><button class="secondary" data-wr-bulk-weekly="expand" data-wr-weekly-ids="${ids}" ${ids ? '' : 'disabled'}>全部展开</button><button class="secondary" data-wr-bulk-weekly="collapse" data-wr-weekly-ids="${ids}" ${ids ? '' : 'disabled'}>全部折叠</button></div>`;
+        const actions = `<div class="wr-weekly-display-actions"><span>周报展示</span><button class="secondary" data-wr-bulk-weekly="expand" data-wr-weekly-ids="${ids}" ${ids ? '' : 'disabled'}>全部展开</button><button class="secondary" data-wr-bulk-weekly="collapse" data-wr-weekly-ids="${ids}" ${ids ? '' : 'disabled'}>全部折叠</button></div>`;
+        return `<div class="wr-weekly-list-tools">${reports.length ? '<b>每周总饱和度</b>' : ''}${actions}</div>`;
       };
       const wrMonthlyContentCard = (report, readonly = false) => {
         const user = wrUser(report.user);
@@ -4872,7 +4999,7 @@
               x.user === 'u01' &&
               (wrState.status === '全部' || x.status === wrState.status),
           );
-        const weekRows = personalWeeks.map(wrWeeklyContentCard).join('');
+        const weekRows = personalWeeks.map((report) => wrWeeklyContentCard(report)).join('');
         const personalMonths = wrMock.monthly.filter(
             (x) =>
               x.user === 'u01' &&
@@ -5001,7 +5128,7 @@
                   (p) =>
                     `<div class="wr-readonly-card"><b>${wrState.projects[p.project].name}</b><p>${p.content}</p><p>成果 / 备注：${p.result || '-'}</p><p>风险前置 / 所需支持：${p.support || '-'}</p><small>${p.stage} · ${p.hours}h · ${wrTag(p.risk)}</small></div>`,
                 )
-                .join('')
+                .join('') + wrWeeklyFields(selected, false, 'audit')
             : `${selected.achievements.map((a) => `<div class="wr-readonly-card"><b>${a[0]}</b><p>价值与影响：${a[1]}</p></div>`).join('')}${selected.reflections.map((a) => `<div class="wr-readonly-card"><b>问题：${a[0]}</b><p>原因分析：${a[1]}</p><p>能力成长与学习：${a[2]}</p></div>`).join('')}<p>合理化建议：${selected.suggestion || '暂无建议'}</p>`
           : '<div class="wr-empty">当前筛选下没有待审核汇报。</div>';
         return (
@@ -5314,6 +5441,7 @@
             if (editable)
               fields +=
                 '<button class="wr-mobile-add" data-wr-action="ding-add-project">＋ 新增项目</button>';
+            fields += wrWeeklyFields(report, editable, 'ding');
           } else {
             fields = `<div class="wr-mobile-section-title"><h3>本月核心成果</h3>${editable ? '<button data-wr-action="ding-add-achievement">＋新增</button>' : ''}</div>${report.achievements.map((entry, index) => `<article class="wr-mobile-project"><label class="wr-field"><span>具体产出</span><textarea rows="3" data-wr-ding-month-kind="achievements" data-wr-ding-index="${index}" data-wr-ding-part="0" ${editable ? '' : 'disabled'}>${entry[0]}</textarea></label><label class="wr-field"><span>价值与影响</span><textarea rows="3" data-wr-ding-month-kind="achievements" data-wr-ding-index="${index}" data-wr-ding-part="1" ${editable ? '' : 'disabled'}>${entry[1]}</textarea></label></article>`).join('')}<div class="wr-mobile-section-title"><h3>本月问题与反思</h3>${editable ? '<button data-wr-action="ding-add-reflection">＋新增</button>' : ''}</div>${report.reflections.map((entry, index) => `<article class="wr-mobile-project">${['问题描述', '原因分析', '能力成长与学习'].map((label, part) => `<label class="wr-field"><span>${label}</span><textarea rows="3" data-wr-ding-month-kind="reflections" data-wr-ding-index="${index}" data-wr-ding-part="${part}" ${editable ? '' : 'disabled'}>${entry[part]}</textarea></label>`).join('')}</article>`).join('')}<label class="wr-field wr-mobile-suggestion"><span>合理化建议</span><textarea rows="4" data-wr-ding-suggestion ${editable ? '' : 'disabled'}>${report.suggestion || ''}</textarea></label>`;
           }
@@ -5356,7 +5484,7 @@
         }
         const r = modal.report,
           u = wrUser(r.user),
-          readonly = !['待提交', '已驳回'].includes(r.status);
+          readonly = !wrCanEditWeeklyModal(r);
         return `<div class="wr-modal-backdrop"><section class="wr-modal"><header><h2>${r.year || 2026}年第${r.week}周工作小结</h2><button data-wr-action="close-modal">×</button></header><div class="wr-modal-body">${r.feedback ? `<div class="wr-feedback"><b>主管反馈</b><p>${r.feedback}</p></div>` : ''}<p class="wr-muted">周期 ${r.period} · 填写人 ${u[0]} · ${u[1]} · ${wrTag(r.status)}</p><datalist id="wr-project-options">${wrState.projects
           .filter((x) => x.status === '启用')
           .map((x) => `<option value="${x.name}"></option>`)
@@ -5367,7 +5495,7 @@
           )
           .join(
             '',
-          )}${!readonly ? '<button class="secondary" data-wr-action="add-project">＋新增项目</button>' : ''}</div><footer><span data-wr-total>项目 ${r.projects.length} 个 · 总工时 ${wrHours(r)}h</span><div class="wr-actions"><button class="secondary" data-wr-action="close-modal">关闭</button>${readonly ? '' : `<button class="secondary" data-wr-action="save-report">暂存</button><button class="primary" data-wr-action="submit-report">${r.status === '已驳回' ? '重新提交' : '提交'}</button>`}</div></footer></section></div>`;
+          )}${!readonly ? '<button class="secondary" data-wr-action="add-project">＋新增项目</button>' : ''}${wrWeeklyFields(r, !readonly, 'week')}</div><footer><span data-wr-total>项目 ${r.projects.length} 个 · 总工时 ${wrHours(r)}h</span><div class="wr-actions"><button class="secondary" data-wr-action="close-modal">关闭</button>${readonly ? '' : `<button class="secondary" data-wr-action="save-report">暂存</button><button class="primary" data-wr-action="submit-report">${r.status === '已驳回' ? '重新提交' : '提交'}</button>`}</div></footer></section></div>`;
       }
       function renderWorkReport() {
         const views = {
@@ -5389,6 +5517,7 @@
       function wrSyncReportField(target) {
         const modal = wrState.modal;
         if (!modal || !['week', 'month'].includes(modal.kind)) return false;
+        if (modal.kind === 'week' && wrSyncWeeklySummary(target, modal.report, 'week')) return true;
         if (target.dataset.wrWeekField && modal.kind === 'week') {
           const entry =
             modal.report.projects[Number(target.dataset.wrWeekIndex)];
@@ -5428,6 +5557,10 @@
       function wrSyncDingField(target) {
         const draft = wrState.mobileDraft;
         if (!draft) return false;
+        if (draft.kind === 'week' && wrSyncWeeklySummary(target, draft.report, 'ding')) {
+          wrState.mobileDirty = true;
+          return true;
+        }
         if (target.dataset.wrDingField && draft.kind === 'week') {
           const entry =
             draft.report.projects[Number(target.dataset.wrDingWeekIndex)];
@@ -6150,6 +6283,7 @@
           }
           if (action === 'ding-submit' && wrState.mobileDraft) {
             const draft = wrState.mobileDraft;
+            if (draft.kind === 'week' && !wrValidateWeeklySaturation(draft.report, 'ding')) return;
             if (
               draft.kind === 'week' &&
               draft.report.projects.some(
@@ -6287,6 +6421,7 @@
             const modal = wrState.modal;
             const report = modal.report;
             if (modal.kind === 'week') {
+              if (!wrCanEditWeeklyModal(report) || !wrValidateWeeklySaturation(report, 'week')) return;
               const invalidProject = report.projects.some((entry) => {
                 const value =
                   entry.projectName ||
